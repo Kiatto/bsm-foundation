@@ -1,0 +1,33 @@
+model:
+  vocab_size: 4096
+  hidden_dim: 256
+  num_layers: 6
+  window_size: 8
+  seq_len: 128
+
+train:
+  batch_size: 32
+  learning_rate: 0.0003
+  max_steps: 10000
+  warmup_steps: 500
+  weight_decay: 0.01
+  seed: 42
+
+tree_head:
+  enabled: true
+  warmup_steps: 2000
+  learning_rate: 0.001
+  train_epochs: 5
+  batch_size: 4096
+
+data:
+  train_path: data/tinystories_train.txt
+  val_path: data/tinystories_val.txt
+  tokenizer_path: checkpoints/tinystories_vocab4096.json
+
+output:
+  checkpoint_dir: checkpoints/quality
+  export_path: checkpoints/tinystories_quality.blmf
+  log_interval: 50
+  save_interval: 1000
+  eval_interval: 1000

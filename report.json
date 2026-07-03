@@ -1,0 +1,18 @@
+{
+  "dataset": {
+    "n_train": 500,
+    "n_test": 125,
+    "D": 256,
+    "k": 5
+  },
+  "build_time_ms": 10.538487054873258,
+  "observe_time_ms": 228.38234202936292,
+  "latency_mean_us": 4688.062872271985,
+  "latency_p50_us": 4366.446984931827,
+  "latency_p99_us": 8960.442275274549,
+  "entries": 500,
+  "memory_keys_kb": 15.625,
+  "version": "1.0.0rc1",
+  "utilization": 0.005,
+  "avg_hamming_radius": 109.01
+}

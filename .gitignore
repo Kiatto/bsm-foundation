@@ -1,0 +1,51 @@
+# Binaries
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+blm
+bin/
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+dist/
+build/
+.eggs/
+*.egg
+.pytest_cache/
+*.pyc
+
+# Go
+runtime/vendor/
+*.test
+*.out
+runtime/cmd/blm/blm
+
+# Models
+*.blmf
+*.pt
+checkpoints/
+models/
+
+# Data
+testdata/*.txt
+!testdata/tiny_corpus.txt
+data/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Temp
+/tmp/

@@ -1,0 +1,8 @@
+{
+  "arch": "BSM",
+  "vocab_size": 4096,
+  "hidden_dim": 512,
+  "num_layers": 6,
+  "window_size": 8,
+  "seq_len": 256
+}

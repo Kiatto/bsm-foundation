@@ -1,0 +1,83 @@
+the cat sat on the mat
+a dog ran in the park
+binary systems are fast
+simple models work well
+the bird flew over the tree
+fish swim in the deep sea
+the sun is bright and warm
+stars shine at night
+a small bug crawled on the leaf
+the book is on the table
+children play in the garden
+the train moves along the track
+a red car drove down the road
+the clock ticks every second
+water flows from the tap
+the moon orbits the earth
+trees grow tall in the forest
+the baby sleeps in the crib
+a plane flies high above the clouds
+rain falls from the grey sky
+the old man reads the news
+a young girl sings a song
+the chef cooks a tasty meal
+the dog barks at the mailman
+a black cat hunts in the dark
+the teacher writes on the board
+students learn new things every day
+the river runs to the sea
+a white sheep grazes in the field
+the bell rings at noon
+birds build nests in the spring
+the fish darts through the clear water
+a gentle breeze blows the leaves
+the baker makes fresh bread each morning
+the stars twinkle in the velvet sky
+a rabbit hops across the meadow
+the wise owl hoots in the night
+the brave knight rides to the castle
+a golden key unlocks the old chest
+the river reflects the setting sun
+binary data flows through the network
+the machine learns from examples
+bits and bytes form the message
+a simple rule governs the system
+the algorithm converges to a solution
+hidden patterns emerge from the data
+the neural network processes the input
+state transitions follow a fixed rule
+memory stores the past events
+the output depends on the current state
+each layer transforms the signal
+the gradient flows back through the network
+weights are updated after each batch
+the learning rate decays over time
+validation loss measures generalization
+the test set evaluates the final model
+the dataset contains many examples
+each example has a label
+the model predicts the next word
+training continues until convergence
+the optimizer finds a good minimum
+the loss function guides the search
+binary encoding saves memory and power
+the embedded vector represents a token
+the hidden state captures context
+the mixing layer combines information
+the output head produces probabilities
+greedy decoding picks the most likely token
+sampling adds randomness to generation
+temperature controls the creativity
+the top k filter limits choices
+the prompt gives the starting context
+generation stops at the end token
+the vocabulary maps tokens to ids
+the tokenizer splits text into pieces
+byte pair encoding finds common patterns
+rare tokens are split into smaller parts
+common tokens are merged into single ids
+the corpus contains the training text
+data preparation cleans and normalizes
+the batch groups similar length sequences
+padding fills the shorter sequences
+the attention mask ignores padded positions
