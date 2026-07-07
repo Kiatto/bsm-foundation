@@ -1,0 +1,30 @@
+[
+  {
+    "model": "GPT-2 (base)",
+    "params_m": 124.439808,
+    "type": "base",
+    "no_rag_accuracy": 0.2,
+    "with_rag_accuracy": 0.4666666666666667,
+    "delta": 0.26666666666666666,
+    "no_rag_latency_mean_ms": 1125.75430973302,
+    "with_rag_latency_mean_ms": 1361.936903999837,
+    "no_rag_latency_p99_ms": 1324.9317922988848,
+    "with_rag_latency_p99_ms": 1448.7346142005117,
+    "bsm_recall_at_5": 0.8666666666666667,
+    "bsm_memory_kb": 0
+  },
+  {
+    "model": "SmolLM2-135M-Instruct",
+    "params_m": 134.515008,
+    "type": "instruct",
+    "no_rag_accuracy": 0.6,
+    "with_rag_accuracy": 0.7333333333333333,
+    "delta": 0.1333333333333333,
+    "no_rag_latency_mean_ms": 1157.178264133351,
+    "with_rag_latency_mean_ms": 2722.7832443328225,
+    "no_rag_latency_p99_ms": 1772.0451392020184,
+    "with_rag_latency_p99_ms": 3618.4705214992573,
+    "bsm_recall_at_5": 0.8666666666666667,
+    "bsm_memory_kb": 0
+  }
+]
