@@ -62,7 +62,7 @@ class ContextCompiler:
         Args:
             results: list of (payload_dict, hamming_dist, meta_dict)
                      from BSM.recall()
-            query: optional query text (for dedup against query).
+            query: query text (used for reranking if non-empty).
 
         Returns:
             list of chunk text strings, ordered by relevance.
@@ -79,8 +79,20 @@ class ContextCompiler:
 
         self.last_stats["chunks_in"] = len(entries)
 
-        # 2. Rank (already sorted by distance from BSM, but ensure)
-        entries.sort(key=lambda e: e["dist"])
+        # 2. Rerank by combined Hamming distance + query word overlap
+        if query:
+            for e in entries:
+                q_overlap = _word_overlap(e["text"], query)
+                # Combined: lower is better
+                # Hamming normalized by D, minus query overlap weighted
+                e["query_overlap"] = q_overlap
+                e["score"] = e["dist"] - q_overlap * 40.0  # weight: ~15% of D=256
+            entries.sort(key=lambda e: e["score"])
+        else:
+            entries.sort(key=lambda e: e["dist"])
+            for e in entries:
+                e["query_overlap"] = 0.0
+                e["score"] = float(e["dist"])
 
         # 3. Cluster by word overlap
         clusters = self._cluster(entries)
@@ -131,13 +143,13 @@ class ContextCompiler:
         return clusters
 
     def _merge(self, clusters: List[List[int]], entries: List[dict]) -> List[dict]:
-        """Pick best entry per cluster: lowest distance wins, tie → shortest."""
+        """Pick best entry per cluster: lowest score wins, tie → shortest."""
         merged = []
         for comp in clusters:
-            best = min(comp, key=lambda i: (entries[i]["dist"],
+            best = min(comp, key=lambda i: (entries[i].get("score", entries[i]["dist"]),
                                             len(entries[i]["text"])))
             merged.append(entries[best])
-        merged.sort(key=lambda e: e["dist"])
+        merged.sort(key=lambda e: e.get("score", e["dist"]))
         return merged
 
     def _prune(self, entries: List[dict]) -> List[str]:

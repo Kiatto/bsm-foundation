@@ -64,7 +64,16 @@ class BSMRAG:
             })
 
     def index_documents(self, docs: List[dict]):
-        """Index a list of {"text": str, "source": str} documents."""
+        """Index a list of {"text": str, "source": str} documents.
+
+        If the BSM encoder is a ProjectionEncoder that hasn't been fitted,
+        this will fit it on the corpus texts first.
+        """
+        from bsm.memory.encoder.bsm_encoder import ProjectionEncoder
+        enc = self.bsm._encoder
+        if isinstance(enc, ProjectionEncoder) and not enc._fitted:
+            texts = [doc["text"] for doc in docs]
+            enc.fit(texts)
         for doc in docs:
             self.index_text(doc["text"], doc.get("source", ""))
 
