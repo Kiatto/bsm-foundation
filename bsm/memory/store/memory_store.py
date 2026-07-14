@@ -60,8 +60,13 @@ class MemoryStore:
         return out
 
     def unpack(self, packed: np.ndarray) -> np.ndarray:
-        """Unpack uint64 array back to int8 {-1,+1} vector."""
-        bits = np.unpackbits(packed.view(np.uint8))[:self.state_dim]
+        """Unpack uint64 array back to int8 {-1,+1} vector.
+
+        bitorder='little' per essere l'inverso esatto di pack(), che
+        scrive il bit j alla posizione j%64 del chunk j//64.
+        """
+        bits = np.unpackbits(packed.view(np.uint8),
+                             bitorder="little")[:self.state_dim]
         return np.where(bits > 0, 1, -1).astype(np.int8)
 
     # ------------------------------------------------------------------
