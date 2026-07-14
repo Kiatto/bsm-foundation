@@ -1,0 +1,163 @@
+{
+ "note": "Estrazione livello A eseguita da LLM (Claude in-sessione) leggendo TUTTI i contesti (gold+distrattori). Triple in schema aperto; include triple distrattrici per onestà sul rumore.",
+ "questions": [
+  {
+   "id": "5a8c7595554299585d9e36b6",
+   "q": "What government position was held by the woman who portrayed Corliss Archer in the film Kiss and Tell?",
+   "gold": "Chief of Protocol",
+   "plan": {"type": "chain", "anchor": "corliss archer kiss and tell film", "chain": ["portrayed_by", "held_position"]},
+   "triples": [
+    ["corliss archer kiss and tell film", "portrayed_by", "shirley temple", "Kiss and Tell is a 1945 American comedy film starring then 17-year-old Shirley Temple as Corliss Archer."],
+    ["shirley temple", "held_position", "chief of protocol of the united states", "As an adult, she was named United States ambassador to Ghana and to Czechoslovakia and also served as Chief of Protocol of the United States."],
+    ["shirley temple", "ambassador_to", "ghana and czechoslovakia", "As an adult, she was named United States ambassador to Ghana and to Czechoslovakia."],
+    ["corliss archer radio series", "portrayed_by", "janet waldo", "Janet Waldo on radio played the title character in Meet Corliss Archer."],
+    ["a kiss for corliss film", "stars", "shirley temple", "A Kiss for Corliss stars Shirley Temple in her final starring role."],
+    ["a kiss for corliss film", "directed_by", "richard wallace", "A Kiss for Corliss is a 1949 American comedy film directed by Richard Wallace."],
+    ["meet corliss archer tv series", "edited_by", "charles craft", "Charles Craft would work on Meet Corliss Archer (1954)."],
+    ["lord high treasurer", "is_a", "english government position", "The post of Lord High Treasurer was an English government position."],
+    ["village accountant", "is_a", "administrative government position in india", "The Village Accountant is an administrative government position found in rural parts of the Indian sub-continent."]
+   ]
+  },
+  {
+   "id": "5a85ea095542994775f606a8",
+   "q": "What science fantasy young adult series, told in first person, has a set of companion books narrating the stories of enslaved worlds and alien species?",
+   "gold": "Animorphs",
+   "plan": {"type": "chain", "anchor": "enslaved worlds alien species companion books", "chain": ["narrated_in_companion_of"]},
+   "triples": [
+    ["enslaved worlds alien species companion books", "narrated_in_companion_of", "animorphs", "The Hork-Bajir Chronicles is the second companion book to the Animorphs series: how the Yeerks enslaved the Hork-Bajir and aliens tried to save their world."],
+    ["animorphs", "is_a", "science fantasy young adult series first person", "Animorphs is a science fantasy series of young adult books... told in first person."],
+    ["animorphs", "written_by", "k a applegate", "Animorphs written by Katherine Applegate and Michael Grant under the name K. A. Applegate."],
+    ["the hork-bajir chronicles", "companion_book_of", "animorphs", "The Hork-Bajir Chronicles is the second companion book to the Animorphs series."],
+    ["the seer and the sword", "companion_book_of", "victoria hanley books", "Her first three books are companion books to one another."],
+    ["shadowshaper", "is_a", "urban fantasy young adult novel", "Shadowshaper is a 2015 American urban fantasy young adult novel."],
+    ["the divide trilogy", "is_a", "fantasy young adult trilogy", "The Divide trilogy is a fantasy young adult novel trilogy by Elizabeth Kay."],
+    ["left behind the kids", "written_by", "jerry b jenkins tim lahaye chris fabry", "Left Behind: The Kids is a series written by Jerry B. Jenkins, Tim LaHaye, and Chris Fabry."],
+    ["science fantasy magazine", "is_a", "british fantasy science fiction magazine", "Science Fantasy was a British fantasy and science fiction magazine."]
+   ]
+  },
+  {
+   "id": "5a8e3ea95542995a26add48d",
+   "q": "The director of the romantic comedy Big Stone Gap is based in what New York city?",
+   "gold": "Greenwich Village, New York City",
+   "plan": {"type": "chain", "anchor": "big stone gap film", "chain": ["directed_by", "based_in"]},
+   "triples": [
+    ["big stone gap film", "directed_by", "adriana trigiani", "Big Stone Gap is a 2014 American drama romantic comedy film written and directed by Adriana Trigiani."],
+    ["adriana trigiani", "based_in", "greenwich village new york city", "Adriana Trigiani is an Italian American best-selling author... based in Greenwich Village, New York City."],
+    ["big stone gap film", "produced_by", "donna gigliotti", "produced by Donna Gigliotti for Altar Identity Studios."],
+    ["nola film", "directed_by", "alan hruska", "Nola is a 2003 American romantic comedy film written and directed by Alan Hruska."],
+    ["i love ny film", "directed_by", "radhika rao and vinay sapru", "I Love NY is an Indian romantic comedy film directed by Radhika Rao and Vinay Sapru."],
+    ["kingston morning", "recorded_in", "brooklyn kingston big stone gap", "Kingston Morning is Dave Eggar's 4th solo release recorded in Brooklyn, Kingston, and Big Stone Gap, Virginia."],
+    ["clinton minnesota", "located_in", "big stone county minnesota", "Clinton is a city in Big Stone County, Minnesota."]
+   ]
+  },
+  {
+   "id": "5abd94525542992ac4f382d2",
+   "q": "2014 S/S is the debut album of a South Korean boy group that was formed by who?",
+   "gold": "YG Entertainment",
+   "plan": {"type": "chain", "anchor": "2014 s/s album", "chain": ["debut_album_of", "formed_by"]},
+   "triples": [
+    ["2014 s/s album", "debut_album_of", "winner", "2014 S/S is the debut album of South Korean group WINNER."],
+    ["winner", "formed_by", "yg entertainment", "Winner is a South Korean boy group formed in 2013 by YG Entertainment."],
+    ["2014 s/s album", "released_by", "yg entertainment", "It was released on August 12, 2014 by the group's record label, YG Entertainment."],
+    ["shinee", "formed_by", "sm entertainment", "The group was formed by S.M. Entertainment in 2008."],
+    ["history band", "formed_by", "loen entertainment", "History was a South Korean boy group formed by LOEN Entertainment in 2013."],
+    ["madtown", "formed_by", "j tune camp", "Madtown is a South Korean boy group formed in 2014 by J. Tune Camp."],
+    ["sf9", "formed_by", "fnc entertainment", "SF9 is a South Korean boy group formed by FNC Entertainment."],
+    ["seventeen", "formed_by", "pledis entertainment", "Seventeen is a South Korean boy group formed by Pledis Entertainment in 2015."],
+    ["mad town album", "debut_album_of", "madtown", "Their debut album, Mad Town, was released on October 6, 2014."]
+   ]
+  },
+  {
+   "id": "5a85b2d95542997b5ce40028",
+   "q": "Who was known by his stage name Aladin and helped organizations improve their performance as a consultant?",
+   "gold": "Eenasul Fateh",
+   "plan": {"type": "chain", "anchor": "aladin stage name", "chain": ["stage_name_of"]},
+   "triples": [
+    ["aladin stage name", "stage_name_of", "eenasul fateh", "Eenasul Fateh, also known by his stage name Aladin, is a Bangladeshi-British cultural practitioner, magician and former international management consultant."],
+    ["eenasul fateh", "profession", "international management consultant", "former international management consultant."],
+    ["method man stage name", "stage_name_of", "clifford smith", "Clifford Smith, better known by his stage name Method Man."],
+    ["criss angel stage name", "stage_name_of", "christopher sarantakos", "Christopher Nicholas Sarantakos, known by the stage name Criss Angel."],
+    ["mick stage name", "stage_name_of", "mick batyske", "Mick Batyske, known by his stage name Mick."],
+    ["eldee stage name", "stage_name_of", "lanre dabiri", "Lanre Dabiri, better known by his stage name Eldee."],
+    ["lil ru stage name", "stage_name_of", "sylvester samuels", "Sylvester Samuels better known by his stage name Lil Ru."],
+    ["indriati iskak stage name", "stage_name_of", "indriati gerald bernardina", "Indriati Gerald Bernardina, also known by her stage name Indriati Iskak."],
+    ["management consulting", "is_a", "practice of helping organizations improve performance", "Management consulting is the practice of helping organizations to improve their performance."]
+   ]
+  },
+  {
+   "id": "5a87ab905542996e4f3088c1",
+   "q": "The arena where the Lewiston Maineiacs played their home games can seat how many people?",
+   "gold": "3,677 seated",
+   "plan": {"type": "chain", "anchor": "lewiston maineiacs", "chain": ["home_arena", "seating_capacity"]},
+   "triples": [
+    ["lewiston maineiacs", "home_arena", "androscoggin bank colisee", "The team played its home games at the Androscoggin Bank Colisee."],
+    ["androscoggin bank colisee", "seating_capacity", "3,677 seated of 4,000 capacity", "The Androscoggin Bank Colisee is a 4,000 capacity (3,677 seated) multi-purpose arena in Lewiston, Maine."],
+    ["lewiston maineiacs", "is_a", "qmjhl junior ice hockey team", "The Lewiston Maineiacs were a junior ice hockey team of the Quebec Major Junior Hockey League."],
+    ["lewiston maineiacs", "won", "presidents cup 2007", "They won the President's Cup in 2007."],
+    ["robins center", "seating_capacity", "7,201 seats", "The Robins Center is a 7,201-seat multi-purpose arena in Richmond, Virginia."],
+    ["case gym", "seating_capacity", "1,800 seats", "Case Gym is a 1,800-seat multi-purpose arena at Boston University."],
+    ["dwyer arena", "seating_capacity", "1,400 people", "The main rink can seat up to 1,400 people."],
+    ["billings bulls", "home_arena", "centennial ice arena", "They most recently played home games at the 550-seat Centennial Ice Arena."]
+   ]
+  },
+  {
+   "id": "5a7bbb64554299042af8f7cc",
+   "q": "Who is older, Annie Morton or Terry Richardson?",
+   "gold": "Terry Richardson",
+   "plan": {"type": "compare_older", "anchors": ["annie morton", "terry richardson"], "rel": "born_in_year"},
+   "triples": [
+    ["annie morton", "born_in_year", "1970", "Annie Morton (born October 8, 1970) is an American model."],
+    ["terry richardson", "born_in_year", "1965", "Terrence Uncle Terry Richardson (born August 14, 1965) is an American fashion photographer."],
+    ["amanda lepore", "born_in_year", "1967", "Amanda Lepore (born November 21, 1967) is an American transgender model."],
+    ["kenton richardson", "born_in_year", "1999", "Kenton Terry Richardson (born 26 July 1999) is an English professional footballer."],
+    ["annie morton", "profession", "american model", "Annie Morton is an American model born in Pennsylvania."],
+    ["terry richardson", "profession", "fashion portrait photographer", "Terry Richardson is an American fashion and portrait photographer."]
+   ]
+  },
+  {
+   "id": "5a7166395542994082a3e814",
+   "q": "What is the name of the fight song of the university whose main campus is in Lawrence, Kansas and whose branch campuses are in the Kansas City metropolitan area?",
+   "gold": "Kansas Song",
+   "plan": {"type": "chain", "anchor": "main campus lawrence kansas", "chain": ["main_campus_of", "fight_song"]},
+   "triples": [
+    ["main campus lawrence kansas", "main_campus_of", "university of kansas", "The main campus in Lawrence, one of the largest college towns in Kansas, is on Mount Oread."],
+    ["university of kansas", "fight_song", "kansas song", "Kansas Song (We're From Kansas) is a fight song of the University of Kansas."],
+    ["university of kansas", "branch_campuses_in", "kansas city metropolitan area", "Two branch campuses are in the Kansas City metropolitan area."],
+    ["main campus san antonio", "main_campus_of", "university of the incarnate word", "The University of the Incarnate Word main campus is located in San Antonio and Alamo Heights, Texas."],
+    ["university of missouri kansas city", "located_in", "kansas city missouri", "Located in Kansas City, Missouri, UMKC is one of four system campuses of the University of Missouri."],
+    ["kansas city jazz", "is_a", "jazz style from kansas city", "Kansas City jazz is a style of jazz that developed in Kansas City."]
+   ]
+  },
+  {
+   "id": "5a877e5d5542993e715abf7d",
+   "q": "What screenwriter with credits for Evolution co-wrote a film starring Nicolas Cage and Tea Leoni?",
+   "gold": "David Weissman",
+   "plan": {"type": "chain", "anchor": "film starring nicolas cage and tea leoni", "chain": ["written_by"]},
+   "triples": [
+    ["film starring nicolas cage and tea leoni", "written_by", "david diamond and david weissman", "The Family Man is a 2000 American romantic comedy-drama film directed by Brett Ratner, written by David Diamond and David Weissman, and starring Nicolas Cage and Tea Leoni."],
+    ["david weissman", "credits_include", "the family man evolution when in rome", "His film credits include The Family Man (2000), Evolution (2001), and When in Rome (2010)."],
+    ["gone in 60 seconds film", "written_by", "scott rosenberg", "Gone in 60 Seconds was directed by Dominic Sena, written by Scott Rosenberg."],
+    ["deadfall film", "written_by", "christopher coppola and nick vallelonga", "Coppola co-wrote the script with Nick Vallelonga."],
+    ["season of the witch film", "stars", "nicolas cage and ron perlman", "Season of the Witch is a 2011 film starring Nicolas Cage and Ron Perlman."],
+    ["city of angels film", "stars", "nicolas cage and meg ryan", "City of Angels starring Nicolas Cage and Meg Ryan."],
+    ["it could happen to you film", "stars", "nicolas cage and bridget fonda", "It Could Happen to You is a 1994 film starring Nicolas Cage and Bridget Fonda."],
+    ["drive angry film", "stars", "nicolas cage and amber heard", "Drive Angry is a 2011 film starring Nicolas Cage and Amber Heard."]
+   ]
+  },
+  {
+   "id": "5ab3b0bf5542992ade7c6e39",
+   "q": "What year did Guns N Roses perform a promo for a movie starring Arnold Schwarzenegger as a former New York Police detective?",
+   "gold": "1999",
+   "plan": {"type": "chain", "anchor": "arnold schwarzenegger former new york police detective film", "chain": ["role_in_film", "guns_n_roses_promo_year"]},
+   "triples": [
+    ["arnold schwarzenegger former new york police detective film", "role_in_film", "end of days", "End of Days follows former New York Police Department detective Jericho Cane (Schwarzenegger)."],
+    ["end of days", "guns_n_roses_promo_year", "1999", "Oh My God is a song by Guns N' Roses released in 1999 on the soundtrack to the film End of Days; sent to radio stations in November 1999 as a promo."],
+    ["end of days", "directed_by", "peter hyams", "End of Days is a 1999 film directed by Peter Hyams starring Arnold Schwarzenegger."],
+    ["last action hero", "stars_as", "arnold schwarzenegger los angeles police detective jack slater", "Last Action Hero stars Arnold Schwarzenegger as Jack Slater, a Los Angeles police detective."],
+    ["true lies", "stars", "arnold schwarzenegger", "True Lies is a 1994 film starring Arnold Schwarzenegger as US government agent Harry Tasker."],
+    ["oh my god song", "by_band", "guns n roses", "Oh My God is a song by Guns N' Roses."],
+    ["get christie love", "stars_as", "teresa graves undercover police detective", "Get Christie Love! starring Teresa Graves as an undercover female police detective."]
+   ]
+  }
+ ]
+}
