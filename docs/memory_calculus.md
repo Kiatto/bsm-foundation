@@ -135,7 +135,27 @@ esatti, che sono gratuiti e sicuri).
 | Confluenza frammento esatto | dimostrata (sketch Newman + verifica meccanica) |
 | Confluenza in distribuzione (P3 annidati) | **aperta** |
 | Soundness dei costi (= Law V) | ereditata dal Teorema 3.4 |
-| Predizione del compilatore (§5.2) | **da testare** |
+| Predizione del compilatore (§5.2) | **VERIFICATA** (vedi sotto) |
+
+### Verifica della predizione §5.2 (sleep-time compilation)
+
+Le composizioni esatte F = f₁⊕f₂ (NF.1: gratuite, probabilità 1)
+consolidate a sleep-time in una seconda traccia T₂; a query time le
+domande a 2 hop costano UN cleanup su T₂ invece di due su T:
+
+| catene | naïf (2 cleanup su T) | p² previsto | compilato (1 cleanup su T₂) |
+|---|---|---|---|
+| 40 | 82% | 87% | **99%** |
+| 80 | 25% | 26% | **89%** |
+| 160 | 3% | 3% | **44%** |
+
+Doppio guadagno, entrambi previsti dal calcolo: (i) un solo passo P3
+(p invece di p²), (ii) T₂ è metà carica di T (Law IV). Il naïf segue
+p² (Law V, di nuovo); il compilato segue p(N₂, D, M). *La
+normalizzazione non è un'ottimizzazione stilistica: a carichi alti è
+la differenza tra un sistema che ragiona (89%) e uno che non ragiona
+(25%). Il "sonno che compila" ha ora una giustificazione derivata dal
+calcolo, non ispirata alla biologia.*
 
 Prossimo lavoro: (i) la confluenza in distribuzione; (ii) il test del
 compilatore (normalizza-poi-decodifica vs chaining naïf — esperimento
