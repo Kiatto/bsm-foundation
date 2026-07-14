@@ -98,9 +98,26 @@ def fig_contract():
     fig.savefig(OUT / "fig5_contract.png")
 
 
+def fig_robustness():
+    d = json.loads((ROOT / "extraction_robustness_results.json").read_text())
+    fig, ax = plt.subplots(figsize=(4.6, 3.2))
+    colors = {"missing": "#1a6faf", "wrong_relation": "#c0392b",
+              "wrong_entity": "#8e44ad", "spurious": "#27ae60"}
+    for kind, col in colors.items():
+        eps = sorted(float(e) for e in d["measured"][kind])
+        ms = [d["measured"][kind][str(e)]["acc"] * 100 for e in eps]
+        ps = [d["predicted"][kind][str(e)] * 100 for e in eps]
+        ax.plot(eps, ms, "o-", color=col, label=kind, ms=3)
+        ax.plot(eps, ps, ":", color=col, alpha=0.6)
+    ax.set_xlabel("errore di estrazione ε"); ax.set_ylabel("accuracy (%)")
+    ax.set_title("Law VIII — Acc(ε) = Pg(ε)·Pr(N_eff(ε))  (linee: teoria)")
+    ax.legend(fontsize=7); fig.tight_layout()
+    fig.savefig(OUT / "fig6_robustness.png")
+
+
 if __name__ == "__main__":
     for f in (fig_capacity, fig_depth, fig_proofwriter, fig_compiler,
-              fig_contract):
+              fig_contract, fig_robustness):
         f()
         print("✓", f.__name__)
     print("→", OUT)
