@@ -283,6 +283,33 @@ accuracy (Laws IV + Gumbel, zero fitted parameters) matches measurement
 with 4.2% mean error over N ∈ [100, 600]: *"up to 300 facts at ≥ 85%
 accuracy in 1 KB"* is a spec sheet signable before deployment.
 
+**Resource Composition Law (empirically corroborated, per-query form).**
+Injecting four extraction-error types at rates ε ∈ [0, 0.5] (2-hop
+chains, D=2048), end-to-end accuracy follows Acc = E_q[Pg(q)] ·
+Pr(N_eff(ε)): grounding and reasoning compose multiplicatively, with
+the reasoning factor evaluated at the load the grounding actually
+leaves (missing facts also *lighten* the trace). Mean deviation ~3%
+over 40 cells. Stress-tested against non-i.i.d. structures: the
+per-query form survives (|dev| 2.3–4.8%) while the mean-precision form
+Acc = p̄^k · Pr breaks exactly where predicted — cluster-correlated
+errors outperform i.i.d. errors of equal mean rate (52% vs 30% at
+ε = 0.4) because the damage concentrates on fewer queries. One
+prediction was falsified and is retained: chain confidence does *not*
+detect grounding errors (the confident-wrong signal exists per hop but
+dilutes in the product), so grounding must be audited at its own level.
+
+**Compiler ranking (dry run).** Three simulated extractors with equal
+apparent quality but different error structure (uniform 8%, whole-chain
+clusters at 20%, recall-tuned with 30% spurious facts) were compiled
+into memories and ranked by the per-query contract *before any query*.
+On the statistically resolvable pairs the predicted ranking matches the
+observed one (2/2 at 95% CI, 10 seeds); on the cluster extractor the
+mean-precision form errs by 11 points where the per-query form errs
+by 4. Corollary: at equal mean precision, an extractor that fails in
+clusters is preferable to one that fails uniformly — a selection
+criterion no precision/recall metric expresses. Real-LLM replication
+is the natural next step.
+
 ## 8. Related work
 
 Vector Symbolic Architectures and hyperdimensional computing (Kanerva;

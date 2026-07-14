@@ -1,0 +1,100 @@
+{
+  "pr_clean": 0.4683333333333334,
+  "predicted": {
+    "alpha": {
+      "per_query": 0.39110699117642395,
+      "mean_form": 0.39110699117642395
+    },
+    "beta": {
+      "per_query": 0.3618377194286211,
+      "mean_form": 0.2894701755428969
+    },
+    "gamma": {
+      "per_query": 0.2513440542556083,
+      "mean_form": 0.2513440542556083
+    }
+  },
+  "measured": {
+    "alpha": 0.36,
+    "beta": 0.40166666666666667,
+    "gamma": 0.255
+  },
+  "sem": {
+    "alpha": 0.01990719207463213,
+    "beta": 0.021437534868416378,
+    "gamma": 0.017576991132840412
+  },
+  "ranking": {
+    "per_query": [
+      "alpha",
+      "beta",
+      "gamma"
+    ],
+    "mean_form": [
+      "alpha",
+      "beta",
+      "gamma"
+    ],
+    "observed": [
+      "beta",
+      "alpha",
+      "gamma"
+    ]
+  },
+  "inspector": {
+    "alpha": {
+      "facts": 120,
+      "dimension": 2048,
+      "codebook": 190,
+      "estimated_capacity": 178,
+      "utilization": 0.67,
+      "pressure": 0.67,
+      "expected_accuracy": 0.759,
+      "grounding_contract": 0.846,
+      "projected_accuracy": 0.642,
+      "capacity_remaining": 58,
+      "expected_after_horizon": 0.346,
+      "horizon": 100,
+      "confidence_margin_sigma": 0.7,
+      "recommended_dimension": 4096,
+      "dominant_error": "capacity",
+      "max_reasoning_depth_p50": 2
+    },
+    "beta": {
+      "facts": 120,
+      "dimension": 2048,
+      "codebook": 198,
+      "estimated_capacity": 176,
+      "utilization": 0.68,
+      "pressure": 0.68,
+      "expected_accuracy": 0.755,
+      "grounding_contract": 0.64,
+      "projected_accuracy": 0.483,
+      "capacity_remaining": 56,
+      "expected_after_horizon": 0.344,
+      "horizon": 100,
+      "confidence_margin_sigma": 0.7,
+      "recommended_dimension": 4096,
+      "dominant_error": "grounding",
+      "max_reasoning_depth_p50": 2
+    },
+    "gamma": {
+      "facts": 140,
+      "dimension": 2048,
+      "codebook": 255,
+      "estimated_capacity": 165,
+      "utilization": 0.85,
+      "pressure": 0.85,
+      "expected_accuracy": 0.641,
+      "grounding_contract": 0.81,
+      "projected_accuracy": 0.519,
+      "capacity_remaining": 25,
+      "expected_after_horizon": 0.292,
+      "horizon": 100,
+      "confidence_margin_sigma": 0.4,
+      "recommended_dimension": 4096,
+      "dominant_error": "capacity",
+      "max_reasoning_depth_p50": 1
+    }
+  }
+}

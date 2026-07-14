@@ -1,0 +1,28 @@
+{
+  "edge": {
+    "dimension": 8192,
+    "facts": 250,
+    "trace_bytes": 1024,
+    "ram_mb_unpacked": 4.3,
+    "ingest_s": 0.2,
+    "ingest_ms_per_fact": 0.8,
+    "query_ms": 1.73,
+    "contract_accuracy": 0.95,
+    "measured_accuracy": 0.9,
+    "contract_error": 0.05,
+    "pressure": 0.45
+  },
+  "server": {
+    "dimension": 131072,
+    "facts": 2000,
+    "trace_bytes": 16384,
+    "ram_mb_unpacked": 550.5,
+    "ingest_s": 10.95,
+    "ingest_ms_per_fact": 5.48,
+    "query_ms": 109.62,
+    "contract_accuracy": 0.998,
+    "measured_accuracy": 1.0,
+    "contract_error": 0.002,
+    "pressure": 0.32
+  }
+}
