@@ -65,12 +65,43 @@ il costo LLM è una tantum all'ingestione; ogni query successiva è XOR.
 | Valore applicativo dimostrato | **7.5** | Fattibilità sì; numeri di produzione richiedono estrazione question-blind su n≥100 |
 | Prossimo passo obbligato | — | Estrazione **question-blind** (open IE) sulle stesse domande: misura la copertura reale del Livello A in produzione |
 
+## Aggiornamento — Pilota 1b: question-blind (stesse 10 domande)
+
+Protocollo: schema di relazioni **generico e fisso** (35 relazioni:
+is_a, directed_by, stars, formed_by, …), estrazione esaustiva
+(~170 triple con inverse automatiche), nessuna relazione cucita sulla
+domanda; catene fino a **3 hop** (es. `former ny police detective →
+end of days → oh my god song → 1999`).
+
+**Risultato: 10/10 anche question-blind**, con confidence più basse
+(0.28–0.64 vs 0.64–0.85): le inverse raddoppiano il carico per traccia,
+esattamente come Law IV prevede. Caveat residuo dichiarato:
+l'estrattore aveva visto le domande in un run precedente
+(contaminazione possibile); la mitigazione è il protocollo (schema
+fisso, estrazione esaustiva). Il numero di produzione richiede un
+estrattore mai esposto alle domande, su n≥100.
+
+## Aggiornamento — Pilota 2: capacity contract
+
+`examples/capacity_contract.py` — accuratezza **predetta dalla teoria
+senza alcun parametro fittato** (Law IV + soglia di Gumbel) vs misurata,
+su una traccia da 1 KB (D=8192):
+
+| N fatti | 100 | 200 | 300 | 400 | 500 | 600 |
+|---|---|---|---|---|---|---|
+| predetto | 100% | 99% | 88% | 71% | 54% | 41% |
+| misurato | 100% | 98% | 85% | 65% | 46% | 35% |
+
+**|errore| medio della predizione: 4.2%.** Il contratto di esempio:
+*"con 1 KB di memoria, fino a 300 fatti, accuratezza ≥ 85%"* — una
+scheda tecnica firmabile prima del deploy, che nessun sistema a
+embedding può offrire.
+
 ## Prossimi passi
 
-1. Ripetere con estrazione question-blind (l'LLM estrae triple dai
-   contesti SENZA vedere la domanda) su 50-100 domande: è il numero di
-   produzione.
-2. Pilota 2 (capacity contract): demo a budget fisso 8KB con accuratezza
-   predetta vs misurata.
-3. Automazione: sostituire l'LLM in sessione con un modello via API
-   nella harness, per scalare a n=100+.
+1. Estrattore **mai esposto alle domande** (LLM via API) su n≥100: il
+   numero di produzione.
+2. Automazione della pipeline LLM→triple→ABM nella harness.
+3. Integrare il capacity contract nel preprint come sezione
+   "applicazioni" (le due proprietà vendibili: contratto di capacità e
+   provenienza deterministica).
