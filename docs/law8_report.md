@@ -76,3 +76,46 @@ conseguenza della teoria, non un'opinione.
    formule che le servono, inclusa questa.
 3. SDK con la teoria esposta (`expected_accuracy`, `capacity_remaining`,
    e ora `expected_accuracy_given_extractor(precision)`).
+
+---
+
+## Addendum — Stress test della Resource Composition Law (2026-07-14)
+
+Come da revisione: la legge è stata messa deliberatamente alla prova
+con strutture d'errore non-i.i.d. (`composition_stress_results.json`),
+con la predizione scritta prima: **la forma per-query sopravvive, la
+forma "a precisione media" si rompe**.
+
+| ε | i.i.d. mis/pred | correlato (catene intere) | sistematico (bias su r2) |
+|---|---|---|---|
+| 20% | 43% / 38% | **53%** / 48% | 40% / 36% |
+| 30% | 37% / 33% | **54%** / 47% | 32% / 27% |
+| 40% | 30% / 26% | **52%** / 44% | 15% / 15% |
+
+|dev| media della forma per-query: i.i.d. 4.3%, correlato 4.8%,
+sistematico **2.3%**. La conferma strutturale chiave: **gli errori
+correlati fanno MEGLIO degli i.i.d. a pari tasso medio** (52% vs 30% a
+ε=40%) — il danno si concentra su meno query. Quindi:
+
+    Acc = E_q[Pg(q)] × Pr(N_eff)      (forma per-query: CORROBORATA)
+    Acc = precision_media^k × Pr      (forma media: VALIDA SOLO i.i.d.)
+
+Status aggiornato: **Resource Composition Law (empirically
+corroborated, per-query form)** — non universale finché non testata su
+domini reali e relazioni dense, come da cautela della revisione.
+
+Corollario di prodotto ulteriore: a parità di precisione media, un
+estrattore che sbaglia "a cluster" è PREFERIBILE a uno che sbaglia
+uniformemente — un criterio di scelta tra estrattori che nessuna
+metrica standard (precision/recall) cattura.
+
+## Addendum 2 — ABM Inspector (`reference/inspector.py`)
+
+Il Memory Contract come API: `stats()`, `contract()`, `report()` — ogni
+campo è una formula del formalismo (capacità, pressione, accuratezza
+attesa, proiezione con l'estrattore via Composition Law, margine σ,
+dimensione raccomandata, profondità massima p50, errore dominante).
+Demo inclusa: una memoria sovraccarica (287 fatti a D=2048) viene
+diagnosticata correttamente (pressione 2.09, "considera D=16384") —
+l'avviso di collasso imminente che nessun vector DB può emettere.
+3 property test dedicati (18 totali sulla reference, 136 nel repo).

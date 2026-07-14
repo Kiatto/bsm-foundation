@@ -138,3 +138,38 @@ class TestCalibration:
     def test_capacity_monotone(self):
         assert capacity(4096, 500) > capacity(2048, 500) > capacity(1024, 500)
         assert capacity(2048, 100) > capacity(2048, 10000)
+
+
+class TestInspector:
+    def _mem(self, n, d=4096):
+        from abm import Memory
+        m = Memory(d)
+        for i in range(n):
+            m.store(f"s{i}", f"r{i % 11}", f"o{i}")
+        return m
+
+    def test_stats_fields(self):
+        from inspector import stats
+        s = stats(self._mem(100), extractor_precision=0.9)
+        assert s["facts"] == 100
+        assert 0 < s["expected_accuracy"] <= 1
+        assert abs(s["projected_accuracy"] -
+                   0.81 * s["expected_accuracy"]) < 2e-3  # Composition Law
+        assert s["estimated_capacity"] > 0
+
+    def test_pressure_warns_overload(self):
+        from inspector import stats
+        healthy = stats(self._mem(60))
+        overloaded = stats(self._mem(600, d=1024))
+        assert healthy["pressure"] < 1 < overloaded["pressure"]
+        assert (overloaded["recommended_dimension"]
+                > overloaded["dimension"])
+
+    def test_contract_prediction_tracks_measurement(self):
+        from inspector import stats
+        import numpy as np
+        m = self._mem(120, d=2048)
+        s = stats(m)
+        facts = [(f"s{i}", f"r{i % 11}", f"o{i}") for i in range(120)]
+        measured = np.mean([m.query(x, r)[0] == o for x, r, o in facts])
+        assert abs(s["expected_accuracy"] - measured) < 0.12
