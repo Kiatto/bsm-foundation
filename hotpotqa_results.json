@@ -1,0 +1,11 @@
+{
+  "n": 200,
+  "type": "bridge",
+  "oracle": 200,
+  "baseline": 26,
+  "integrated": 14,
+  "algebraic": 0,
+  "planned": 1,
+  "avg_triples": 1.91,
+  "median_ms": 11.536202015122399
+}
