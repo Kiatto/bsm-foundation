@@ -1,0 +1,196 @@
+{
+ "counts": {
+  "A_gold_absent": 3,
+  "B_no_path": 8,
+  "C_plan": 18,
+  "D_algebra": 2
+ },
+ "per_question": [
+  {
+   "i": 0,
+   "cat": "B_no_path",
+   "gold": "illnesses",
+   "ans": "One Day (2017 film)"
+  },
+  {
+   "i": 1,
+   "cat": "B_no_path",
+   "gold": "2003",
+   "ans": "Fred John Hageman"
+  },
+  {
+   "i": 2,
+   "cat": "C_plan",
+   "gold": "St. Louis Cardinals",
+   "ans": null
+  },
+  {
+   "i": 3,
+   "cat": "A_gold_absent",
+   "gold": "16,116",
+   "ans": null
+  },
+  {
+   "i": 5,
+   "cat": "C_plan",
+   "gold": "Manhattan",
+   "ans": "1983"
+  },
+  {
+   "i": 6,
+   "cat": "C_plan",
+   "gold": "Mako",
+   "ans": "TMNT (video game)"
+  },
+  {
+   "i": 7,
+   "cat": "C_plan",
+   "gold": "1822",
+   "ans": "Calloway County, Kentucky"
+  },
+  {
+   "i": 8,
+   "cat": "C_plan",
+   "gold": "Jahseh Dwayne Onfroy",
+   "ans": "Morrie Elis"
+  },
+  {
+   "i": 9,
+   "cat": "C_plan",
+   "gold": "American",
+   "ans": null
+  },
+  {
+   "i": 10,
+   "cat": "A_gold_absent",
+   "gold": "second cousin once removed",
+   "ans": null
+  },
+  {
+   "i": 11,
+   "cat": "C_plan",
+   "gold": "nuclear weapons",
+   "ans": "supporting newly independent Israel"
+  },
+  {
+   "i": 12,
+   "cat": "B_no_path",
+   "gold": "5,112 feet",
+   "ans": null
+  },
+  {
+   "i": 14,
+   "cat": "B_no_path",
+   "gold": "pro-Confederate",
+   "ans": null
+  },
+  {
+   "i": 15,
+   "cat": "B_no_path",
+   "gold": "23 November 1946",
+   "ans": null
+  },
+  {
+   "i": 16,
+   "cat": "C_plan",
+   "gold": "A55",
+   "ans": "Flintshire, Wales"
+  },
+  {
+   "i": 17,
+   "cat": "C_plan",
+   "gold": "27 languages",
+   "ans": "Between Shades of Gray"
+  },
+  {
+   "i": 18,
+   "cat": "C_plan",
+   "gold": "the Troubles",
+   "ans": "William James \"Jim\" Fulton"
+  },
+  {
+   "i": 19,
+   "cat": "B_no_path",
+   "gold": "Mark Dayton",
+   "ans": null
+  },
+  {
+   "i": 20,
+   "cat": "C_plan",
+   "gold": "Louis \"Louie\" Zamperini",
+   "ans": "First They Killed My Father (film)"
+  },
+  {
+   "i": 21,
+   "cat": "C_plan",
+   "gold": "Funki Porcini",
+   "ans": "Stereum ostrea"
+  },
+  {
+   "i": 22,
+   "cat": "C_plan",
+   "gold": "the Atlantic Ocean",
+   "ans": null
+  },
+  {
+   "i": 23,
+   "cat": "C_plan",
+   "gold": "Ellesmere Port",
+   "ans": "Cheshire Phoenix"
+  },
+  {
+   "i": 24,
+   "cat": "C_plan",
+   "gold": "Mickey's PhilharMagic",
+   "ans": "Stitch's Great Escape!"
+  },
+  {
+   "i": 25,
+   "cat": "C_plan",
+   "gold": "New Zealand citizen",
+   "ans": "Russell Crowe"
+  },
+  {
+   "i": 26,
+   "cat": "D_algebra",
+   "gold": "FHM",
+   "ans": "Twist (magazine)"
+  },
+  {
+   "i": 27,
+   "cat": "A_gold_absent",
+   "gold": "Ricardo \u201cEl Finito\u201d L\u00f3pez Nava",
+   "ans": null
+  },
+  {
+   "i": 28,
+   "cat": "B_no_path",
+   "gold": "Israeli-American",
+   "ans": "Daniel Kahneman and colleagues"
+  },
+  {
+   "i": 29,
+   "cat": "C_plan",
+   "gold": "The Cherokee Nation",
+   "ans": "March 16, 1920"
+  },
+  {
+   "i": 30,
+   "cat": "C_plan",
+   "gold": "Wes Craven",
+   "ans": null
+  },
+  {
+   "i": 31,
+   "cat": "D_algebra",
+   "gold": "The Chamber",
+   "ans": "Gang Related"
+  },
+  {
+   "i": 32,
+   "cat": "B_no_path",
+   "gold": "light quadricycles (L6e), and heavy quadricycles (L7e)",
+   "ans": "Battery electric vehicle"
+  }
+ ]
+}

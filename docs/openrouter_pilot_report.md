@@ -26,23 +26,29 @@ contratto funziona sui dati reali", è "il contratto ha superato il suo
 primo test esterno, debole ma reale". E l'accuratezza assoluta (6%) è
 pessima: la pipeline free, così com'è, non serve a nessuno.
 
-**Cosa dice.** Tre cose non banali:
+**Cosa dice.** Formulazione corretta (da review): **il claim non è
+stato falsificato da questo test** — non "è sopravvissuto". Con CI
+±14% anche 0%, 4%, 8% o 11% sarebbero risultati compatibili: il test
+non discrimina. Detto ciò:
 
-1. **La predizione puntuale è caduta a 0.4% dal misurato**, emessa
-   prima delle query da un audit simbolico su 15 esempi. È il claim
-   centrale ("il contratto predice") al suo primo contatto con dati
-   non nostri — sopravvissuto.
-2. **L'attribuzione dell'errore è confermata e diagnostica**: Pr
-   teorico = 0.963 (l'algebra non è il problema), e l'analisi dei
-   fallimenti mostra che in 6/8 casi la risposta gold È nelle triple
-   estratte. Il collo di bottiglia è il PLANNER e lo schema di piano
-   (1 hop + vincolo, mentre molte domande richiedono 2 hop veri) più
-   il disallineamento del vocabolario relazioni tra planner ed
-   estrattore. Livello C, non A né B — ed è esattamente il tipo di
-   diagnosi che il framework promette di produrre.
-3. **Coerenza storica**: HotpotQA resta il caso difficile del
-   progetto, e il risultato è coerente col negativo storico — ma ora
-   con l'attribuzione quantificata invece che dedotta.
+1. La predizione puntuale è caduta a 0.4% dal misurato, emessa prima
+   delle query da un audit simbolico su 15 esempi.
+2. **Attribuzione automatica dei fallimenti** (checklist a criteri
+   dichiarati, `attribute_failures.py`, categorie mutuamente esclusive
+   su TUTTI i 31 miss — sostituisce l'analisi preliminare su 8 casi,
+   che usava un criterio substring troppo lasco):
+
+   | categoria | n | % |
+   |---|---|---|
+   | C — planner/schema (percorso ≤2 hop esiste, il piano non lo esprime) | 18 | 58% |
+   | B — percorso assente nell'estrazione | 8 | 26% |
+   | A — gold assente dalle triple | 3 | 10% |
+   | **D — algebra** (piano eseguibile simbolicamente, esecuzione errata) | **2** | **6%** |
+
+   Il 6% di fallimenti algebrici è compatibile con 1−Pr = 3.7%
+   previsto dalla teoria: la separazione dei livelli regge anche qui.
+3. Coerenza col negativo storico su HotpotQA — ma con attribuzione
+   misurata, non dedotta.
 
 ## Limiti dichiarati
 
@@ -56,12 +62,22 @@ pessima: la pipeline free, così com'è, non serve a nessuno.
 
 ## Prossimo passo con il miglior rapporto informazione/costo
 
-Piani a 2 hop + allineamento del vocabolario relazioni (si fa a costo
-zero: si passa al planner l'elenco delle relazioni effettivamente
-estratte). Predizione registrata ora: l'audit stimerà un Pg
-sensibilmente più alto e il contratto dovrà seguire la misura anche
-lì. Se il contratto regge anche ad alto Pg — dove il CI si stringe e
-falsificare è facile — il test diventa forte.
+Piani a 2 hop + allineamento del vocabolario relazioni. Predizione
+nella forma corretta (da review): **se** il nuovo planner cattura i
+2-hop mancanti **senza** degradare precision, aumentare aliasing o
+carico, **allora** Pg dovrebbe salire (la checklist dà il tetto:
+eliminare la categoria C porta Pg verso ~0.6); il contratto dovrà
+seguire la misura anche lì, dove il CI si stringe e falsificare
+diventa facile.
+
+**Esperimento registrato (il discriminante, da review):
+multi-compilatore REALE.** Stesso corpus (le 33 domande), estratto da
+3-4 famiglie di modelli indipendenti disponibili via OpenRouter
+(nvidia/nemotron-ultra, tencent/hy3, google/gemma-4, openai/gpt-oss) →
+un audit, un contratto e una misura per compilatore → se l'errore
+previsto segue quello osservato per OGNI compilatore, la Resource
+Composition Law modella una proprietà dell'architettura, non del
+prompt. Vincolo: ~50 req/giorno → un compilatore al giorno, o crediti.
 
 ## Valutazione 0-10 (conservativa)
 
