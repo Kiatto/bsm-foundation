@@ -94,7 +94,11 @@ def aliasing(triples, queries) -> dict:
     for start, relations in queries:
         node, f = start, 1.0
         for r in relations:
-            g = 1 + obj_count[(node, r)]
+            # candidati a pari segnale = fatti in avanti + fatti inversi
+            # (simmetria degli archi); g=1 se l'unico candidato è quello
+            # giusto, anche quando è memorizzato invertito
+            g = max(1, (1 if (node, r) in subj else 0)
+                    + obj_count[(node, r)])
             if g > 1:
                 bad_rels.add(r)
             f /= g
