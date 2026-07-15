@@ -1,7 +1,9 @@
-# Algebraic Binary Memory: A Resource Theory for Associative Computation
+# A Quantitative Theory of Associative Memory, with a Reference Implementation
 
-**Preprint v1.0 — July 2026**
-*Normative specification: [FORMALISM.md](FORMALISM.md) (frozen, v2.0).
+*(Algebraic Binary Memory — ABM)*
+
+**Preprint v1.1 — July 2026**
+*Normative specification: [FORMALISM.md](FORMALISM.md) (frozen, v2.1).
 Reference implementation: [`reference/abm.py`](../reference/abm.py).
 All experiments reproducible from `examples/`; raw results in the
 repository as JSON.*
@@ -36,11 +38,21 @@ truth oracle is a Hamming distance to a single vector reaches
 99.8–92.4% (±1.4) on ProofWriter at depths 0–5, and a negative result
 on HotpotQA cleanly attributes end-to-end failure to the grounding
 layer rather than the algebra — an attribution confirmed by a pilot in
-which an LLM grounding layer restores 10/10 on the same task. We
-propose ABM as a memory model whose accuracy, capacity and reasoning
-depth can be contracted *before deployment* (theory-predicted accuracy
-within 4.2% of measurement at a fixed 1 KB budget, with no fitted
-parameters).
+which an LLM grounding layer restores 10/10 on the same task. The contribution is not a new memory but a *discipline*: a quantitative
+theory of associative memory — laws with confidence intervals,
+falsifications retained, structural theorems separated from resource
+laws — whose accuracy, capacity and reasoning depth can be contracted
+*before deployment* (theory-predicted accuracy within 4.2% of
+measurement at a fixed 1 KB budget, with no fitted parameters; 1.7%
+theory error in an end-to-end document→compiler→memory pilot whose
+contract, with a declared confidence interval inherited from the audit
+sample, was issued before any query). In that pilot the theory
+corrected the *benchmark*: a direction-blind symbolic audit
+under-scored the system by 47 points until membership was measured up
+to the exact edge symmetry of the encoding — the runtime was right and
+the metric was wrong. ABM is a deterministic algebraic memory runtime
+for compiled symbolic knowledge; it complements LLMs rather than
+replacing them.
 
 ## 1. Introduction
 
