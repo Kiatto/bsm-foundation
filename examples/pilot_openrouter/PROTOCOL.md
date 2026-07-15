@@ -82,3 +82,20 @@ comportamento di compilatori eterogenei" — NON "la legge è
 indipendente dal compilatore".
 
 **Fase 2 (solo dopo):** planner a 2 hop, a compilatore fissato.
+
+### Emendamento pre-dati (registrato prima dei risultati di B)
+
+- Formulazione vincolante dell'eventuale esito positivo: "Across
+  heterogeneous extraction pipelines evaluated under a fixed protocol,
+  contract predictions remained consistent with observed performance
+  within experimental uncertainty."
+- Ordine di lettura dei risultati: PRIMA la decomposizione delle
+  risorse (Pg, N_eff, M, pressure, aliasing, Pr) e la sua coerenza con
+  la legge, POI il contratto vs misurato.
+- Caveat dichiarati: (1) la categoria C (schema di piano, 58% dei miss
+  di A) è comune a tutti i compilatori → rischio di Pg schiacciati in
+  una stessa regione bassa, che non discriminerebbe il modello; in tal
+  caso il test del range richiede la Fase 2 ripetuta su tutti i
+  compilatori. (2) I compilatori sono modelli eterogenei ma con prompt
+  e schema di relazioni identici (nostri): l'eterogeneità è del
+  modello, non della pipeline di prompting.
