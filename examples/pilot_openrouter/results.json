@@ -1,0 +1,243 @@
+{
+ "pg_audit": 0.06666666666666667,
+ "se": 0.06440611887195306,
+ "pr_theory": 0.9630748554757438,
+ "contract": 0.06420499036504959,
+ "ci": 0.14157471070374514,
+ "measured": 0.06060606060606061,
+ "n": 33,
+ "respected": true,
+ "details": [
+  {
+   "i": 0,
+   "q": " Chun Woo-hee's notable films include a South Korean horror film about  a policeman who investigates a series of mysterious killings and what?",
+   "gold": "illnesses",
+   "ans": "One Day (2017 film)",
+   "hit": false
+  },
+  {
+   "i": 1,
+   "q": "What year was the brother of this first round draft pick by the Washington Redskins drafted?",
+   "gold": "2003",
+   "ans": "Fred John Hageman",
+   "hit": false
+  },
+  {
+   "i": 2,
+   "q": "Which bird-themed team did the baseball player, who frequented the Red Cedar Inn and was also known as Dizzy Dean, play for?",
+   "gold": "St. Louis Cardinals",
+   "ans": null,
+   "hit": false
+  },
+  {
+   "i": 3,
+   "q": "What is the population of the city as of the 2010 Census where the band Quincy Mumford & The Reason Why is based?",
+   "gold": "16,116",
+   "ans": null,
+   "hit": false
+  },
+  {
+   "i": 4,
+   "q": "Lauri Markkanen was traded for which player who was born in Houston?",
+   "gold": "Jimmy Butler III",
+   "ans": "Jimmy Butler",
+   "hit": true
+  },
+  {
+   "i": 5,
+   "q": "Where is the magazine headquartered that Robert W. McElroy writes for?",
+   "gold": "Manhattan",
+   "ans": "1983",
+   "hit": false
+  },
+  {
+   "i": 6,
+   "q": "TMNT is a single-player action-adventure multi-platform action game based on a film which was the final film role for who?",
+   "gold": "Mako",
+   "ans": "TMNT (video game)",
+   "hit": false
+  },
+  {
+   "i": 7,
+   "q": "In what year was the county in which Kentucky's 20th-largest city is located founded?",
+   "gold": "1822",
+   "ans": "Calloway County, Kentucky",
+   "hit": false
+  },
+  {
+   "i": 8,
+   "q": "Soundcloud rap has been used by which rapper from Lauderhill, Florida?",
+   "gold": "Jahseh Dwayne Onfroy",
+   "ans": "Morrie Elis",
+   "hit": false
+  },
+  {
+   "i": 9,
+   "q": "What country of origin does Witness and Pamela Wallace have in common?",
+   "gold": "American",
+   "ans": null,
+   "hit": false
+  },
+  {
+   "i": 10,
+   "q": "How is the namesake of The Mountbatten Institute related to Elizabeth II?",
+   "gold": "second cousin once removed",
+   "ans": null,
+   "hit": false
+  },
+  {
+   "i": 11,
+   "q": "What instrument of war was only used by the President of the United States who was born in Lamar, Missouri?",
+   "gold": "nuclear weapons",
+   "ans": "supporting newly independent Israel",
+   "hit": false
+  },
+  {
+   "i": 12,
+   "q": "The structure in Wyoming in which Bo\u0159e\u0148 is similar to has a summit that is how many feet above sea level?",
+   "gold": "5,112 feet",
+   "ans": null,
+   "hit": false
+  },
+  {
+   "i": 13,
+   "q": "Which star of Here Come the Munsters was born in Philadelphia ?",
+   "gold": "Veronica Hamel",
+   "ans": "Veronica Hamel",
+   "hit": true
+  },
+  {
+   "i": 14,
+   "q": "Red Mountain is a film that centers on an attempt by a group of what group of Civil War rangers?",
+   "gold": "pro-Confederate",
+   "ans": null,
+   "hit": false
+  },
+  {
+   "i": 15,
+   "q": "What is the birthday of the actress who was the Duchess in \"The Revengers Tragedy\"?",
+   "gold": "23 November 1946",
+   "ans": null,
+   "hit": false
+  },
+  {
+   "i": 16,
+   "q": " Afonwen is situated just under four miles from what road also known as the North Wales Expressway",
+   "gold": "A55",
+   "ans": "Flintshire, Wales",
+   "hit": false
+  },
+  {
+   "i": 17,
+   "q": "Ashes in the Snow is a World War II drama based on a best-seller novel that was translated to how many languages ?",
+   "gold": "27 languages",
+   "ans": "Between Shades of Gray",
+   "hit": false
+  },
+  {
+   "i": 18,
+   "q": "Which conflict was this person whose assassination led to Mark Fulton taking over command the Loyalist Volunteer Force involved in?",
+   "gold": "the Troubles",
+   "ans": "William James \"Jim\" Fulton",
+   "hit": false
+  },
+  {
+   "i": 19,
+   "q": "Who is the current governor of the state where former wrestler Stephen Cepello painted the Governor's Mansion?",
+   "gold": "Mark Dayton",
+   "ans": null,
+   "hit": false
+  },
+  {
+   "i": 20,
+   "q": "Who was a Christian Evangelist and US prisoner of war survivor that was the basis for a film directed by Angelina Jolie?",
+   "gold": "Louis \"Louie\" Zamperini",
+   "ans": "First They Killed My Father (film)",
+   "hit": false
+  },
+  {
+   "i": 21,
+   "q": "What is another name for basidiomycete fungus?",
+   "gold": "Funki Porcini",
+   "ans": "Stereum ostrea",
+   "hit": false
+  },
+  {
+   "i": 22,
+   "q": "Near what ocean does the highway carried by the Long-Allen bridge terminate near?",
+   "gold": "the Atlantic Ocean",
+   "ans": null,
+   "hit": false
+  },
+  {
+   "i": 23,
+   "q": "Jamell Anderson plays for the basketball team from what city?",
+   "gold": "Ellesmere Port",
+   "ans": "Cheshire Phoenix",
+   "hit": false
+  },
+  {
+   "i": 24,
+   "q": "What 4-D film attraction at Walt Disney World is based off a 2004 computer-animated Christmas movie? ",
+   "gold": "Mickey's PhilharMagic",
+   "ans": "Stitch's Great Escape!",
+   "hit": false
+  },
+  {
+   "i": 25,
+   "q": "What is the nationality of this actor, film producer and musician who has lived most of his life in Australia and appeared in Romper Stomper alongside Daniel Pollock, Jacqueline McKenzie and Tony Lee?",
+   "gold": "New Zealand citizen",
+   "ans": "Russell Crowe",
+   "hit": false
+  },
+  {
+   "i": 26,
+   "q": "Liam McEwan works with what UK monthly men's lifestyle magazine?",
+   "gold": "FHM",
+   "ans": "Twist (magazine)",
+   "hit": false
+  },
+  {
+   "i": 27,
+   "q": "What IBF Light Flyweight Championship winner was related to the Mexican boxer born on May 28, 1986 in Mexico City?",
+   "gold": "Ricardo \u201cEl Finito\u201d L\u00f3pez Nava",
+   "ans": null,
+   "hit": false
+  },
+  {
+   "i": 28,
+   "q": "What nationality is the man who developed the dictator game?",
+   "gold": "Israeli-American",
+   "ans": "Daniel Kahneman and colleagues",
+   "hit": false
+  },
+  {
+   "i": 29,
+   "q": "Which legal, autonomous North American tribal government signed its constitution in Oklahoma on September 6, 1839?",
+   "gold": "The Cherokee Nation",
+   "ans": "March 16, 1920",
+   "hit": false
+  },
+  {
+   "i": 30,
+   "q": "Who is the original writer of the 1977 horror film?",
+   "gold": "Wes Craven",
+   "ans": null,
+   "hit": false
+  },
+  {
+   "i": 31,
+   "q": "What film did Lela Rochon based on a John Grisham novel?",
+   "gold": "The Chamber",
+   "ans": "Gang Related",
+   "hit": false
+  },
+  {
+   "i": 32,
+   "q": "What are the two categories of the non-electric version of the neighbourhood electric vehicle?",
+   "gold": "light quadricycles (L6e), and heavy quadricycles (L7e)",
+   "ans": "Battery electric vehicle",
+   "hit": false
+  }
+ ]
+}

@@ -1,0 +1,245 @@
+[
+ {
+  "q": 0,
+  "anchor": "Chun Woo-hee",
+  "relation": "starred",
+  "constraint": {
+   "relation": "genre",
+   "value": "horror"
+  }
+ },
+ {
+  "q": 1,
+  "anchor": "Washington Redskins",
+  "relation": "plays_for_inv",
+  "constraint": null
+ },
+ {
+  "q": 2,
+  "anchor": "Dizzy Dean",
+  "relation": "plays_for",
+  "constraint": null
+ },
+ {
+  "q": 3,
+  "anchor": "Quincy Mumford & The Reason Why",
+  "relation": "located_in",
+  "constraint": null
+ },
+ {
+  "q": 4,
+  "anchor": "Houston",
+  "relation": "born_in_inv",
+  "constraint": null
+ },
+ {
+  "q": 5,
+  "anchor": "Robert W. McElroy",
+  "relation": "works_for",
+  "constraint": null
+ },
+ {
+  "q": 6,
+  "anchor": "TMNT",
+  "relation": "based_on",
+  "constraint": null
+ },
+ {
+  "q": 7,
+  "anchor": "Kentucky",
+  "relation": "located_in_inv",
+  "constraint": null
+ },
+ {
+  "q": 8,
+  "anchor": "Lauderhill, Florida",
+  "relation": "born_in_inv",
+  "constraint": {
+   "relation": "occupation",
+   "value": "rapper"
+  }
+ },
+ {
+  "q": 9,
+  "anchor": "Witness",
+  "relation": "author_of_inv",
+  "constraint": null
+ },
+ {
+  "q": 10,
+  "anchor": "The Mountbatten Institute",
+  "relation": "founded_by",
+  "constraint": null
+ },
+ {
+  "q": 11,
+  "anchor": "Lamar, Missouri",
+  "relation": "born_in_inv",
+  "constraint": {
+   "relation": "occupation",
+   "value": "President of the United States"
+  }
+ },
+ {
+  "q": 12,
+  "anchor": "Bo\u0159e\u0148",
+  "relation": "instance_of",
+  "constraint": {
+   "relation": "located_in",
+   "value": "Wyoming"
+  }
+ },
+ {
+  "q": 13,
+  "anchor": "Here Come the Munsters",
+  "relation": "starred",
+  "constraint": {
+   "relation": "born_in",
+   "value": "Philadelphia"
+  }
+ },
+ {
+  "q": 14,
+  "anchor": "Red Mountain",
+  "relation": "based_on",
+  "constraint": {
+   "relation": "instance_of",
+   "value": "Civil War rangers"
+  }
+ },
+ {
+  "q": 15,
+  "anchor": "The Revengers Tragedy",
+  "relation": "starred",
+  "constraint": {
+   "relation": "occupation",
+   "value": "actress"
+  }
+ },
+ {
+  "q": 16,
+  "anchor": "Afonwen",
+  "relation": "located_in_inv",
+  "constraint": {
+   "relation": "instance_of",
+   "value": "road"
+  }
+ },
+ {
+  "q": 17,
+  "anchor": "Ashes in the Snow",
+  "relation": "based_on",
+  "constraint": {
+   "relation": "instance_of",
+   "value": "novel"
+  }
+ },
+ {
+  "q": 18,
+  "anchor": "Loyalist Volunteer Force",
+  "relation": "member_of_inv",
+  "constraint": {
+   "relation": "died_in",
+   "value": "assassination"
+  }
+ },
+ {
+  "q": 19,
+  "anchor": "Stephen Cepello",
+  "relation": "works_for_inv",
+  "constraint": {
+   "relation": "occupation",
+   "value": "wrestler"
+  }
+ },
+ {
+  "q": 20,
+  "anchor": "Angelina Jolie",
+  "relation": "directed_by_inv",
+  "constraint": {
+   "relation": "based_on",
+   "value": "Prisoner of war survivor"
+  }
+ },
+ {
+  "q": 21,
+  "anchor": "basidiomycete fungus",
+  "relation": "instance_of",
+  "constraint": {
+   "relation": "known_for",
+   "value": "another name"
+  }
+ },
+ {
+  "q": 22,
+  "anchor": "Long-Allen bridge",
+  "relation": "part_of_inv",
+  "constraint": null
+ },
+ {
+  "q": 23,
+  "anchor": "Jamell Anderson",
+  "relation": "plays_for",
+  "constraint": null
+ },
+ {
+  "q": 24,
+  "anchor": "Walt Disney World",
+  "relation": "part_of_inv",
+  "constraint": {
+   "relation": "based_on",
+   "value": "2004 computer-animated Christmas movie"
+  }
+ },
+ {
+  "q": 25,
+  "anchor": "Romper Stomper",
+  "relation": "starred",
+  "constraint": null
+ },
+ {
+  "q": 26,
+  "anchor": "Liam McEwan",
+  "relation": "works_for",
+  "constraint": null
+ },
+ {
+  "q": 27,
+  "anchor": "IBF Light Flyweight Championship",
+  "relation": "instance_of",
+  "constraint": null
+ },
+ {
+  "q": 28,
+  "anchor": "dictator game",
+  "relation": "developed_by",
+  "constraint": null
+ },
+ {
+  "q": 29,
+  "anchor": "Oklahoma",
+  "relation": "founded_in_inv",
+  "constraint": null
+ },
+ {
+  "q": 30,
+  "anchor": "1977 horror film",
+  "relation": "written_by",
+  "constraint": null
+ },
+ {
+  "q": 31,
+  "anchor": "Lela Rochon",
+  "relation": "starred",
+  "constraint": {
+   "relation": "based_on",
+   "value": "John Grisham novel"
+  }
+ },
+ {
+  "q": 32,
+  "anchor": "neighbourhood electric vehicle",
+  "relation": "instance_of",
+  "constraint": null
+ }
+]
