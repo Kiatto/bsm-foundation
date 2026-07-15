@@ -157,6 +157,21 @@ is catastrophic (ε=5% halves accuracy): key construction, cleanup
 targets and stored content corrupt jointly. The item memory is the
 trusted computing base of the paradigm.
 
+### 3.x Two families of results
+
+The theory splits into two families. **Resource laws** answer *how
+much it costs*: they depend on (D, N, M, ε, h) — Laws I, IV, V, VII
+and the Resource Composition Law. **Structural laws** answer *what is
+possible*: they depend on the symmetries and invariances of the
+algebra, not on resources — Bridge Elimination, Compose, trace
+self-cancellation (the no-go theorem), and edge-symmetry aliasing
+(§7). The distinction assigns each operator a conceptual role: cleanup
+removes *noise* (a resource phenomenon); typed projection removes
+*unwanted symmetries* (a structural phenomenon) — it is a
+disambiguation operator, not an optimization. Aliasing candidates sit
+at equal signal, so no amount of cleanup can separate them; projection
+eliminates them exactly.
+
 ## 4. Error composition and the Memory Calculus
 
 **Theorem (hop composition).** With cleanup between hops,
@@ -326,6 +341,14 @@ entirely (80% measured vs 79% full contract). Structure enters the law
 only through an algebraic term computable from the query plan before
 any query — never through content. The symmetry is also a feature:
 inverse queries come for free.
+
+**Aliasing Factor Hypothesis.** The derived correction Acc = p · Π 1/gᵢ
+(gᵢ = equal-signal candidates at hop i, computable from the query plan)
+is corroborated at g ∈ {2, 3, 4, 8} (mean |dev| 4.2%, max 7.5%), and
+the counter-check separates the two operator roles: guided projection
+restores accuracy to p at *every* g, confirming that aliasing is
+symmetry, not noise. It remains a hypothesis pending mixed multi-hop
+plans and real corpora.
 
 ## 8. Related work
 

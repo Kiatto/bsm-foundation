@@ -1,6 +1,6 @@
 # Algebraic Binary Memory — Formalismo
 
-*Versione 2.0 — 2026-07-13 — CONGELATO. Ogni implementazione (Python,
+*Versione 2.1 (v2.0 + addendum) — 2026-07-15 — CONGELATO. Ogni implementazione (Python,
 C++, FPGA) va valutata rispetto a questa specifica, non viceversa.
 Le modifiche richiedono un incremento di versione e la motivazione.*
 
@@ -424,3 +424,54 @@ codebook (Hopfield iterato).*
 
 **"Algebraic Binary Memory: A Computational Model with Capacity Laws
 for Associative Reasoning"**
+
+---
+
+## Addendum v2.1 — 2026-07-15 (il corpo v2.0 resta invariato)
+
+### Due famiglie di risultati
+
+La struttura teorica si articola in due famiglie distinte:
+
+- **Resource Laws** (*quanto costa*): Law I, IV, V, VII, Resource
+  Composition Law — dipendono dalle risorse (D, N, M, ε, h).
+- **Structural Laws** (*che cosa è possibile*): Bridge Elimination,
+  Compose, Auto-cancellazione (no-go §2.11), Aliasing — dipendono
+  dalle simmetrie e invarianze del formalismo, NON dalle risorse.
+
+### Projection: da ottimizzazione a operatore di disambiguazione
+
+Riclassificazione. Il cleanup **elimina il rumore** (proiezione sul
+codebook, A3). La Projection tipata **elimina le simmetrie
+indesiderate** (restrizione del codebook che rompe un'invarianza).
+Sono operazioni concettualmente diverse: l'aliasing non è rumore e il
+cleanup da solo non può eliminarlo (candidati a pari segnale); la
+Projection sì (verificato: guided ≈ p per ogni g testato).
+
+### Simmetria degli archi (proprietà esatta)
+
+L'encoding f = s ⊕ ρ(r) ⊕ o è simmetrico in (s, o): ogni fatto è un
+arco non orientato — f ⊕ key(o, r) = s esattamente. Conseguenze:
+(i) le query inverse sono gratuite; (ii) a query(node, r), ogni fatto
+con `node` come oggetto e relazione r è un candidato a pari segnale.
+
+### Aliasing Factor Hypothesis (IPOTESI, non legge)
+
+    Acc = p(N, M) × Π_i 1/g_i
+
+con g_i = numero di candidati a pari segnale all'hop i (calcolabile
+dal piano di query, prima dell'esecuzione). Status: derivazione
+algebrica esatta; corroborata a g ∈ {2, 3, 4, 8} (|dev| media 4.2%,
+max 7.5%, `aliasing_factor_results.json`). Resta ipotesi finché non
+testata su piani misti multi-hop e domini reali. Predizione nuova e
+falsificatore: su qualunque piano, il fattore Π 1/g_i dichiarato
+dall'Inspector prima delle query deve coincidere con il rapporto
+naive/guided misurato.
+
+### Tabella di stato (delta rispetto a v2.0)
+
+| # | Enunciato | Livello | Stato |
+|---|---|---|---|
+| 2.12 | Simmetria degli archi | 2 | **ESATTA** (algebra) |
+| 3.10 | Aliasing Factor | 3 | **IPOTESI corroborata** (4 punti) |
+| — | Residuo compilatore-cluster (+4pt) | 3 | APERTO (paper §9.7) |

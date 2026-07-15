@@ -24,8 +24,11 @@ from abm import (Memory, capacity, predicted_accuracy, z_gumbel, hamming,
 
 
 def stats(mem: Memory, extractor_precision: float = 1.0,
-          horizon: int = 100, hops: int = 2) -> dict:
-    """Il Memory Contract calcolato, non osservato."""
+          horizon: int = 100, hops: int = 2,
+          triples=None, queries=None) -> dict:
+    """Il Memory Contract calcolato, non osservato. Se l'applicazione
+    fornisce triples+queries (livello A), aggiunge la diagnosi di
+    aliasing strutturale."""
     n = len(mem._facts)
     m = max(len(mem.items), 2)
     cap = capacity(mem.dim, m)
@@ -40,6 +43,12 @@ def stats(mem: Memory, extractor_precision: float = 1.0,
     while n > 0.5 * capacity(rec, m) and rec < 2 ** 20:
         rec *= 2
     pg = extractor_precision ** hops
+    out_alias = {}
+    if triples is not None and queries is not None:
+        al = aliasing(triples, queries)
+        out_alias = dict(al)
+        out_alias["projected_with_aliasing"] = round(
+            al["aliasing_factor"] * pg * acc_now, 3)
     return {
         "facts": n,
         "dimension": mem.dim,
@@ -59,7 +68,43 @@ def stats(mem: Memory, extractor_precision: float = 1.0,
         "max_reasoning_depth_p50": (
             int(np.floor(np.log(0.5) / np.log(acc_now)))
             if 0 < acc_now < 1 else 99),
+        **out_alias,
     }
+
+
+def aliasing(triples, queries) -> dict:
+    """Diagnosi di aliasing strutturale (Aliasing Factor Hypothesis,
+    corroborata a g ∈ {2,3,4,8}): per la simmetria dell'encoding ogni
+    fatto è un arco non orientato, quindi a query(node, r) i fatti che
+    hanno `node` come OGGETTO con la stessa relazione r sono candidati
+    a pari segnale. Fattore atteso per query: Π 1/g_i.
+
+    triples: lista simbolica (s, r, o) — vive al livello A, l'Inspector
+    la riceve dall'applicazione. queries: lista (start, [r1..rh]).
+    Calcolabile PRIMA di qualsiasi query. Rimedio: Projection sul
+    sottoinsieme dei non visitati (operatore di disambiguazione).
+    """
+    from collections import defaultdict
+    subj = defaultdict(dict)                    # (s, r) -> o
+    obj_count = defaultdict(int)                # (o, r) -> n archi entranti
+    for s, r, o in triples:
+        subj[(s, r)] = o
+        obj_count[(o, r)] += 1
+    factors, bad_rels = [], set()
+    for start, relations in queries:
+        node, f = start, 1.0
+        for r in relations:
+            g = 1 + obj_count[(node, r)]
+            if g > 1:
+                bad_rels.add(r)
+            f /= g
+            node = subj.get((node, r), node)
+        factors.append(f)
+    factor = float(np.mean(factors)) if factors else 1.0
+    return {"aliasing_factor": round(factor, 3),
+            "aliasing_relations": sorted(bad_rels),
+            "remedy": ("guided projection over unvisited subset"
+                       if bad_rels else None)}
 
 
 def contract(mem: Memory, grounding: float = 1.0) -> str:

@@ -165,6 +165,22 @@ class TestInspector:
         assert (overloaded["recommended_dimension"]
                 > overloaded["dimension"])
 
+    def test_aliasing_diagnosis(self):
+        from inspector import aliasing, stats
+        # catena a relazione ripetuta: g=2 sull'hop 2 -> fattore 0.5
+        triples = [("a", "next", "b"), ("b", "next", "c")]
+        al = aliasing(triples, [("a", ["next", "next"])])
+        assert al["aliasing_factor"] == 0.5
+        assert al["aliasing_relations"] == ["next"]
+        # relazioni distinte: nessun alias
+        clean = aliasing([("a", "r1", "b"), ("b", "r2", "c")],
+                         [("a", ["r1", "r2"])])
+        assert clean["aliasing_factor"] == 1.0 and not clean["aliasing_relations"]
+        # integrazione in stats
+        m = self._mem(20)
+        s = stats(m, triples=triples, queries=[("a", ["next", "next"])])
+        assert s["projected_with_aliasing"] <= 0.5 * s["expected_accuracy"] + 1e-9
+
     def test_contract_prediction_tracks_measurement(self):
         from inspector import stats
         import numpy as np

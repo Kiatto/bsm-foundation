@@ -84,3 +84,30 @@ in entrambe le direzioni.
 2. Inspector: rilevare relazioni ripetute nel piano e dichiarare il
    fattore di aliasing nel contratto.
 3. Corpus documentali reali per dominio (con estrazioni LLM di kiatto).
+
+---
+
+## Addendum — Aliasing Factor Hypothesis a g ∈ {2,3,4,8} (2026-07-15)
+
+Curva completa (`examples/aliasing_factor_bench.py`, D=4096, 5 seed,
+30 stelle/g), predizione Acc = p/g a zero parametri:
+
+| g | previsto p/g | naive (95% CI) | |dev| | guided | p teorico |
+|---|---|---|---|---|---|
+| 2 | 50% | 53% ±10% | 0.036 | 99% | 99% |
+| 3 | 33% | 41% ±8% | 0.075 | 99% | 100% |
+| 4 | 25% | 26% ±9% | 0.014 | 98% | 98% |
+| 8 | 9% | 13% ±5% | 0.043 | 69% | 72% |
+
+|dev| media 4.2%. La contro-verifica concettuale: **guided ≈ p per
+ogni g** (anche a g=8, dove il carico maggiore abbassa p a 72% e
+guided misura 69%) — l'alias è simmetria e lo elimina Projection;
+non è rumore, e infatti il cleanup da solo non può separare candidati
+a pari segnale. Status: IPOTESI corroborata (FORMALISM v2.1 §3.10),
+non legge — mancano piani misti multi-hop e corpus reali.
+
+L'Inspector ora la espone: `aliasing(triples, queries)` e i campi
+`aliasing_factor` / `aliasing_relations` / `projected_with_aliasing`
+in `stats()` — la diagnosi ("relazione ripetuta: next_step, fattore
+2×, rimedio: proiezione guidata") è calcolata dal piano di query
+prima di eseguirlo. Test dedicato in `reference/test_abm.py` (19/19).
