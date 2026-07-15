@@ -15,5 +15,22 @@
   "measured": 0.061,
   "error": 0.001,
   "respected": true
+ },
+ {
+  "label": "B",
+  "model": "tencent/hy3:free",
+  "n": 33,
+  "pg": 0.067,
+  "pg_ci": 0.126,
+  "n_eff_mean": 260.1,
+  "m_mean": 121.0,
+  "pressure": 0.324,
+  "aliasing": 0.913,
+  "pr": 0.966,
+  "contract": 0.059,
+  "ci": 0.131,
+  "measured": 0.061,
+  "error": 0.002,
+  "respected": true
  }
 ]
