@@ -99,3 +99,35 @@ indipendente dal compilatore".
   compilatori. (2) I compilatori sono modelli eterogenei ma con prompt
   e schema di relazioni identici (nostri): l'eterogeneità è del
   modello, non della pipeline di prompting.
+
+---
+
+## Fase 1A — CHIUSA: saturation check (2026-07-15)
+
+Conclusione sperimentale: con planner v1, due famiglie di compilatori
+molto diverse (nemotron-550b, hy3) producono profili di risorse
+indistinguibili (Δ<1% su ogni colonna) e le stesse 2 risposte
+corrette. Il planner v1 domina Pg; il compilatore è variabile di
+secondo ordine entro la sensibilità del protocollo. C e D non vengono
+eseguiti nelle stesse condizioni (valore atteso ~nullo).
+
+## Fase 1B pre-registrata — planner sensitivity (registrata PRIMA di scrivere il planner v2)
+
+**Varia SOLO il planner** (v1 → v2). Congelati: estrazioni del
+compilatore A (extractions_A.jsonl, già raccolte), corpus 33 domande,
+esecutore semantico esteso ai piani a 2 hop, audit (prime 15), D=8192,
+matching. Planner v2: piani con catena ≤2 relazioni + vincolo
+opzionale; riceve la domanda E l'elenco dei NOMI di relazione
+effettivamente estratti (non i contesti: il context-blind resta —
+i nomi di relazione non contengono i documenti; dichiarato).
+
+**Predizioni scritte ora:**
+- L'attribuzione dà il tetto: eliminare la categoria C (58% dei miss)
+  porterebbe Pg verso ~0.6; realisticamente il planner v2 ne
+  eliminerà una parte → atteso Pg in [0.15, 0.5] (largo, dichiarato).
+- Caso A: Pg↑, Pr~, contratto segue → evidenza forte (CI stretto).
+- Caso B: Pg↑ ma con più aliasing/carico effettivo → il contratto
+  DEVE incorporarli e seguire comunque.
+- Caso C: Pg↑ ma la misura non segue → FALSIFICAZIONE della forma
+  per-query su dati esterni; va nel paper come tale.
+- Criterio identico: |misurato − contratto| ≤ CI dichiarato.
