@@ -53,3 +53,32 @@ predice l'accuratezza entro l'incertezza dichiarata".
   planning. Se il rate limit tronca il run, si riporta il campione
   effettivo con il suo SE.
 - La chiave API è dell'utente, usata via env, mai committata.
+
+---
+
+## Fase 1 pre-registrata — Multi-compilatore reale (registrata 2026-07-15)
+
+**Varia SOLO il compilatore.** Congelati: corpus (le 33 domande con
+estrazione riuscita del compilatore A, identificate da `sample_meta` ∩
+`extractions.jsonl`), planner v1 e i suoi piani (`plans.json`, chiave =
+id domanda), esecutore, audit (prime 15 in ordine di campionamento),
+D=8192, matching. Un compilatore per run, analisi prima del successivo.
+
+Compilatori (famiglie indipendenti): A nvidia/nemotron-3-ultra-550b ·
+B tencent/hy3 · C google/gemma-4 (26b o 31b) · D openai/gpt-oss-20b.
+
+Per ogni compilatore si registra la riga completa:
+Pg (audit n=15) | N_eff | M | pressure | aliasing | Pr previsto |
+accuracy prevista (=Pg×Pr×alias) ± CI | accuracy osservata | errore.
+
+**Domanda:** il contratto segue la misura per OGNI compilatore?
+Esiti entrambi utili: (A) sì → evidenza che la legge descrive
+l'architettura; (B) un compilatore rompe sistematicamente il contratto
+→ limite della teoria, da riportare come tale.
+
+**Linguaggio dell'esito (vincolante):** in caso positivo si scrive
+"su questo protocollo e su questo campione la legge descrive il
+comportamento di compilatori eterogenei" — NON "la legge è
+indipendente dal compilatore".
+
+**Fase 2 (solo dopo):** planner a 2 hop, a compilatore fissato.

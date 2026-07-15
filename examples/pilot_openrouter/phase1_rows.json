@@ -1,0 +1,19 @@
+[
+ {
+  "label": "A",
+  "model": "nvidia/nemotron-3-ultra-550b-a55b:free",
+  "n": 33,
+  "pg": 0.067,
+  "pg_ci": 0.126,
+  "n_eff_mean": 260.7,
+  "m_mean": 121.2,
+  "pressure": 0.326,
+  "aliasing": 0.935,
+  "pr": 0.963,
+  "contract": 0.06,
+  "ci": 0.134,
+  "measured": 0.061,
+  "error": 0.001,
+  "respected": true
+ }
+]

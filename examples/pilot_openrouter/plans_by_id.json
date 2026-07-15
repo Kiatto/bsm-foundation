@@ -1,0 +1,245 @@
+{
+ "5ac2f79e5542996773102661": {
+  "q": 0,
+  "anchor": "Chun Woo-hee",
+  "relation": "starred",
+  "constraint": {
+   "relation": "genre",
+   "value": "horror"
+  }
+ },
+ "5ae738f75542991bbc9761c4": {
+  "q": 1,
+  "anchor": "Washington Redskins",
+  "relation": "plays_for_inv",
+  "constraint": null
+ },
+ "5a846da0554299334474611e": {
+  "q": 2,
+  "anchor": "Dizzy Dean",
+  "relation": "plays_for",
+  "constraint": null
+ },
+ "5abdf7055542993f32c2a06c": {
+  "q": 3,
+  "anchor": "Quincy Mumford & The Reason Why",
+  "relation": "located_in",
+  "constraint": null
+ },
+ "5abdb7ff5542993f32c2a011": {
+  "q": 4,
+  "anchor": "Houston",
+  "relation": "born_in_inv",
+  "constraint": null
+ },
+ "5a76b56d554299373536017b": {
+  "q": 5,
+  "anchor": "Robert W. McElroy",
+  "relation": "works_for",
+  "constraint": null
+ },
+ "5ab576c4554299637185c5a4": {
+  "q": 6,
+  "anchor": "TMNT",
+  "relation": "based_on",
+  "constraint": null
+ },
+ "5a89e6615542992e4fca8462": {
+  "q": 7,
+  "anchor": "Kentucky",
+  "relation": "located_in_inv",
+  "constraint": null
+ },
+ "5abce43855429959677d6b18": {
+  "q": 8,
+  "anchor": "Lauderhill, Florida",
+  "relation": "born_in_inv",
+  "constraint": {
+   "relation": "occupation",
+   "value": "rapper"
+  }
+ },
+ "5a8b768655429949d91db5a9": {
+  "q": 9,
+  "anchor": "Witness",
+  "relation": "author_of_inv",
+  "constraint": null
+ },
+ "5a7a68d25542996c55b2dd98": {
+  "q": 10,
+  "anchor": "The Mountbatten Institute",
+  "relation": "founded_by",
+  "constraint": null
+ },
+ "5abffc0d5542990832d3a1e2": {
+  "q": 11,
+  "anchor": "Lamar, Missouri",
+  "relation": "born_in_inv",
+  "constraint": {
+   "relation": "occupation",
+   "value": "President of the United States"
+  }
+ },
+ "5a873ec75542996432c57244": {
+  "q": 12,
+  "anchor": "Bo\u0159e\u0148",
+  "relation": "instance_of",
+  "constraint": {
+   "relation": "located_in",
+   "value": "Wyoming"
+  }
+ },
+ "5ab65e1e55429954757d3261": {
+  "q": 13,
+  "anchor": "Here Come the Munsters",
+  "relation": "starred",
+  "constraint": {
+   "relation": "born_in",
+   "value": "Philadelphia"
+  }
+ },
+ "5ae4a2b25542995ad6573de0": {
+  "q": 14,
+  "anchor": "Red Mountain",
+  "relation": "based_on",
+  "constraint": {
+   "relation": "instance_of",
+   "value": "Civil War rangers"
+  }
+ },
+ "5adfa3da554299025d62a317": {
+  "q": 15,
+  "anchor": "The Revengers Tragedy",
+  "relation": "starred",
+  "constraint": {
+   "relation": "occupation",
+   "value": "actress"
+  }
+ },
+ "5ac510255542994611c8b353": {
+  "q": 16,
+  "anchor": "Afonwen",
+  "relation": "located_in_inv",
+  "constraint": {
+   "relation": "instance_of",
+   "value": "road"
+  }
+ },
+ "5ab6266555429953192ad277": {
+  "q": 17,
+  "anchor": "Ashes in the Snow",
+  "relation": "based_on",
+  "constraint": {
+   "relation": "instance_of",
+   "value": "novel"
+  }
+ },
+ "5abec8e45542997ec76fd364": {
+  "q": 18,
+  "anchor": "Loyalist Volunteer Force",
+  "relation": "member_of_inv",
+  "constraint": {
+   "relation": "died_in",
+   "value": "assassination"
+  }
+ },
+ "5ab47e0a5542990594ba9c32": {
+  "q": 19,
+  "anchor": "Stephen Cepello",
+  "relation": "works_for_inv",
+  "constraint": {
+   "relation": "occupation",
+   "value": "wrestler"
+  }
+ },
+ "5ac245015542992f1f2b3829": {
+  "q": 20,
+  "anchor": "Angelina Jolie",
+  "relation": "directed_by_inv",
+  "constraint": {
+   "relation": "based_on",
+   "value": "Prisoner of war survivor"
+  }
+ },
+ "5ae54bbd5542990ba0bbb262": {
+  "q": 21,
+  "anchor": "basidiomycete fungus",
+  "relation": "instance_of",
+  "constraint": {
+   "relation": "known_for",
+   "value": "another name"
+  }
+ },
+ "5a76c98855429972597f13d0": {
+  "q": 22,
+  "anchor": "Long-Allen bridge",
+  "relation": "part_of_inv",
+  "constraint": null
+ },
+ "5ae690b055429908198fa622": {
+  "q": 23,
+  "anchor": "Jamell Anderson",
+  "relation": "plays_for",
+  "constraint": null
+ },
+ "5a792ad055429907847277d1": {
+  "q": 24,
+  "anchor": "Walt Disney World",
+  "relation": "part_of_inv",
+  "constraint": {
+   "relation": "based_on",
+   "value": "2004 computer-animated Christmas movie"
+  }
+ },
+ "5ab4c8735542996a3a969fcb": {
+  "q": 25,
+  "anchor": "Romper Stomper",
+  "relation": "starred",
+  "constraint": null
+ },
+ "5a876a4a5542993e715abf30": {
+  "q": 26,
+  "anchor": "Liam McEwan",
+  "relation": "works_for",
+  "constraint": null
+ },
+ "5adbfb6b55429947ff17388d": {
+  "q": 27,
+  "anchor": "IBF Light Flyweight Championship",
+  "relation": "instance_of",
+  "constraint": null
+ },
+ "5ade03c65542990dbb2f7f2e": {
+  "q": 28,
+  "anchor": "dictator game",
+  "relation": "developed_by",
+  "constraint": null
+ },
+ "5a736f7c5542991f29ee2e18": {
+  "q": 29,
+  "anchor": "Oklahoma",
+  "relation": "founded_in_inv",
+  "constraint": null
+ },
+ "5ab3d5f355429969a97a81c5": {
+  "q": 30,
+  "anchor": "1977 horror film",
+  "relation": "written_by",
+  "constraint": null
+ },
+ "5ae6143f5542996de7b71b2d": {
+  "q": 31,
+  "anchor": "Lela Rochon",
+  "relation": "starred",
+  "constraint": {
+   "relation": "based_on",
+   "value": "John Grisham novel"
+  }
+ },
+ "5ae4ca6355429913cc204507": {
+  "q": 32,
+  "anchor": "neighbourhood electric vehicle",
+  "relation": "instance_of",
+  "constraint": null
+ }
+}
