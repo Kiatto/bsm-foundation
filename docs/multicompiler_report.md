@@ -86,6 +86,9 @@ penultima riga prima del deploy.
 
 1. Replica multi-compilatore con LLM reali (kiatto lancia le estrazioni
    sul protocollo di `multicompiler_bench.py`).
-2. Caratterizzare il residuo +4pt di beta (secondo ordine dei cluster).
+2. Il residuo +4pt di beta è registrato come PROBLEMA APERTO (paper
+   §9.7), NON come nuova legge: esiste un solo tipo di clustering
+   testato (su catene) — scriverne oggi una Law VIIIb rischierebbe di
+   spiegare un artefatto particolare, come la vecchia Law VI.
 3. Benchmark industriale su corpus documentale reale con la stessa
    tabella (costo/latenza/errore-contratto).

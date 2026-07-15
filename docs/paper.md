@@ -310,6 +310,23 @@ clusters is preferable to one that fails uniformly — a selection
 criterion no precision/recall metric expresses. Real-LLM replication
 is the natural next step.
 
+**Cross-domain invariance (with one exact exception).** Four
+deliberately different graph topologies (dense relation reuse,
+single-relation sequences, subject hubs, object hubs) under one
+contract formula with no fitted per-domain parameters: mean deviation
+2.4%. The single-relation domain initially *falsified* the naive
+domain-independence claim (37% vs 79%) through an exact algebraic
+mechanism, not noise: the encoding s⊕ρ(r)⊕o is symmetric in s and o —
+every fact is an undirected edge — so with equal relations on
+consecutive hops the predecessor aliases the successor at equal signal
+(verified: 21/19/0 on clean hops). The derived 1/g aliasing factor
+restores the contract (|dev| 2.6%), and the typed projection already
+in the model (cleanup over the unvisited subset) eliminates the alias
+entirely (80% measured vs 79% full contract). Structure enters the law
+only through an algebraic term computable from the query plan before
+any query — never through content. The symmetry is also a feature:
+inverse queries come for free.
+
 ## 8. Related work
 
 Vector Symbolic Architectures and hyperdimensional computing (Kanerva;
@@ -334,6 +351,11 @@ axiomatization justified by operator-ablation.
 4. Sign-saturation correction to Law VII at extreme weights.
 5. Negation and quantifiers in the algebraic truth oracle.
 6. Φ-descent dynamics off-codebook (Hopfield-style multi-step cleanup).
+7. An observed residual in the compiler-ranking experiment suggests
+   that correlated grounding errors may reduce effective memory load
+   on unaffected queries beyond the first-order model (+4 pt on the
+   clustered extractor, consistent across seeds). Only one clustering
+   type has been tested; characterization is left for future work.
 
 ## 10. Conclusion
 

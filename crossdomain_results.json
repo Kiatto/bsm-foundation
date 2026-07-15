@@ -1,0 +1,47 @@
+{
+  "api": {
+    "eps": 0.06,
+    "n": 100,
+    "m": 158,
+    "contract": 0.875,
+    "measured": 0.884,
+    "ci95": 0.044,
+    "dev": 0.009
+  },
+  "manuals": {
+    "eps": 0.11,
+    "n": 80,
+    "m": 124,
+    "contract": 0.396,
+    "measured": 0.37,
+    "ci95": 0.048,
+    "dev": 0.026
+  },
+  "legal": {
+    "eps": 0.18,
+    "n": 90,
+    "m": 152,
+    "contract": 0.67,
+    "measured": 0.613,
+    "ci95": 0.068,
+    "dev": 0.056
+  },
+  "medical": {
+    "eps": 0.09,
+    "n": 100,
+    "m": 119,
+    "contract": 0.822,
+    "measured": 0.804,
+    "ci95": 0.031,
+    "dev": 0.018
+  },
+  "manuals_guided": {
+    "eps": 0.11,
+    "n": 80,
+    "m": 124,
+    "contract": 0.791,
+    "measured": 0.8,
+    "ci95": 0.058,
+    "dev": 0.009
+  }
+}
