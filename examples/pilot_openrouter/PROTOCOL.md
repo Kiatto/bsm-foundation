@@ -131,3 +131,26 @@ i nomi di relazione non contengono i documenti; dichiarato).
 - Caso C: Pg↑ ma la misura non segue → FALSIFICAZIONE della forma
   per-query su dati esterni; va nel paper come tale.
 - Criterio identico: |misurato − contratto| ≤ CI dichiarato.
+
+### Fase 1B — esito e emendamento v2.1 (registrato prima della valutazione v2.1)
+
+ESITO v2 (criterio pre-registrato): Pg audit = 0/15, contratto 0% ± 2%,
+misurato 3% (1/33) → formalmente VIOLATO di 1 punto. DUE note oneste:
+(1) la formula del CI degenera a Pg=0 (SE binomiale=0) — difetto di
+disegno del NOSTRO harness, scoperto dal caso limite; con l'intervallo
+esatto Clopper-Pearson (0/15 → upper 21.8%, contratto upper ~20%) la
+misura è compatibile. Si riportano ENTRAMBE le letture, senza
+sostituire il criterio a posteriori. (2) Diagnosi: i piani v2 sono
+semanticamente corretti ma falliscono sul MATCH ESATTO del nome di
+relazione (frammentazione del vocabolario dell'estrattore:
+traded_for/traded_to, works_for/writes_for). La categoria C si
+raffina: non struttura del piano, ma allineamento del vocabolario a
+livello di istanza.
+
+EMENDAMENTO v2.1 (una sola modifica, meccanica): esecutore e audit
+groundano anche le RELAZIONI con lo stesso matcher token-based già
+usato per le entità (per ogni hop, si accettano le relazioni estratte
+con overlap di token col nome pianificato; soglia: ≥1 token condiviso
+dopo normalizzazione). Predizione: se la frammentazione è la causa
+vera, Pg sale in modo netto; criterio invariato, CI con
+Clopper-Pearson d'ora in poi (correzione di harness dichiarata).

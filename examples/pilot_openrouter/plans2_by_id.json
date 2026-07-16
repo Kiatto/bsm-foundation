@@ -1,0 +1,356 @@
+{
+ "5ac2f79e5542996773102661": {
+  "q": 0,
+  "anchor": "Chun Woo-hee",
+  "chain": [
+   "film_credits",
+   "genre"
+  ],
+  "constraint": {
+   "relation": "genre",
+   "value": "horror film"
+  }
+ },
+ "5ae738f75542991bbc9761c4": {
+  "q": 1,
+  "anchor": "Washington Redskins",
+  "chain": [
+   "drafted_by",
+   "draft_year"
+  ],
+  "constraint": {
+   "relation": "draft_round",
+   "value": "first round"
+  }
+ },
+ "5a846da0554299334474611e": {
+  "q": 2,
+  "anchor": "Dizzy Dean",
+  "chain": [
+   "also_known_as",
+   "played_for"
+  ],
+  "constraint": {
+   "relation": "type",
+   "value": "bird-themed team"
+  }
+ },
+ "5abdf7055542993f32c2a06c": {
+  "q": 3,
+  "anchor": "Quincy Mumford & The Reason Why",
+  "chain": [
+   "based_in",
+   "population"
+  ],
+  "constraint": {
+   "relation": "census_year",
+   "value": "2010"
+  }
+ },
+ "5abdb7ff5542993f32c2a011": {
+  "q": 4,
+  "anchor": "Lauri Markkanen",
+  "chain": [
+   "traded_to",
+   "born_in"
+  ],
+  "constraint": {
+   "relation": "born_in",
+   "value": "Houston"
+  }
+ },
+ "5a76b56d554299373536017b": {
+  "q": 5,
+  "anchor": "Robert W. McElroy",
+  "chain": [
+   "writes_for",
+   "located_in"
+  ],
+  "constraint": null
+ },
+ "5ab576c4554299637185c5a4": {
+  "q": 6,
+  "anchor": "TMNT",
+  "chain": [
+   "based_on",
+   "film_credits"
+  ],
+  "constraint": {
+   "relation": "type",
+   "value": "final film role"
+  }
+ },
+ "5a89e6615542992e4fca8462": {
+  "q": 7,
+  "anchor": "Kentucky's 20th-largest city",
+  "chain": [
+   "located_in",
+   "founded_in"
+  ],
+  "constraint": null
+ },
+ "5abce43855429959677d6b18": {
+  "q": 8,
+  "anchor": "Lauderhill, Florida",
+  "chain": [
+   "born_in",
+   "known_for"
+  ],
+  "constraint": {
+   "relation": "known_for",
+   "value": "Soundcloud rap"
+  }
+ },
+ "5a8b768655429949d91db5a9": {
+  "q": 9,
+  "anchor": "Pamela Wallace",
+  "chain": [
+   "known_for",
+   "nationality"
+  ],
+  "constraint": {
+   "relation": "instance_of",
+   "value": "Witness"
+  }
+ },
+ "5a7a68d25542996c55b2dd98": {
+  "q": 10,
+  "anchor": "The Mountbatten Institute",
+  "chain": [
+   "named_after",
+   "served_as"
+  ],
+  "constraint": {
+   "relation": "served_as",
+   "value": "related to Elizabeth II"
+  }
+ },
+ "5abffc0d5542990832d3a1e2": {
+  "q": 11,
+  "anchor": "President of the United States who was born in Lamar, Missouri",
+  "chain": [
+   "born_in",
+   "instance_of"
+  ],
+  "constraint": {
+   "relation": "born_in",
+   "value": "Lamar, Missouri"
+  }
+ },
+ "5a873ec75542996432c57244": {
+  "q": 12,
+  "anchor": "Bo\u0159e\u0148",
+  "chain": [
+   "located_in",
+   "located_in"
+  ],
+  "constraint": {
+   "relation": "located_in",
+   "value": "Wyoming"
+  }
+ },
+ "5ab65e1e55429954757d3261": {
+  "q": 13,
+  "anchor": "Here Come the Munsters",
+  "chain": [
+   "starred_in",
+   "born_in"
+  ],
+  "constraint": {
+   "relation": "born_in",
+   "value": "Philadelphia"
+  }
+ },
+ "5ae4a2b25542995ad6573de0": {
+  "q": 14,
+  "anchor": "Red Mountain",
+  "chain": [
+   "based_on",
+   "instance_of"
+  ],
+  "constraint": null
+ },
+ "5adfa3da554299025d62a317": {
+  "q": 15,
+  "anchor": "The Revengers Tragedy",
+  "chain": [
+   "played_role",
+   "born_on"
+  ],
+  "constraint": {
+   "relation": "played_role",
+   "value": "Duchess"
+  }
+ },
+ "5ac510255542994611c8b353": {
+  "q": 16,
+  "anchor": "Afonwen",
+  "chain": [
+   "located_near",
+   "also_known_as"
+  ],
+  "constraint": {
+   "relation": "also_known_as",
+   "value": "North Wales Expressway"
+  }
+ },
+ "5ab6266555429953192ad277": {
+  "q": 17,
+  "anchor": "Ashes in the Snow",
+  "chain": [
+   "based_on",
+   "also_known_as"
+  ],
+  "constraint": null
+ },
+ "5abec8e45542997ec76fd364": {
+  "q": 18,
+  "anchor": "Mark Fulton",
+  "chain": [
+   "served_as",
+   "part_of"
+  ],
+  "constraint": {
+   "relation": "served_as",
+   "value": "Loyalist Volunteer Force"
+  }
+ },
+ "5ab47e0a5542990594ba9c32": {
+  "q": 19,
+  "anchor": "Stephen Cepello",
+  "chain": [
+   "employed_in",
+   "served_as"
+  ],
+  "constraint": null
+ },
+ "5ac245015542992f1f2b3829": {
+  "q": 20,
+  "anchor": "Angelina Jolie",
+  "chain": [
+   "directed_by",
+   "based_on"
+  ],
+  "constraint": null
+ },
+ "5ae54bbd5542990ba0bbb262": {
+  "q": 21,
+  "anchor": "basidiomycete fungus",
+  "chain": [
+   "also_known_as"
+  ],
+  "constraint": null
+ },
+ "5a76c98855429972597f13d0": {
+  "q": 22,
+  "anchor": "Long-Allen bridge",
+  "chain": [
+   "located_near",
+   "located_near"
+  ],
+  "constraint": null
+ },
+ "5ae690b055429908198fa622": {
+  "q": 23,
+  "anchor": "Jamell Anderson",
+  "chain": [
+   "plays_for",
+   "located_in"
+  ],
+  "constraint": null
+ },
+ "5a792ad055429907847277d1": {
+  "q": 24,
+  "anchor": "Walt Disney World",
+  "chain": [
+   "features",
+   "based_on"
+  ],
+  "constraint": {
+   "relation": "release_date",
+   "value": "2004"
+  }
+ },
+ "5ab4c8735542996a3a969fcb": {
+  "q": 25,
+  "anchor": "Romper Stomper",
+  "chain": [
+   "starred",
+   "nationality"
+  ],
+  "constraint": null
+ },
+ "5a876a4a5542993e715abf30": {
+  "q": 26,
+  "anchor": "Liam McEwan",
+  "chain": [
+   "employed_in"
+  ],
+  "constraint": null
+ },
+ "5adbfb6b55429947ff17388d": {
+  "q": 27,
+  "anchor": "Mexico City",
+  "chain": [
+   "born_on",
+   "won_award"
+  ],
+  "constraint": {
+   "relation": "born_on",
+   "value": "May 28, 1986"
+  }
+ },
+ "5ade03c65542990dbb2f7f2e": {
+  "q": 28,
+  "anchor": "dictator game",
+  "chain": [
+   "developed_by",
+   "nationality"
+  ],
+  "constraint": null
+ },
+ "5a736f7c5542991f29ee2e18": {
+  "q": 29,
+  "anchor": "Oklahoma",
+  "chain": [
+   "located_in",
+   "founded_in"
+  ],
+  "constraint": {
+   "relation": "founded_in",
+   "value": "September 6, 1839"
+  }
+ },
+ "5ab3d5f355429969a97a81c5": {
+  "q": 30,
+  "anchor": "1977 horror film",
+  "chain": [
+   "written_by"
+  ],
+  "constraint": null
+ },
+ "5ae6143f5542996de7b71b2d": {
+  "q": 31,
+  "anchor": "Lela Rochon",
+  "chain": [
+   "starred_in",
+   "based_on"
+  ],
+  "constraint": {
+   "relation": "based_on",
+   "value": "John Grisham novel"
+  }
+ },
+ "5ae4ca6355429913cc204507": {
+  "q": 32,
+  "anchor": "neighbourhood electric vehicle",
+  "chain": [
+   "type_of",
+   "type"
+  ],
+  "constraint": {
+   "relation": "type_of",
+   "value": "non-electric version"
+  }
+ }
+}
