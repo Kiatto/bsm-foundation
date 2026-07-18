@@ -17,10 +17,15 @@ Documents → LLM compiler → triples → ABM → Inspector → Memory Contract
 
 ## Quickstart
 
-The reference implementation is two files, numpy-only, 255 + ~150 lines.
+```bash
+pip install abm-runtime
+abm demo
+```
+
+Developer guide (no theory required): [docs/SDK.md](docs/SDK.md).
+The runtime is two files, numpy-only, ~400 lines total.
 
 ```python
-import sys; sys.path.insert(0, "reference")
 from abm import Memory
 from inspector import stats, contract, report
 
