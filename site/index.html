@@ -1,0 +1,150 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ABM — the memory that signs a contract</title>
+<meta name="description" content="A deterministic memory runtime for compiled knowledge. Unlike vector memories, it predicts in advance how accurately it can answer under a fixed memory budget.">
+<style>
+  :root {
+    --bg: #f4f4f1; --panel: #ffffff; --panel2: #ecece8;
+    --ink: #23262b; --muted: #6b7078; --line: #d8d8d2;
+    --accent: #b25d25; --accent-ink: #ffffff; --good: #2e7d4f;
+  }
+  @media (prefers-color-scheme: dark) { :root {
+    --bg: #16181c; --panel: #1e2126; --panel2: #24272d;
+    --ink: #e8e6e1; --muted: #8f949c; --line: #33373e;
+    --accent: #d98e4a; --accent-ink: #16181c; --good: #5cbd85;
+  }}
+  * { box-sizing: border-box; }
+  body { background: var(--bg); color: var(--ink); margin: 0;
+    font: 16px/1.6 "Avenir Next", "Segoe UI", system-ui, sans-serif; }
+  .mono { font-family: ui-monospace, "SF Mono", Consolas, monospace; }
+  main { max-width: 720px; margin: 0 auto; padding: 56px 20px 90px; }
+  h1 { font-size: 34px; line-height: 1.2; letter-spacing: -0.015em;
+    margin: 0 0 14px; text-wrap: balance; }
+  h1 em { color: var(--accent); font-style: normal; }
+  .lead { font-size: 18px; color: var(--muted); margin: 0 0 28px;
+    max-width: 60ch; }
+  h2 { font-size: 13px; letter-spacing: .14em; color: var(--muted);
+    margin: 44px 0 14px; }
+  pre { background: var(--panel); border: 1px solid var(--line);
+    border-radius: 6px; padding: 14px 16px; overflow-x: auto;
+    font-family: ui-monospace, "SF Mono", Consolas, monospace;
+    font-size: 13.5px; line-height: 1.55; margin: 0 0 12px; }
+  .accent { color: var(--accent); }
+  .good { color: var(--good); }
+  .cta { display: inline-block; background: var(--accent);
+    color: var(--accent-ink); text-decoration: none; font-weight: 600;
+    padding: 10px 20px; border-radius: 5px; margin: 4px 10px 4px 0; }
+  .cta.ghost { background: transparent; color: var(--accent);
+    border: 1px solid var(--accent); }
+  .cta:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  .cols { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  @media (max-width: 640px) { .cols { grid-template-columns: 1fr; } }
+  .card { background: var(--panel); border: 1px solid var(--line);
+    border-radius: 6px; padding: 14px 16px; font-size: 14.5px; }
+  .card b { display: block; margin-bottom: 4px; }
+  details { border-bottom: 1px solid var(--line); padding: 10px 0; }
+  summary { cursor: pointer; font-weight: 600; }
+  details p { color: var(--muted); margin: 8px 0 2px; font-size: 15px; }
+  footer { margin-top: 52px; color: var(--muted); font-size: 13.5px; }
+  footer a { color: var(--accent); }
+</style>
+</head>
+<body>
+<main>
+
+<h1>A memory that tells you <em>in advance</em> how well it will answer.</h1>
+<p class="lead">ABM is a deterministic memory runtime for compiled
+knowledge. Unlike vector memories, it predicts — before you run a
+single query — how accurately it can answer under a fixed memory
+budget. Then you can hold it to that number.</p>
+
+<p>
+  <a class="cta" href="https://github.com/Kiatto/bsm-foundation">GitHub</a>
+  <a class="cta ghost" href="../demo/index.html">90-second live demo</a>
+</p>
+
+<h2>INSTALL · 30 SECONDS</h2>
+<pre>pip install abm-runtime
+abm demo</pre>
+
+<h2>USE · 5 MINUTES</h2>
+<pre><span class="accent">from</span> abm <span class="accent">import</span> Memory, contract
+
+mem = Memory(dim=8192)
+mem.store("payment_service", "requires", "auth_service")
+mem.store("auth_service", "writes_to", "session_store")
+
+mem.query("payment_service", "requires")
+<span class="good"># ("auth_service", 0.99)   calibrated: 0.5 = random</span>
+
+mem.chain("payment_service", ["requires", "writes_to"])
+<span class="good"># ("session_store", 0.98)  multi-hop, no index, no search</span>
+
+print(contract(mem, grounding=0.93))</pre>
+
+<h2>THE MEMORY CONTRACT</h2>
+<pre>MEMORY CONTRACT
+  Capacity        &lt;= 944 facts (D=8192, codebook=74)
+  Expected accuracy &gt;= 96% at current load (180 facts)
+  Grounding       &gt;= 93% (projected end-to-end 89%)
+  Confidence      calibrated (0.5 = chance), margin 3.1σ
+  Max depth (p50) =  7 hops
+  Pressure        =  0.19</pre>
+<p style="color: var(--muted); font-size: 15px">Every line is computed
+from closed-form capacity laws — zero fitted parameters. If the
+contract says 96% and you measure 60%, that's a bug in ABM, not bad
+luck. <b>The contract is the product.</b></p>
+
+<h2>WHAT IT'S GOOD AT</h2>
+<div class="cols">
+  <div class="card"><b>Agent memory</b>Your LLM extracts facts once;
+    ABM answers thousands of multi-hop queries deterministically, with
+    provenance, at microsecond-algebra cost.</div>
+  <div class="card"><b>Knowledge you must trust</b>Procedures,
+    dependencies, catalogs, on-call chains — domains where a wrong
+    answer costs money and "the retriever felt confident" isn't an
+    audit trail.</div>
+  <div class="card"><b>Tiny footprints</b>2,000 facts live in a 16 KB
+    trace. Same inputs, same bits, same answers — deployable where a
+    vector database will never fit.</div>
+  <div class="card"><b>Capacity planning</b>Ask the memory before
+    deploying: how many facts until it degrades? What dimension do I
+    need? Which is my bottleneck — extraction or memory?</div>
+</div>
+
+<h2>FAQ</h2>
+<details><summary>Is this a vector database?</summary>
+<p>No. There are no embeddings and no similarity search. Facts are
+exact (subject, relation, object) triples bound into a single binary
+trace by XOR algebra. It complements vector search; it doesn't replace
+it.</p></details>
+<details><summary>Do I need to understand the math?</summary>
+<p>No. Five concepts: <span class="mono">Memory, store, query, chain,
+contract</span>. The theory exists so the contract can be computed —
+you only read its output.</p></details>
+<details><summary>Where do the facts come from?</summary>
+<p>From you, or from an LLM reading your documents. That extraction
+step is honestly the hard part of any symbolic pipeline — which is
+exactly why the contract accepts your extractor's audited precision
+and projects the end-to-end number.</p></details>
+<details><summary>What's the catch?</summary>
+<p>Knowledge must be compiled into triples before it's useful, and
+entities are exact names — normalize at ingestion. If your data can't
+be expressed as discrete facts, ABM is the wrong tool and we'll say
+so.</p></details>
+<details><summary>How is the accuracy prediction possible?</summary>
+<p>The memory is a mathematical object with known statistics; its
+capacity and error rates follow closed-form laws that were published,
+pre-registered and falsification-tested. The repo contains every
+experiment, including the failed ones.</p></details>
+
+<footer>
+  MIT licensed · <a href="https://github.com/Kiatto/bsm-foundation">source
+  &amp; paper</a> · <span class="mono">pip install abm-runtime</span>
+</footer>
+</main>
+</body>
+</html>
