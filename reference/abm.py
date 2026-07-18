@@ -27,7 +27,9 @@ from typing import Any, List, Optional, Sequence, Tuple
 import hashlib
 import numpy as np
 
-__version__ = "1.0.0"                       # frozen with FORMALISM v2.0
+__version__ = "1.0.1"                       # frozen with FORMALISM v2.0
+# 1.0.1: confidence() returns a plain Python float instead of
+# np.float64 (public-API surface fix; numerically identical).
 
 
 # ---------------------------------------------------------------------------
@@ -87,7 +89,7 @@ def confidence(dist: float, dim: int, temperature: float = 8.0) -> float:
     """Calibrated confidence: logistic in the Hamming-null z-score.
     0.5 = indistinguishable from noise."""
     z = (dim / 2.0 - dist) / (sqrt(dim) / 2.0)
-    return 1.0 / (1.0 + np.exp(-z / temperature))
+    return float(1.0 / (1.0 + np.exp(-z / temperature)))
 
 
 def z_gumbel(m: int) -> float:

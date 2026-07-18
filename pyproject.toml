@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "abm-runtime"
-version = "1.0.0"
+version = "1.0.1"
 description = "ABM — deterministic algebraic memory runtime for compiled symbolic knowledge, with predictive Memory Contracts"
 readme = "README.md"
 license = {text = "MIT"}
@@ -25,6 +25,9 @@ classifiers = [
 dependencies = [
     "numpy>=1.24",
 ]
+
+[project.scripts]
+abm = "abm.cli:main"
 
 [project.urls]
 Homepage = "https://github.com/Kiatto/bsm-foundation"
