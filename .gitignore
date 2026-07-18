@@ -49,3 +49,5 @@ Thumbs.db
 
 # Temp
 /tmp/
+dist/
+*.egg-info/
