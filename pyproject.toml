@@ -1,50 +1,39 @@
 [build-system]
 requires = ["setuptools>=68"]
-build-backend = "setuptools.backends._legacy:_Backend"
+build-backend = "setuptools.build_meta"
 
 [project]
-name = "bsm-foundation"
-version = "1.0.0rc1"
-description = "BSM Foundation — Geometric Memory Platform"
+name = "abm-runtime"
+version = "1.0.0"
+description = "ABM — deterministic algebraic memory runtime for compiled symbolic knowledge, with predictive Memory Contracts"
 readme = "README.md"
 license = {text = "MIT"}
 requires-python = ">=3.9"
 authors = [
-    {name = "BSM Foundation Contributors"},
+    {name = "kiatto"},
 ]
-keywords = ["memory", "hamming", "binary", "geometric", "embedding"]
+keywords = ["memory", "associative", "vsa", "hyperdimensional",
+            "knowledge", "agent-memory", "symbolic"]
 classifiers = [
     "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
     "Intended Audience :: Science/Research",
     "License :: OSI Approved :: MIT License",
     "Programming Language :: Python :: 3",
-    "Programming Language :: Python :: 3.9",
-    "Programming Language :: Python :: 3.10",
-    "Programming Language :: Python :: 3.11",
-    "Programming Language :: Python :: 3.12",
-    "Programming Language :: Python :: 3.13",
     "Topic :: Scientific/Engineering :: Artificial Intelligence",
 ]
 dependencies = [
     "numpy>=1.24",
 ]
 
-[project.optional-dependencies]
-torch = ["torch>=2.0"]
-bench = ["faiss-cpu"]
-all = ["bsm-foundation[torch,bench]"]
-
 [project.urls]
-Homepage = "https://github.com/anomalyco/opencode"
-Documentation = "https://github.com/anomalyco/opencode"
-Source = "https://github.com/anomalyco/opencode"
+Homepage = "https://github.com/Kiatto/bsm-foundation"
+Source = "https://github.com/Kiatto/bsm-foundation"
 
-[project.scripts]
-bsm-bench = "bsm.bench.cli:main"
-
-[tool.setuptools.packages.find]
-include = ["bsm", "bsm.*"]
+[tool.setuptools]
+package-dir = {"abm" = "reference"}
+packages = ["abm"]
 
 [tool.pytest.ini_options]
-testpaths = ["bsm/tests"]
+testpaths = ["reference", "bsm/tests"]
 python_files = ["test_*.py"]
