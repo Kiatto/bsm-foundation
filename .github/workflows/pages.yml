@@ -1,0 +1,38 @@
+name: Deploy landing + demo to GitHub Pages
+
+on:
+  push:
+    branches: [master]
+    paths: ["site/**", "demo/**", ".github/workflows/pages.yml"]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Assemble site (landing at /, demo at /demo)
+        run: |
+          mkdir -p _site/demo
+          cp site/index.html _site/index.html
+          cp demo/index.html _site/demo/index.html
+          # la landing linka la demo con ../demo/ (layout repo):
+          # su Pages la demo sta in /demo/
+          sed -i 's|href="../demo/index.html"|href="demo/"|' _site/index.html
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+      - id: deployment
+        uses: actions/deploy-pages@v4
