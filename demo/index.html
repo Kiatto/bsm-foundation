@@ -1,0 +1,378 @@
+<title>ABM — 90-second demo</title>
+<style>
+  :root {
+    --bg: #f4f4f1; --panel: #ffffff; --panel2: #ececé8;
+    --ink: #23262b; --muted: #6b7078; --line: #d8d8d2;
+    --accent: #b25d25; --accent-ink: #ffffff;
+    --good: #2e7d4f; --warn: #a8730a; --bad: #b3402e;
+    --bit0: #e4e4de; --bit1: #b25d25;
+  }
+  @media (prefers-color-scheme: dark) { :root {
+    --bg: #16181c; --panel: #1e2126; --panel2: #24272d;
+    --ink: #e8e6e1; --muted: #8f949c; --line: #33373e;
+    --accent: #d98e4a; --accent-ink: #16181c;
+    --good: #5cbd85; --warn: #d9a441; --bad: #d96a55;
+    --bit0: #2a2d33; --bit1: #d98e4a;
+  }}
+  :root[data-theme="dark"] {
+    --bg: #16181c; --panel: #1e2126; --panel2: #24272d;
+    --ink: #e8e6e1; --muted: #8f949c; --line: #33373e;
+    --accent: #d98e4a; --accent-ink: #16181c;
+    --good: #5cbd85; --warn: #d9a441; --bad: #d96a55;
+    --bit0: #2a2d33; --bit1: #d98e4a;
+  }
+  :root[data-theme="light"] {
+    --bg: #f4f4f1; --panel: #ffffff; --panel2: #ecece8;
+    --ink: #23262b; --muted: #6b7078; --line: #d8d8d2;
+    --accent: #b25d25; --accent-ink: #ffffff;
+    --good: #2e7d4f; --warn: #a8730a; --bad: #b3402e;
+    --bit0: #e4e4de; --bit1: #b25d25;
+  }
+  * { box-sizing: border-box; }
+  body {
+    background: var(--bg); color: var(--ink);
+    font: 15px/1.55 "Avenir Next", "Segoe UI", system-ui, sans-serif;
+    margin: 0; padding: 24px 16px 80px;
+  }
+  .mono { font-family: ui-monospace, "SF Mono", "Cascadia Code", Consolas, monospace; }
+  main { max-width: 1060px; margin: 0 auto; }
+  header { margin-bottom: 28px; max-width: 640px; }
+  h1 { font-size: 26px; margin: 0 0 6px; letter-spacing: -0.01em; text-wrap: balance; }
+  .sub { color: var(--muted); margin: 0; }
+  .grid { display: grid; grid-template-columns: 1fr 330px; gap: 20px; align-items: start; }
+  @media (max-width: 880px) { .grid { grid-template-columns: 1fr; } }
+  .step {
+    background: var(--panel); border: 1px solid var(--line);
+    border-radius: 6px; padding: 16px 18px; margin-bottom: 14px;
+    opacity: .45; transition: opacity .3s;
+  }
+  .step.on { opacity: 1; }
+  .step h2 { font-size: 15px; margin: 0 0 10px; display: flex; gap: 10px; align-items: baseline; }
+  .n {
+    font-size: 11px; color: var(--muted); letter-spacing: .12em;
+    font-family: ui-monospace, monospace;
+  }
+  textarea, select {
+    width: 100%; background: var(--panel2); color: var(--ink);
+    border: 1px solid var(--line); border-radius: 4px; padding: 10px;
+    font-family: ui-monospace, monospace; font-size: 12.5px; line-height: 1.5;
+  }
+  textarea { resize: vertical; }
+  button {
+    background: var(--accent); color: var(--accent-ink); border: 0;
+    border-radius: 4px; padding: 8px 16px; font: 600 13.5px "Avenir Next",
+    "Segoe UI", system-ui, sans-serif; cursor: pointer; margin-top: 10px;
+  }
+  button:hover { filter: brightness(1.08); }
+  button:focus-visible, select:focus-visible, textarea:focus-visible {
+    outline: 2px solid var(--accent); outline-offset: 2px;
+  }
+  button.ghost { background: transparent; color: var(--accent);
+    border: 1px solid var(--accent); }
+  .triples { max-height: 180px; overflow: auto; font-size: 12.5px; }
+  .triples div { padding: 2px 0; border-bottom: 1px dashed var(--line); }
+  .rel { color: var(--accent); }
+  canvas { width: 100%; height: 64px; image-rendering: pixelated;
+    border: 1px solid var(--line); border-radius: 4px; background: var(--bit0); }
+  .contract {
+    background: var(--panel); border: 1px solid var(--line); border-radius: 6px;
+    padding: 16px 18px; position: sticky; top: 16px;
+  }
+  .contract h2 { font-size: 12px; letter-spacing: .14em; margin: 0 0 12px;
+    color: var(--muted); }
+  .row { display: flex; justify-content: space-between; gap: 12px;
+    padding: 5px 0; border-bottom: 1px solid var(--line); font-size: 13.5px; }
+  .row:last-child { border-bottom: 0; }
+  .row b { font-variant-numeric: tabular-nums;
+    font-family: ui-monospace, monospace; font-weight: 600; }
+  .ok { color: var(--good); } .mid { color: var(--warn); } .ko { color: var(--bad); }
+  .verdict { margin-top: 12px; padding: 10px 12px; border-radius: 4px;
+    background: var(--panel2); font-size: 13.5px; display: none; }
+  .answer { margin-top: 12px; font-size: 15px; }
+  .answer b { color: var(--accent); }
+  .explain { margin-top: 10px; font-size: 12px; color: var(--muted);
+    white-space: pre; overflow-x: auto; }
+  .pill { display: inline-block; padding: 1px 8px; border-radius: 999px;
+    font-size: 11.5px; font-weight: 600; }
+  .pill.ok { background: color-mix(in srgb, var(--good) 15%, transparent); }
+  .pill.mid { background: color-mix(in srgb, var(--warn) 15%, transparent); }
+  .pill.ko { background: color-mix(in srgb, var(--bad) 15%, transparent); }
+  footer { margin-top: 26px; color: var(--muted); font-size: 12.5px;
+    max-width: 640px; }
+  footer a { color: var(--accent); }
+  @media (prefers-reduced-motion: reduce) { .step { transition: none; } }
+</style>
+
+<main>
+<header>
+  <h1>ABM — the memory that signs a contract</h1>
+  <p class="sub">A deterministic memory runtime for compiled knowledge.
+  Unlike vector memories, it predicts <em>in advance</em> how accurately
+  it can answer under a fixed memory budget. Everything below runs in
+  your browser — real XOR binding, real majority-vote trace, real
+  formulas. 90 seconds.</p>
+</header>
+
+<div class="grid">
+<div>
+
+  <section class="step on" id="s1">
+    <h2><span class="n">1 · DOCUMENT</span> Your knowledge, as text</h2>
+    <textarea id="doc" rows="7" spellcheck="false">payment_service requires auth_service.
+checkout_page requires payment_service.
+auth_service writes to session_store.
+payment_service is owned by team_payments.
+team_payments escalates to alice.
+session_store is deployed in eu_west.
+user_db is deployed in eu_west.
+auth_service requires user_db.
+inventory_service requires user_db.
+inventory_service is owned by team_catalog.
+team_catalog escalates to bob.
+search_service requires inventory_service.</textarea>
+    <button id="bExtract">Extract facts</button>
+  </section>
+
+  <section class="step" id="s2">
+    <h2><span class="n">2 · COMPILE</span> Facts an LLM (or a regex) extracted</h2>
+    <div class="triples mono" id="triples"></div>
+    <button id="bStore" disabled>Store in binary memory</button>
+  </section>
+
+  <section class="step" id="s3">
+    <h2><span class="n">3 · MEMORY</span> One 2048-bit trace holds everything</h2>
+    <canvas id="trace" width="256" height="8" aria-label="binary trace"></canvas>
+    <p class="sub" style="font-size:12.5px; margin:8px 0 0">Every fact is
+    XOR-bound and majority-voted into this single bit pattern —
+    <span class="mono" id="traceLabel">…</span></p>
+  </section>
+
+  <section class="step" id="s4">
+    <h2><span class="n">4 · ASK</span> Multi-hop questions, answered by algebra</h2>
+    <select id="q">
+      <option value="payment_service|owned_by,escalates_to">Who do I page when payment_service breaks? (2 hops)</option>
+      <option value="checkout_page|requires,requires">What does checkout_page depend on, transitively? (2 hops)</option>
+      <option value="payment_service|requires,writes_to">Where does payment_service's dependency write state? (2 hops)</option>
+      <option value="search_service|requires,owned_by,escalates_to">Who owns what search_service needs — and who gets paged? (3 hops)</option>
+      <option value="session_store|deployed_in">Which region is session_store in? (1 hop)</option>
+    </select>
+    <button id="bAsk" disabled>Ask</button>
+    <div class="answer" id="answer"></div>
+    <div class="explain mono" id="explain"></div>
+  </section>
+
+  <section class="step" id="s5">
+    <h2><span class="n">5 · VERIFY</span> The contract, tested live</h2>
+    <p class="sub" style="font-size:13px; margin:0">The panel on the right
+    was <em>computed</em>, not measured. Press verify: every stored fact
+    is queried back and the measured accuracy is compared with the
+    promise.</p>
+    <button id="bVerify" disabled class="ghost">Verify the contract</button>
+    <div class="verdict mono" id="verdict"></div>
+  </section>
+
+</div>
+
+<aside class="contract" aria-live="polite">
+  <h2>MEMORY CONTRACT · computed pre-query</h2>
+  <div class="row"><span>Facts stored</span><b id="cFacts">0</b></div>
+  <div class="row"><span>Trace size</span><b>2048 bit (256 B)</b></div>
+  <div class="row"><span>Codebook</span><b id="cCode">0</b></div>
+  <div class="row"><span>Capacity</span><b id="cCap">—</b></div>
+  <div class="row"><span>Pressure</span><b id="cPress">—</b></div>
+  <div class="row"><span>Expected accuracy</span><b id="cAcc">—</b></div>
+  <div class="row"><span>Max depth (p50)</span><b id="cDepth">—</b></div>
+  <div class="row"><span>Recommended size</span><b id="cRec">—</b></div>
+  <p class="sub" style="font-size:12px; margin:12px 0 0">No fitted
+  parameters. If the promise and the measurement disagree beyond a few
+  points, that is a bug — the contract is the product.</p>
+</aside>
+</div>
+
+<footer>
+  Built on the frozen reference implementation of
+  <a href="https://github.com/Kiatto/bsm-foundation">ABM</a> —
+  <span class="mono">pip install abm-runtime</span>, then
+  <span class="mono">abm demo</span>. The same contract, from the same
+  formulas, on your own data: <span class="mono">abm inspect
+  triples.json</span>.
+</footer>
+</main>
+
+<script>
+"use strict";
+const D = 2048;
+
+/* ---------- ABM core (mirrors reference/abm.py) ---------- */
+function hash32(s) {                       // FNV-1a
+  let h = 0x811c9dc5;
+  for (let i = 0; i < s.length; i++) {
+    h ^= s.charCodeAt(i); h = Math.imul(h, 0x01000193);
+  }
+  return h >>> 0;
+}
+function mulberry32(a) {
+  return function () {
+    a |= 0; a = (a + 0x6D2B79F5) | 0;
+    let t = Math.imul(a ^ (a >>> 15), 1 | a);
+    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+  };
+}
+const hvCache = new Map();
+function randomHV(name) {                   // deterministic item vector
+  const k = name.toLowerCase();
+  if (!hvCache.has(k)) {
+    const rng = mulberry32(hash32(k));
+    const v = new Int8Array(D);
+    for (let i = 0; i < D; i++) v[i] = rng() > 0.5 ? 1 : -1;
+    hvCache.set(k, v);
+  }
+  return hvCache.get(k);
+}
+const bind = (a, b) => { const o = new Int8Array(D);
+  for (let i = 0; i < D; i++) o[i] = a[i] * b[i]; return o; };
+const permute = (x) => { const o = new Int8Array(D);
+  for (let i = 0; i < D; i++) o[(i + 1) % D] = x[i]; return o; };
+function bundle(vs) {
+  const t = new Float64Array(D);
+  for (const v of vs) for (let i = 0; i < D; i++) t[i] += v[i];
+  const tie = randomHV("__tie__");
+  const even = vs.length % 2 === 0;
+  const o = new Int8Array(D);
+  for (let i = 0; i < D; i++) {
+    const s = even ? t[i] * 2 + tie[i] : t[i];
+    o[i] = s >= 0 ? 1 : -1;
+  }
+  return o;
+}
+const hamming = (a, b) => { let d = 0;
+  for (let i = 0; i < D; i++) if (a[i] !== b[i]) d++; return d; };
+function erf(x) {                           // Abramowitz–Stegun 7.1.26
+  const s = x < 0 ? -1 : 1; x = Math.abs(x);
+  const t = 1 / (1 + 0.3275911 * x);
+  const y = 1 - (((((1.061405429 * t - 1.453152027) * t) + 1.421413741)
+    * t - 0.284496736) * t + 0.254829592) * t * Math.exp(-x * x);
+  return s * y;
+}
+const zG = m => { const z = Math.sqrt(2 * Math.log(Math.max(m, 3)));
+  return z - (Math.log(Math.log(Math.max(m, 3))) + Math.log(4 * Math.PI)) / (2 * z); };
+const predAcc = (n, m) => n === 0 ? 1 :
+  0.5 * (1 + erf((Math.sqrt(2 * D / (Math.PI * n)) - zG(m)) / Math.SQRT2));
+const capacity = m => 0.92 * 2 * D / (Math.PI * zG(m) ** 2);
+const confidence = d =>
+  1 / (1 + Math.exp(-((D / 2 - d) / (Math.sqrt(D) / 2)) / 8));
+
+/* ---------- memory ---------- */
+let facts = [], entities = [], trace = null;
+const key = (s, r) => bind(randomHV(s), permute(randomHV(r)));
+function store(list) {
+  facts = list;
+  const set = new Set();
+  list.forEach(([s, r, o]) => { set.add(s); set.add(o); });
+  entities = [...set];
+  trace = bundle(list.map(([s, r, o]) => bind(key(s, r), randomHV(o))));
+}
+function cleanup(noisy) {
+  let best = null, bd = D + 1, second = null, sd = D + 1;
+  for (const e of entities) {
+    const d = hamming(noisy, randomHV(e));
+    if (d < bd) { second = best; sd = bd; best = e; bd = d; }
+    else if (d < sd) { second = e; sd = d; }
+  }
+  return { best, bd, second, sd };
+}
+const query = (s, r) => cleanup(bind(trace, key(s, r)));
+
+/* ---------- extraction (pattern compiler, stand-in for your LLM) ---- */
+const PATTERNS = [
+  [/(\w+) requires (\w+)/, "requires"],
+  [/(\w+) writes to (\w+)/, "writes_to"],
+  [/(\w+) is owned by (\w+)/, "owned_by"],
+  [/(\w+) escalates to (\w+)/, "escalates_to"],
+  [/(\w+) is deployed in (\w+)/, "deployed_in"],
+];
+function extract(text) {
+  const out = [];
+  for (const line of text.split(/\n+/)) {
+    for (const [re, rel] of PATTERNS) {
+      const m = line.match(re);
+      if (m) { out.push([m[1], rel, m[2]]); break; }
+    }
+  }
+  return out;
+}
+
+/* ---------- UI ---------- */
+const $ = id => document.getElementById(id);
+const on = id => $(id).classList.add("on");
+
+$("bExtract").onclick = () => {
+  const t = extract($("doc").value);
+  $("triples").innerHTML = t.map(([s, r, o]) =>
+    `<div>${s} <span class="rel">—${r}→</span> ${o}</div>`).join("");
+  $("triples").dataset.t = JSON.stringify(t);
+  on("s2"); $("bStore").disabled = false;
+};
+
+$("bStore").onclick = () => {
+  store(JSON.parse($("triples").dataset.t));
+  const ctx = $("trace").getContext("2d");
+  const css = getComputedStyle(document.documentElement);
+  ctx.clearRect(0, 0, 256, 8);
+  for (let i = 0; i < D; i++) {
+    ctx.fillStyle = trace[i] > 0 ? css.getPropertyValue("--bit1")
+                                 : css.getPropertyValue("--bit0");
+    ctx.fillRect(i % 256, Math.floor(i / 256), 1, 1);
+  }
+  $("traceLabel").textContent =
+    `${facts.length} facts, ${entities.length + 5} symbols, 256 bytes.`;
+  const m = entities.length + 5, n = facts.length;
+  const cap = capacity(m), acc = predAcc(n, m);
+  $("cFacts").textContent = n;
+  $("cCode").textContent = m;
+  $("cCap").textContent = `≤ ${Math.round(cap)} facts`;
+  const p = n / cap;
+  $("cPress").innerHTML = `<span class="pill ${p < 0.5 ? "ok" : p < 1 ? "mid" : "ko"}">${p.toFixed(2)}</span>`;
+  $("cAcc").textContent = `${(acc * 100).toFixed(1)} %`;
+  $("cDepth").textContent = acc >= 1 ? "99 hops" :
+    `${Math.floor(Math.log(0.5) / Math.log(acc))} hops`;
+  let rec = D; while (n > 0.5 * 0.92 * 2 * rec / (Math.PI * zG(m) ** 2)
+    && rec < 1 << 20) rec *= 2;
+  $("cRec").textContent = rec === D ? "2048 bit ✓" : `${rec} bit`;
+  on("s3"); on("s4"); on("s5");
+  $("bAsk").disabled = false; $("bVerify").disabled = false;
+};
+
+$("bAsk").onclick = () => {
+  const [start, chain] = $("q").value.split("|");
+  let node = start, conf = 1, lines = [];
+  for (const r of chain.split(",")) {
+    const res = query(node, r);
+    const c = confidence(res.bd);
+    lines.push(`unbind(trace, ${node} ⊕ ρ(${r}))  →  cleanup: `
+      + `${res.best} (d=${res.bd})   runner-up: ${res.second} (d=${res.sd})`);
+    node = res.best; conf *= c;
+  }
+  $("answer").innerHTML = `→ <b>${node}</b> &nbsp;<span class="pill ${
+    conf > 0.75 ? "ok" : conf > 0.55 ? "mid" : "ko"}">confidence ${
+    (conf * 100).toFixed(0)}%</span>`;
+  $("explain").textContent = lines.join("\n");
+};
+
+$("bVerify").onclick = () => {
+  let ok = 0;
+  for (const [s, r, o] of facts) if (query(s, r).best === o) ok++;
+  const meas = ok / facts.length;
+  const prom = predAcc(facts.length, entities.length + 5);
+  const dev = Math.abs(meas - prom);
+  const v = $("verdict");
+  v.style.display = "block";
+  v.innerHTML =
+    `promised ${(prom * 100).toFixed(1)}%   measured ${(meas * 100).toFixed(1)}%`
+    + `   |Δ| ${(dev * 100).toFixed(1)} pt\n`
+    + `<span class="${dev < 0.06 ? "ok" : "ko"}">`
+    + (dev < 0.06 ? "CONTRACT RESPECTED" : "CONTRACT VIOLATED — file a bug")
+    + `</span>  (${ok}/${facts.length} facts recalled)`;
+};
+</script>

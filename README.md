@@ -1,7 +1,9 @@
 # ABM — Algebraic Binary Memory
 
-**A deterministic algebraic memory runtime for compiled symbolic
-knowledge. It complements LLMs rather than replacing them.**
+**ABM is a deterministic memory runtime for compiled knowledge. Unlike
+vector memories, it predicts in advance how accurately it can answer
+under a fixed memory budget.** It complements LLMs rather than
+replacing them.
 
 The LLM is the compiler: it reads documents and emits facts. ABM is the
 runtime: it stores them in a single holographic binary trace, composes
