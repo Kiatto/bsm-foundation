@@ -12,7 +12,7 @@ non difendere il prodotto durante il feedback. Il deliverable non è
 > pip install abm-runtime && abm demo
 >
 > Repo: https://github.com/Kiatto/bsm-foundation
-> Demo web (niente da installare): [URL GitHub Pages]/demo/
+> Demo web (niente da installare): https://kiatto.github.io/bsm-foundation/demo/
 >
 > Mi servono solo tre cose, anche due righe:
 > 1. quanto ci hai messo dal link al primo output;
