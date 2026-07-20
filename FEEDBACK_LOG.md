@@ -29,4 +29,26 @@ Regole (vincolanti, decise PRIMA del primo tester):
 
 ## Idee core emerse durante l'osservazione (VIETATE fino a fine freeze)
 
-- —
+- **Sleep-time learning (apprendimento continuo per consolidamento)**
+  (20/7/2026, da conversazione con kiatto, non da un tester). Idea:
+  un ciclo offline ("sonno") che rivede contesti multipli (conversazioni/
+  sessioni passate) ed estrae fatti nuovi mai memorizzati esplicitamente
+  — analogo neuroscientifico: consolidamento ippocampo→neocorteccia via
+  replay durante il sonno.
+  - Cosa esiste GIÀ e non è questo: `Memory.compile_pairs()` (sleep-time
+    *compilation*, congelata) consolida coppie di fatti GIÀ NOTI in una
+    traccia più efficiente da interrogare (2 cleanup → 1). Non impara
+    fatti nuovi, riorganizza quelli esistenti.
+  - Cosa esiste GIÀ e copre PARZIALMENTE l'idea: `store(s,r,o,weight=n)`
+    + Law VII (N_eff=Σw²) danno già significato quantitativo al
+    rinforzo per esposizioni ripetute dello stesso fatto — l'analogo
+    più vicino, nella teoria attuale, al consolidamento per ripetizione.
+    Utilizzabile SUBITO, non è nuova teoria.
+  - Cosa sarebbe GENUINAMENTE NUOVO (e quindi vietato fino a fine
+    freeze): un meccanismo interno ad ABM che rivisita periodicamente
+    la propria traccia, rileva ridondanze/contraddizioni tra fatti
+    accumulati nel tempo, e si ripesa da solo. Implicherebbe un nuovo
+    operatore/legge — non un'estrazione (Livello A: resta compito
+    dell'LLM decidere cosa vale la pena memorizzare da un contesto).
+  - Da riprendere a fine freeze, PRIMA come esperimento con predizione
+    scritta, non come feature.
