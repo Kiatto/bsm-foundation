@@ -1,0 +1,6 @@
+{
+  "name": "abm-live-demo",
+  "private": true,
+  "version": "1.0.0",
+  "description": "ABM live demo with real LLM extraction via a Vercel Edge Function"
+}

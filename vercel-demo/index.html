@@ -1,0 +1,282 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>abm — live terminal</title>
+<meta name="description" content="A real terminal running the ABM CLI in your browser: live LLM extraction, a binary memory, and a Memory Contract signed before any query.">
+<style>
+  :root {
+    --bg: #f4efe4; --panel: #ece5d4; --ink: #2b2620; --muted: #8a7f6c;
+    --accent: #a6531f; --good: #3c7a4a; --warn: #a8730a; --bad: #b3402e;
+    --caret: #a6531f;
+  }
+  @media (prefers-color-scheme: dark) { :root {
+    --bg: #1c1712; --panel: #241d15; --ink: #f2c98a; --muted: #8a7255;
+    --accent: #ffb454; --good: #6bcf8a; --warn: #f0b64c; --bad: #ff8266;
+    --caret: #ffb454;
+  }}
+  :root[data-theme="dark"] {
+    --bg: #1c1712; --panel: #241d15; --ink: #f2c98a; --muted: #8a7255;
+    --accent: #ffb454; --good: #6bcf8a; --warn: #f0b64c; --bad: #ff8266;
+    --caret: #ffb454;
+  }
+  :root[data-theme="light"] {
+    --bg: #f4efe4; --panel: #ece5d4; --ink: #2b2620; --muted: #8a7f6c;
+    --accent: #a6531f; --good: #3c7a4a; --warn: #a8730a; --bad: #b3402e;
+    --caret: #a6531f;
+  }
+  * { box-sizing: border-box; }
+  html, body { height: 100%; }
+  body {
+    margin: 0; background: var(--bg); color: var(--ink);
+    font: 14.5px/1.6 ui-monospace, "SF Mono", "Cascadia Code", Consolas, monospace;
+  }
+  main {
+    max-width: 900px; margin: 0 auto; padding: 20px 16px 30px;
+    min-height: 100vh; display: flex; flex-direction: column;
+  }
+  .frame {
+    background: var(--panel); border: 1px solid color-mix(in srgb, var(--ink) 20%, transparent);
+    border-radius: 8px; flex: 1; display: flex; flex-direction: column;
+    overflow: hidden; box-shadow: 0 8px 30px rgba(0,0,0,.15);
+  }
+  .titlebar {
+    display: flex; align-items: center; gap: 8px; padding: 10px 14px;
+    border-bottom: 1px solid color-mix(in srgb, var(--ink) 15%, transparent);
+    color: var(--muted); font-size: 12px; letter-spacing: .04em;
+  }
+  .dot3 { width: 9px; height: 9px; border-radius: 50%; background: var(--muted); opacity: .5; }
+  #term {
+    flex: 1; overflow-y: auto; padding: 16px 18px; white-space: pre-wrap;
+    word-break: break-word; font-size: 14px;
+  }
+  .line { margin: 0 0 2px; }
+  .prompt { color: var(--good); }
+  .path { color: var(--accent); }
+  .cmd { color: var(--ink); }
+  .dim { color: var(--muted); }
+  .accent { color: var(--accent); font-weight: 600; }
+  .ok { color: var(--good); font-weight: 600; }
+  .ko { color: var(--bad); font-weight: 600; }
+  .warn { color: var(--warn); }
+  .rel { color: var(--accent); }
+  .inputline { display: flex; align-items: baseline; gap: 8px; margin-top: 2px; }
+  .inputline input {
+    flex: 1; background: transparent; border: 0; outline: 0; padding: 0;
+    color: var(--ink); font: inherit; caret-color: var(--caret);
+  }
+  #term a { color: var(--accent); }
+  .contract-box { border-left: 2px solid var(--accent); padding-left: 12px; margin: 6px 0; }
+  .row2 { display: flex; justify-content: space-between; max-width: 480px; }
+  .row2 b { font-weight: 600; }
+  .banner { color: var(--accent); font-weight: 700; }
+  ::selection { background: color-mix(in srgb, var(--accent) 35%, transparent); }
+  footer { text-align: center; color: var(--muted); font-size: 12px; padding: 12px 4px 0; }
+  footer a { color: var(--accent); }
+  @media (prefers-reduced-motion: reduce) { * { scroll-behavior: auto !important; } }
+</style>
+</head>
+<body>
+<main>
+  <div class="frame">
+    <div class="titlebar"><span class="dot3"></span><span class="dot3"></span><span class="dot3"></span>
+      &nbsp;visitor@abm — live demo</div>
+    <div id="term" role="log" aria-live="polite"></div>
+    <div class="inputline" style="padding: 0 18px 16px">
+      <span class="prompt">visitor@abm</span><span class="dim">:</span><span class="path">~</span><span class="dim">$</span>
+      <input id="in" autocomplete="off" autocapitalize="off" spellcheck="false" autofocus
+             aria-label="terminal input" />
+    </div>
+  </div>
+  <footer>ABM: a deterministic memory runtime for compiled knowledge · pip install abm-runtime · <a href="https://github.com/Kiatto/bsm-foundation">source</a></footer>
+</main>
+
+<script>
+"use strict";
+const D = 2048;
+
+/* ---------- ABM core (mirrors reference/abm.py) ---------- */
+function hash32(s) { let h = 0x811c9dc5; for (let i=0;i<s.length;i++){h^=s.charCodeAt(i); h=Math.imul(h,0x01000193);} return h>>>0; }
+function mulberry32(a) { return function(){ a|=0; a=(a+0x6D2B79F5)|0; let t=Math.imul(a^(a>>>15),1|a); t=(t+Math.imul(t^(t>>>7),61|t))^t; return ((t^(t>>>14))>>>0)/4294967296; }; }
+const hvCache = new Map();
+function randomHV(name) {
+  const k = String(name).toLowerCase();
+  if (!hvCache.has(k)) {
+    const rng = mulberry32(hash32(k)); const v = new Int8Array(D);
+    for (let i=0;i<D;i++) v[i] = rng() > 0.5 ? 1 : -1;
+    hvCache.set(k, v);
+  }
+  return hvCache.get(k);
+}
+const bind = (a,b) => { const o=new Int8Array(D); for(let i=0;i<D;i++) o[i]=a[i]*b[i]; return o; };
+const permute = (x) => { const o=new Int8Array(D); for(let i=0;i<D;i++) o[(i+1)%D]=x[i]; return o; };
+function bundle(vs) {
+  const t = new Float64Array(D);
+  for (const v of vs) for (let i=0;i<D;i++) t[i]+=v[i];
+  const tie = randomHV("__tie__"); const even = vs.length % 2 === 0;
+  const o = new Int8Array(D);
+  for (let i=0;i<D;i++){ const s = even ? t[i]*2+tie[i] : t[i]; o[i] = s>=0?1:-1; }
+  return o;
+}
+const hamming = (a,b) => { let d=0; for(let i=0;i<D;i++) if(a[i]!==b[i]) d++; return d; };
+function erf(x){ const s=x<0?-1:1; x=Math.abs(x); const t=1/(1+0.3275911*x);
+  const y=1-(((((1.061405429*t-1.453152027)*t)+1.421413741)*t-0.284496736)*t+0.254829592)*t*Math.exp(-x*x);
+  return s*y; }
+const zG = m => { const z=Math.sqrt(2*Math.log(Math.max(m,3))); return z-(Math.log(Math.log(Math.max(m,3)))+Math.log(4*Math.PI))/(2*z); };
+const predAcc = (n,m) => n===0?1:0.5*(1+erf((Math.sqrt(2*D/(Math.PI*n))-zG(m))/Math.SQRT2));
+const capacity = m => 0.92*2*D/(Math.PI*zG(m)**2);
+const confidence = d => 1/(1+Math.exp(-((D/2-d)/(Math.sqrt(D)/2))/8));
+
+let facts = [], entities = [], trace = null;
+const key = (s,r) => bind(randomHV(s), permute(randomHV(r)));
+function storeAll(list) {
+  facts = list;
+  const set = new Set(); list.forEach(([s,r,o])=>{set.add(s);set.add(o);});
+  entities = [...set];
+  trace = bundle(list.map(([s,r,o]) => bind(key(s,r), randomHV(o))));
+}
+function cleanup(noisy) {
+  let best=null,bd=D+1,second=null,sd=D+1;
+  for (const e of entities) { const d=hamming(noisy, randomHV(e));
+    if (d<bd){second=best;sd=bd;best=e;bd=d;} else if(d<sd){second=e;sd=d;} }
+  return {best,bd,second,sd};
+}
+const runQuery = (s,r) => cleanup(bind(trace, key(s,r)));
+
+/* ---------- terminal shell ---------- */
+const term = document.getElementById("term");
+const input = document.getElementById("in");
+const history = []; let hIdx = -1;
+
+function esc(s){ return String(s).replace(/[&<>]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;"}[c])); }
+function print(html) { const d = document.createElement("div"); d.className = "line"; d.innerHTML = html; term.appendChild(d); term.scrollTop = term.scrollHeight; }
+function printEcho(cmd) { print(`<span class="prompt">visitor@abm</span><span class="dim">:</span><span class="path">~</span><span class="dim">$</span> <span class="cmd">${esc(cmd)}</span>`); }
+
+function contractBlock() {
+  const m = entities.length + 5, n = facts.length;
+  const cap = capacity(m), acc = predAcc(n, m);
+  const p = n / cap;
+  const pClass = p < 0.5 ? "ok" : p < 1 ? "warn" : "ko";
+  let rec = D; while (n > 0.5*0.92*2*rec/(Math.PI*zG(m)**2) && rec < 1<<20) rec *= 2;
+  const depth = acc >= 1 ? "99 hops" : `${Math.floor(Math.log(0.5)/Math.log(acc))} hops`;
+  return `<div class="contract-box">
+<b class="accent">MEMORY CONTRACT</b> <span class="dim">· computed pre-query</span>
+<div class="row2"><span>Facts stored</span><b>${n}</b></div>
+<div class="row2"><span>Codebook</span><b>${m}</b></div>
+<div class="row2"><span>Capacity</span><b>&le; ${Math.round(cap)} facts</b></div>
+<div class="row2"><span>Pressure</span><b class="${pClass}">${p.toFixed(2)}</b></div>
+<div class="row2"><span>Expected accuracy</span><b>${(acc*100).toFixed(1)}%</b></div>
+<div class="row2"><span>Max depth (p50)</span><b>${depth}</b></div>
+<div class="row2"><span>Recommended size</span><b>${rec===D?"2048 bit ✓":rec+" bit"}</b></div>
+</div>`;
+}
+
+const SAMPLE = `The payment service requires the auth service to start.
+The checkout page requires the payment service.
+The auth service writes its session state to session_store.
+The payment service is owned by team_payments.
+team_payments escalates incidents to alice.
+session_store is deployed in the eu_west region.
+The inventory service requires the user database.
+The inventory service is owned by team_catalog.
+team_catalog escalates incidents to bob.`;
+
+async function extractLive(text) {
+  print(`<span class="dim">→ calling a free-tier LLM server-side (no key reaches your browser) — can take up to a minute…</span>`);
+  const res = await fetch("/api/extract", { method: "POST",
+    headers: {"Content-Type":"application/json"}, body: JSON.stringify({text}) });
+  const data = await res.json();
+  if (!res.ok || data.error) throw new Error(data.error || "unknown error");
+  storeAll(data.triples);
+  print(`<span class="dim">model: ${esc(data.model)}</span>`);
+  data.triples.forEach(([s,r,o]) => print(`  ${esc(s)} <span class="rel">—${esc(r)}→</span> ${esc(o)}`));
+  print(`<span class="ok">✓ stored</span> — ${data.triples.length} facts, ${entities.length+5} symbols, one 2048-bit trace (256 bytes).`);
+  print(contractBlock());
+}
+
+function help() {
+  print(`Commands:`);
+  print(`  <span class="accent">abm demo</span>                    run the full pipeline on a sample doc`);
+  print(`  <span class="accent">abm extract</span> &lt;text&gt;          extract facts from YOUR text (live LLM)`);
+  print(`  <span class="accent">abm facts</span>                    list what's currently stored`);
+  print(`  <span class="accent">abm ask</span> &lt;entity&gt; &lt;rel[,rel2]&gt;   query, 1 or 2 hops`);
+  print(`  <span class="accent">abm inspect</span>                  full Memory Contract report`);
+  print(`  <span class="accent">abm verify</span>                   promised vs measured, live`);
+  print(`  <span class="dim">clear</span>, <span class="dim">help</span>`);
+}
+
+async function run(raw) {
+  const cmd = raw.trim();
+  if (!cmd) return;
+  printEcho(cmd);
+  history.push(cmd); hIdx = history.length;
+
+  if (cmd === "help" || cmd === "?") return help();
+  if (cmd === "clear") { term.innerHTML = ""; return; }
+
+  if (cmd === "abm demo") {
+    print(`<span class="dim">sample document:</span>`);
+    SAMPLE.split("\n").forEach(l => print(`  <span class="dim">${esc(l)}</span>`));
+    try { await extractLive(SAMPLE); }
+    catch (e) { print(`<span class="ko">✗ ${esc(e.message)}</span> — free models get rate-limited upstream sometimes, try again.`); }
+    return;
+  }
+  if (cmd.startsWith("abm extract")) {
+    const text = cmd.slice("abm extract".length).trim();
+    if (!text) return print(`<span class="ko">usage:</span> abm extract &lt;your text&gt;`);
+    try { await extractLive(text); }
+    catch (e) { print(`<span class="ko">✗ ${esc(e.message)}</span>`); }
+    return;
+  }
+  if (cmd === "abm facts") {
+    if (!facts.length) return print(`<span class="dim">(empty — run "abm demo" or "abm extract ...")</span>`);
+    facts.forEach(([s,r,o]) => print(`  ${esc(s)} <span class="rel">—${esc(r)}→</span> ${esc(o)}`));
+    return;
+  }
+  if (cmd.startsWith("abm ask")) {
+    const parts = cmd.slice("abm ask".length).trim().split(/\s+/);
+    if (!trace) return print(`<span class="ko">no memory yet</span> — run "abm demo" first.`);
+    if (parts.length < 2 || !parts[0]) return print(`<span class="ko">usage:</span> abm ask &lt;entity&gt; &lt;relation[,relation2]&gt;`);
+    let node = parts[0], conf = 1;
+    for (const r of parts[1].split(",")) {
+      const res = runQuery(node, r);
+      const c = confidence(res.bd);
+      print(`  unbind(trace, ${esc(node)} ⊕ ρ(${esc(r)})) → cleanup: <b>${esc(res.best)}</b> (d=${res.bd})  runner-up: ${esc(res.second)} (d=${res.sd})`);
+      node = res.best; conf *= c;
+    }
+    print(`<span class="accent">→ ${esc(node)}</span>  <span class="${conf>0.75?"ok":conf>0.55?"warn":"ko"}">confidence ${(conf*100).toFixed(0)}%</span>`);
+    return;
+  }
+  if (cmd === "abm inspect") {
+    if (!trace) return print(`<span class="ko">no memory yet</span> — run "abm demo" first.`);
+    return print(contractBlock());
+  }
+  if (cmd === "abm verify") {
+    if (!trace) return print(`<span class="ko">no memory yet</span> — run "abm demo" first.`);
+    let ok = 0; for (const [s,r,o] of facts) if (runQuery(s,r).best === o) ok++;
+    const meas = ok/facts.length, prom = predAcc(facts.length, entities.length+5);
+    const dev = Math.abs(meas-prom);
+    print(`promised <b>${(prom*100).toFixed(1)}%</b>   measured <b>${(meas*100).toFixed(1)}%</b>   |&Delta;| ${(dev*100).toFixed(1)} pt`);
+    print(dev < 0.06 ? `<span class="ok">CONTRACT RESPECTED</span>` : `<span class="ko">CONTRACT VIOLATED — file a bug</span>`);
+    print(`<span class="dim">(${ok}/${facts.length} facts recalled)</span>`);
+    return;
+  }
+  print(`<span class="ko">command not found:</span> ${esc(cmd)} — type "help"`);
+}
+
+input.addEventListener("keydown", (e) => {
+  if (e.key === "Enter") { const v = input.value; input.value = ""; run(v); }
+  else if (e.key === "ArrowUp") { if (hIdx>0){ hIdx--; input.value = history[hIdx]||""; } e.preventDefault(); }
+  else if (e.key === "ArrowDown") { if (hIdx<history.length){ hIdx++; input.value = history[hIdx]||""; } e.preventDefault(); }
+});
+document.addEventListener("click", () => input.focus());
+
+print(`<span class="banner">abm — the memory that signs a contract</span>`);
+print(`<span class="dim">A real language model extracts facts server-side (its key never reaches this page);</span>`);
+print(`<span class="dim">ABM stores them in a binary trace and computes a contract before answering anything.</span>`);
+print(`Type <span class="accent">abm demo</span> to run the full pipeline, or <span class="accent">help</span> for all commands.`);
+input.focus();
+</script>
+</body>
+</html>
