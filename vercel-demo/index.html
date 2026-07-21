@@ -130,11 +130,22 @@ const confidence = d => 1/(1+Math.exp(-((D/2-d)/(Math.sqrt(D)/2))/8));
 
 let facts = [], entities = [], trace = null;
 const key = (s,r) => bind(randomHV(s), permute(randomHV(r)));
-function storeAll(list) {
-  facts = list;
-  const set = new Set(); list.forEach(([s,r,o])=>{set.add(s);set.add(o);});
+function addFacts(list) {
+  // additive, like the real Memory.store(): the trace is rebuilt from
+  // ALL accumulated facts, never wiped by a new extract/demo call.
+  facts = facts.concat(list);
+  const set = new Set(); facts.forEach(([s,r,o])=>{set.add(s);set.add(o);});
   entities = [...set];
-  trace = bundle(list.map(([s,r,o]) => bind(key(s,r), randomHV(o))));
+  trace = bundle(facts.map(([s,r,o]) => bind(key(s,r), randomHV(o))));
+}
+function resetMemory() { facts = []; entities = []; trace = null; }
+// codebook M = distinct entities + distinct relations (matches the
+// reference: every name passed to items.add() counts, subjects,
+// objects AND relations alike).
+function codebookSize() {
+  const set = new Set(entities);
+  facts.forEach(([, r]) => set.add(`rel:${r}`));
+  return Math.max(set.size, 2);
 }
 function cleanup(noisy) {
   let best=null,bd=D+1,second=null,sd=D+1;
@@ -154,7 +165,7 @@ function print(html) { const d = document.createElement("div"); d.className = "l
 function printEcho(cmd) { print(`<span class="prompt">visitor@abm</span><span class="dim">:</span><span class="path">~</span><span class="dim">$</span> <span class="cmd">${esc(cmd)}</span>`); }
 
 function contractBlock() {
-  const m = entities.length + 5, n = facts.length;
+  const m = codebookSize(), n = facts.length;
   const cap = capacity(m), acc = predAcc(n, m);
   const p = n / cap;
   const pClass = p < 0.5 ? "ok" : p < 1 ? "warn" : "ko";
@@ -188,21 +199,23 @@ async function extractLive(text) {
     headers: {"Content-Type":"application/json"}, body: JSON.stringify({text}) });
   const data = await res.json();
   if (!res.ok || data.error) throw new Error(data.error || "unknown error");
-  storeAll(data.triples);
+  addFacts(data.triples);
   print(`<span class="dim">model: ${esc(data.model)}</span>`);
   data.triples.forEach(([s,r,o]) => print(`  ${esc(s)} <span class="rel">—${esc(r)}→</span> ${esc(o)}`));
-  print(`<span class="ok">✓ stored</span> — ${data.triples.length} facts, ${entities.length+5} symbols, one 2048-bit trace (256 bytes).`);
+  print(`<span class="ok">✓ added</span> — ${data.triples.length} new facts (${facts.length} total, ${entities.length} symbols). Memory Contract updated:`);
   print(contractBlock());
 }
 
 function help() {
-  print(`Commands:`);
-  print(`  <span class="accent">abm demo</span>                    run the full pipeline on a sample doc`);
-  print(`  <span class="accent">abm extract</span> &lt;text&gt;          extract facts from YOUR text (live LLM)`);
-  print(`  <span class="accent">abm facts</span>                    list what's currently stored`);
-  print(`  <span class="accent">abm ask</span> &lt;entity&gt; &lt;rel[,rel2]&gt;   query, 1 or 2 hops`);
-  print(`  <span class="accent">abm inspect</span>                  full Memory Contract report`);
-  print(`  <span class="accent">abm verify</span>                   promised vs measured, live`);
+  print(`Commands (each store/extract/demo call is ADDITIVE — like the real Memory.store()):`);
+  print(`  <span class="accent">abm demo</span>                       add a sample doc's facts to memory`);
+  print(`  <span class="accent">abm extract</span> &lt;text&gt;             extract facts from YOUR text (live LLM), add them`);
+  print(`  <span class="accent">abm store</span> &lt;s&gt; &lt;r&gt; &lt;o&gt;           add ONE fact by hand, no LLM call`);
+  print(`  <span class="accent">abm facts</span>                       list everything currently stored`);
+  print(`  <span class="accent">abm ask</span> &lt;entity&gt; &lt;rel[,rel2]&gt;    query, 1 or 2 hops`);
+  print(`  <span class="accent">abm inspect</span>                     full Memory Contract report`);
+  print(`  <span class="accent">abm verify</span>                      promised vs measured, live`);
+  print(`  <span class="accent">abm reset</span>                       wipe the memory (keep the terminal history)`);
   print(`  <span class="dim">clear</span>, <span class="dim">help</span>`);
 }
 
@@ -230,13 +243,26 @@ async function run(raw) {
     return;
   }
   if (cmd === "abm facts") {
-    if (!facts.length) return print(`<span class="dim">(empty — run "abm demo" or "abm extract ...")</span>`);
+    if (!facts.length) return print(`<span class="dim">(empty — run "abm demo", "abm extract ..." or "abm store s r o")</span>`);
     facts.forEach(([s,r,o]) => print(`  ${esc(s)} <span class="rel">—${esc(r)}→</span> ${esc(o)}`));
+    return;
+  }
+  if (cmd.startsWith("abm store")) {
+    const parts = cmd.slice("abm store".length).trim().split(/\s+/);
+    if (parts.length !== 3 || !parts[0])
+      return print(`<span class="ko">usage:</span> abm store &lt;subject&gt; &lt;relation&gt; &lt;object&gt;  (no spaces inside each — use underscores)`);
+    addFacts([parts]);
+    print(`<span class="ok">✓ added</span> ${esc(parts[0])} <span class="rel">—${esc(parts[1])}→</span> ${esc(parts[2])}  (${facts.length} facts total)`);
+    return;
+  }
+  if (cmd === "abm reset") {
+    resetMemory();
+    print(`<span class="dim">memory wiped — facts, entities and trace cleared.</span>`);
     return;
   }
   if (cmd.startsWith("abm ask")) {
     const parts = cmd.slice("abm ask".length).trim().split(/\s+/);
-    if (!trace) return print(`<span class="ko">no memory yet</span> — run "abm demo" first.`);
+    if (!trace) return print(`<span class="ko">no memory yet</span> — try "abm demo", "abm extract ..." or "abm store s r o".`);
     if (parts.length < 2 || !parts[0]) return print(`<span class="ko">usage:</span> abm ask &lt;entity&gt; &lt;relation[,relation2]&gt;`);
     let node = parts[0], conf = 1;
     for (const r of parts[1].split(",")) {
@@ -249,13 +275,13 @@ async function run(raw) {
     return;
   }
   if (cmd === "abm inspect") {
-    if (!trace) return print(`<span class="ko">no memory yet</span> — run "abm demo" first.`);
+    if (!trace) return print(`<span class="ko">no memory yet</span> — try "abm demo", "abm extract ..." or "abm store s r o".`);
     return print(contractBlock());
   }
   if (cmd === "abm verify") {
-    if (!trace) return print(`<span class="ko">no memory yet</span> — run "abm demo" first.`);
+    if (!trace) return print(`<span class="ko">no memory yet</span> — try "abm demo", "abm extract ..." or "abm store s r o".`);
     let ok = 0; for (const [s,r,o] of facts) if (runQuery(s,r).best === o) ok++;
-    const meas = ok/facts.length, prom = predAcc(facts.length, entities.length+5);
+    const meas = ok/facts.length, prom = predAcc(facts.length, codebookSize());
     const dev = Math.abs(meas-prom);
     print(`promised <b>${(prom*100).toFixed(1)}%</b>   measured <b>${(meas*100).toFixed(1)}%</b>   |&Delta;| ${(dev*100).toFixed(1)} pt`);
     print(dev < 0.06 ? `<span class="ok">CONTRACT RESPECTED</span>` : `<span class="ko">CONTRACT VIOLATED — file a bug</span>`);
