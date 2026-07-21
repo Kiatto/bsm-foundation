@@ -161,6 +161,12 @@ const input = document.getElementById("in");
 const history = []; let hIdx = -1;
 
 function esc(s){ return String(s).replace(/[&<>]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;"}[c])); }
+function tokenize(s) {
+  // supports quoted multi-word names: abm store "payment service" requires "auth service"
+  const out = []; const re = /"([^"]*)"|'([^']*)'|(\S+)/g; let m;
+  while ((m = re.exec(s))) out.push(m[1] ?? m[2] ?? m[3]);
+  return out;
+}
 function print(html) { const d = document.createElement("div"); d.className = "line"; d.innerHTML = html; term.appendChild(d); term.scrollTop = term.scrollHeight; }
 function printEcho(cmd) { print(`<span class="prompt">visitor@abm</span><span class="dim">:</span><span class="path">~</span><span class="dim">$</span> <span class="cmd">${esc(cmd)}</span>`); }
 
@@ -210,7 +216,7 @@ function help() {
   print(`Commands (each store/extract/demo call is ADDITIVE — like the real Memory.store()):`);
   print(`  <span class="accent">abm demo</span>                       add a sample doc's facts to memory`);
   print(`  <span class="accent">abm extract</span> &lt;text&gt;             extract facts from YOUR text (live LLM), add them`);
-  print(`  <span class="accent">abm store</span> &lt;s&gt; &lt;r&gt; &lt;o&gt;           add ONE fact by hand, no LLM call`);
+  print(`  <span class="accent">abm store</span> &lt;s&gt; &lt;r&gt; &lt;o&gt;           add ONE fact by hand (quote multi-word names), no LLM call`);
   print(`  <span class="accent">abm facts</span>                       list everything currently stored`);
   print(`  <span class="accent">abm ask</span> &lt;entity&gt; &lt;rel[,rel2]&gt;    query, 1 or 2 hops`);
   print(`  <span class="accent">abm inspect</span>                     full Memory Contract report`);
@@ -248,9 +254,9 @@ async function run(raw) {
     return;
   }
   if (cmd.startsWith("abm store")) {
-    const parts = cmd.slice("abm store".length).trim().split(/\s+/);
-    if (parts.length !== 3 || !parts[0])
-      return print(`<span class="ko">usage:</span> abm store &lt;subject&gt; &lt;relation&gt; &lt;object&gt;  (no spaces inside each — use underscores)`);
+    const parts = tokenize(cmd.slice("abm store".length).trim());
+    if (parts.length !== 3)
+      return print(`<span class="ko">usage:</span> abm store &lt;subject&gt; &lt;relation&gt; &lt;object&gt; — multi-word names? quote them: abm store "payment service" requires "auth service"`);
     addFacts([parts]);
     print(`<span class="ok">✓ added</span> ${esc(parts[0])} <span class="rel">—${esc(parts[1])}→</span> ${esc(parts[2])}  (${facts.length} facts total)`);
     return;
@@ -261,9 +267,9 @@ async function run(raw) {
     return;
   }
   if (cmd.startsWith("abm ask")) {
-    const parts = cmd.slice("abm ask".length).trim().split(/\s+/);
+    const parts = tokenize(cmd.slice("abm ask".length).trim());
     if (!trace) return print(`<span class="ko">no memory yet</span> — try "abm demo", "abm extract ..." or "abm store s r o".`);
-    if (parts.length < 2 || !parts[0]) return print(`<span class="ko">usage:</span> abm ask &lt;entity&gt; &lt;relation[,relation2]&gt;`);
+    if (parts.length < 2 || !parts[0]) return print(`<span class="ko">usage:</span> abm ask &lt;entity&gt; &lt;relation[,relation2]&gt;  — multi-word entity? quote it: abm ask "payment service" requires`);
     let node = parts[0], conf = 1;
     for (const r of parts[1].split(",")) {
       const res = runQuery(node, r);
