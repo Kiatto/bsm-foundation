@@ -78,13 +78,23 @@ di ottimizzazione autoreferenziale — fermarsi e aspettare dati veri.
   allora si corregge, ed entra come [UTENTE].
 - "Che PDF devo caricare?" — se emerge, è un segnale di onboarding
   mancante (esempio pre-caricato?), non di UI.
+- **(osservato in T2, 1/1 finora)** L'utente pone una domanda
+  "topica"/titolo ("Assunzione a tempo indeterminato?") invece di una
+  domanda su una relazione specifica fra entità ("chi è il datore di
+  lavoro?", "qual è la retribuzione lorda?"). Il sistema non comunica
+  da nessuna parte che tipo di domande sa gestire (relazioni fra
+  entità nominate, non domande sull'intero documento o sì/no). Se
+  ricorre con un secondo utente indipendente → azione candidata:
+  esempi di domande nel placeholder o sotto la casella di input
+  (specifico per il documento caricato, se possibile). Non ancora
+  implementato — 1 solo caso osservato.
 
 ## Registro
 
 | Tester | Profilo | TTFS | TTFV | Primo errore/blocco (citazione) | Completato? | "Ti mancherebbe?" | Origine | Tipo | Azione (max 1) |
 |---|---|---:|---|---|---|---|---|---|---|
 | T1 | kiatto stesso, PDF reale (listini Shopify, italiano) | ~15s import (45 facts, 46 entities) | TBD | 3/3 domande fallite: "sei d'accordo con quanto stabilito nel documento allegato?" → no answer (couldn't ground "documento allegato"); "come vengono gestiti su shopify i listini multipli?" → low confidence; "Come si costruisce un listino?" → no answer (couldn't ground "listino") | No — 0/3 risposte utili | TBD | UTENTE | TBD — in diagnosi, serve vedere i fatti estratti prima di classificare | Nessuna ancora — regola 6: serve evidenza, non ipotesi |
-| T2 | kiatto stesso, PDF reale (contratto di assunzione, italiano, dati personali/sensibili) | TBD | TBD | domanda esatta TBD → "no answer couldn't ground \"Assunzione a tempo indeterminato\" to anything in the document" (nota: quella frase è il titolo/oggetto del documento, non un'entità estratta) | No | TBD | UTENTE | TBD — ipotesi: planner (context-blind) ha restituito il TITOLO del documento come anchor invece di un'entità reale; da confermare con la domanda esatta + lista entità | Nessuna ancora — serve la domanda esatta e l'elenco entità prima di agire |
+| T2 | kiatto stesso, PDF reale (contratto di assunzione, italiano, dati personali/sensibili) | TBD | TBD | Domanda testuale: "Assunzione a tempo indeterminato?" (= il titolo del documento + "?", non una domanda su una relazione specifica) → "no answer couldn't ground..." | No | TBD | UTENTE | **Comprensione** — diagnosi confermata dalla citazione stessa, non serve altro dato: la domanda non è una query fattuale su un'entità (tipo "chi è il datore di lavoro?"), è il titolo del documento. Il sistema si è comportato correttamente: nessuna entità reale da agganciare → ha detto "non lo so" invece di inventare una risposta. Il gap è che l'utente non sapeva che tipo di domande porre | **Nessuna azione (regola 5: 1 sessione, non 3; e non è un bug — il sistema ha fallito onestamente, non silenziosamente)**. Ipotesi aggiunta sotto: serve guidare l'utente sul tipo di domande accettate |
 
 (Righe aggiunte una alla volta, non in blocco da 5 — per-tester,
 appena disponibile. **Tipo**: Comprensione / Feature / Bug / Ipotesi —
