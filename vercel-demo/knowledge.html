@@ -57,6 +57,10 @@
   .a-answer { font-size: 17px; margin-bottom: 8px; }
   .a-answer b { color: var(--accent); }
   .meta { display: flex; gap: 14px; flex-wrap: wrap; font-size: 12.5px; color: var(--muted); }
+  .fb { margin-top: 8px; font-size: 12.5px; color: var(--muted); }
+  .fbtn { background: transparent; border: 1px solid var(--line); color: var(--ink);
+    padding: 2px 8px; border-radius: 5px; font-size: 13px; cursor: pointer; }
+  .fbtn:hover { border-color: var(--accent); }
   .pill { display: inline-block; padding: 1px 8px; border-radius: 999px; font-size: 11.5px; font-weight: 600; }
   .pill.ok { background: color-mix(in srgb, var(--good) 15%, transparent); color: var(--good); }
   .pill.mid { background: color-mix(in srgb, var(--warn) 15%, transparent); color: var(--warn); }
@@ -311,13 +315,25 @@ async function askQuestion(q) {
   }
   const sources = [...new Set(usedFacts.map(([s,r,o]) => factSource.get(`${s}|${r}|${o}`)).filter(Boolean))];
   const confClass = conf > 0.75 ? "ok" : conf > 0.55 ? "mid" : "ko";
+  const fbId = "fb" + Math.random().toString(36).slice(2);
   aBox.innerHTML =
     `<div class="a-answer">→ <b>${esc(node)}</b></div>` +
     `<div class="meta">` +
     `<span class="pill ${confClass}">confidence ${(conf*100).toFixed(0)}%</span>` +
     `<span>source: ${sources.length ? esc(sources.join(", ")) : "unknown"}</span>` +
     `<span>path: ${usedFacts.map(([s,r,o])=>`${esc(s)}→${esc(r)}→${esc(o)}`).join(" · ")}</span>` +
-    `</div>`;
+    `</div>` +
+    `<div class="fb" id="${fbId}">Useful? ` +
+    `<button class="fbtn" data-v="up">👍</button> ` +
+    `<button class="fbtn" data-v="down">👎</button></div>`;
+  aBox.querySelectorAll(".fbtn").forEach((btn) => {
+    btn.onclick = () => {
+      // No backend: at this stage (a handful of observed sessions)
+      // the signal is read by watching, not by aggregating telemetry.
+      document.getElementById(fbId).innerHTML =
+        `<span class="sub" style="font-size:12.5px">thanks ${btn.dataset.v === "up" ? "🙂" : "— noted"}</span>`;
+    };
+  });
 }
 
 $("ask").onclick = () => { const v = $("q").value.trim(); if (v) { $("q").value = ""; askQuestion(v); } };
