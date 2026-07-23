@@ -2,17 +2,20 @@
 // var), never reaches the browser. Node.js runtime (not Edge): Edge
 // has a hard ~25s cap that free-tier reasoning models blow past.
 
+import { IS_LOCAL, modelsOrDefault, chatComplete } from "./_llm.js";
+
 export const config = { maxDuration: 60 };
 
 // Fastest/lightest first — free-tier "ultra"/large models (nemotron-
 // 550b, hy3) took 60-90s per call in prior testing and are excluded:
-// a single one would exceed even this extended budget.
-const MODELS = [
+// a single one would exceed even this extended budget. Ignored when
+// LLM_BASE_URL points at a local server (one model, no cascade).
+const MODELS = modelsOrDefault([
   "google/gemma-4-26b-a4b-it:free",
   "openai/gpt-oss-20b:free",
   "nvidia/nemotron-3-nano-30b-a3b:free",
   "nvidia/nemotron-nano-9b-v2:free",
-];
+]);
 
 const MAX_CHARS = 3000;
 const DEADLINE_MS = 50000; // margin under the 60s function cap
@@ -46,36 +49,16 @@ function rateLimited(ip) {
 }
 
 async function callModel(model, text, timeoutMs) {
-  const ctrl = new AbortController();
-  const t = setTimeout(() => ctrl.abort(), timeoutMs);
-  try {
-    const res = await fetch("https://openrouter.ai/api/v1/chat/completions", {
-      method: "POST",
-      signal: ctrl.signal,
-      headers: {
-        Authorization: `Bearer ${process.env.OPENROUTER_API_KEY}`,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        model,
-        max_tokens: 1500,
-        messages: [{ role: "user", content: PROMPT + text }],
-      }),
-    });
-    if (!res.ok) throw new Error(`upstream ${res.status}`);
-    const data = await res.json();
-    const msg = data.choices?.[0]?.message || {};
-    let txt = msg.content || "";
-    if (!txt.includes("[")) txt = msg.reasoning || txt;
-    const s = txt.slice(txt.indexOf("["), txt.lastIndexOf("]") + 1);
-    const triples = JSON.parse(s).filter(
-      (tr) => Array.isArray(tr) && tr.length === 3 &&
-              tr.every((x) => typeof x === "string" && x.length < 200)
-    );
-    return { triples, model };
-  } finally {
-    clearTimeout(t);
-  }
+  const txt = await chatComplete(
+    model, [{ role: "user", content: PROMPT + text }],
+    { maxTokens: 1500, timeoutMs }
+  );
+  const s = txt.slice(txt.indexOf("["), txt.lastIndexOf("]") + 1);
+  const triples = JSON.parse(s).filter(
+    (tr) => Array.isArray(tr) && tr.length === 3 &&
+            tr.every((x) => typeof x === "string" && x.length < 200)
+  );
+  return { triples, model };
 }
 
 export default async function handler(req, res) {
@@ -91,7 +74,7 @@ export default async function handler(req, res) {
   const text = (req.body?.text || "").toString().slice(0, MAX_CHARS);
   if (text.trim().length < 10)
     return res.status(400).json({ error: "text too short" });
-  if (!process.env.OPENROUTER_API_KEY)
+  if (!IS_LOCAL && !process.env.OPENROUTER_API_KEY)
     return res.status(500).json({
       error: "server misconfigured: OPENROUTER_API_KEY not set",
     });

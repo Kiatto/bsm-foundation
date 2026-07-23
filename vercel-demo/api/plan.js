@@ -4,13 +4,15 @@
 // question + the relation names) — same discipline as the research
 // harness this reuses (examples/pilot_openrouter/planner2.py).
 
+import { IS_LOCAL, modelsOrDefault, chatComplete } from "./_llm.js";
+
 export const config = { maxDuration: 30 };
 
-const MODELS = [
+const MODELS = modelsOrDefault([
   "google/gemma-4-26b-a4b-it:free",
   "openai/gpt-oss-20b:free",
   "nvidia/nemotron-3-nano-30b-a3b:free",
-];
+]);
 
 const hits = new Map();
 const WINDOW_MS = 60_000, MAX_PER_WINDOW = 20;
@@ -41,34 +43,15 @@ Question: ${question}`;
 }
 
 async function callModel(model, text, timeoutMs) {
-  const ctrl = new AbortController();
-  const t = setTimeout(() => ctrl.abort(), timeoutMs);
-  try {
-    const res = await fetch("https://openrouter.ai/api/v1/chat/completions", {
-      method: "POST",
-      signal: ctrl.signal,
-      headers: {
-        Authorization: `Bearer ${process.env.OPENROUTER_API_KEY}`,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        model, max_tokens: 400,
-        messages: [{ role: "user", content: text }],
-      }),
-    });
-    if (!res.ok) throw new Error(`upstream ${res.status}`);
-    const data = await res.json();
-    const msg = data.choices?.[0]?.message || {};
-    let txt = msg.content || "";
-    if (!txt.includes("{")) txt = msg.reasoning || txt;
-    const s = txt.slice(txt.indexOf("{"), txt.lastIndexOf("}") + 1);
-    const plan = JSON.parse(s);
-    if (!plan.anchor || !Array.isArray(plan.chain))
-      throw new Error("malformed plan");
-    return plan;
-  } finally {
-    clearTimeout(t);
-  }
+  const txt = await chatComplete(
+    model, [{ role: "user", content: text }],
+    { maxTokens: 400, timeoutMs }
+  );
+  const s = txt.slice(txt.indexOf("{"), txt.lastIndexOf("}") + 1);
+  const plan = JSON.parse(s);
+  if (!plan.anchor || !Array.isArray(plan.chain))
+    throw new Error("malformed plan");
+  return plan;
 }
 
 export default async function handler(req, res) {
@@ -81,7 +64,7 @@ export default async function handler(req, res) {
   const { question, relations } = req.body || {};
   if (!question || !Array.isArray(relations) || !relations.length)
     return res.status(400).json({ error: "question and relations[] required" });
-  if (!process.env.OPENROUTER_API_KEY)
+  if (!IS_LOCAL && !process.env.OPENROUTER_API_KEY)
     return res.status(500).json({ error: "server misconfigured: OPENROUTER_API_KEY not set" });
 
   const text = prompt(question.slice(0, 500), relations.slice(0, 80));

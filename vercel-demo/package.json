@@ -2,5 +2,6 @@
   "name": "abm-live-demo",
   "private": true,
   "version": "1.0.0",
-  "description": "ABM live demo with real LLM extraction via a Vercel Edge Function"
+  "type": "module",
+  "description": "ABM live demo with real LLM extraction via OpenRouter (default) or a local Unsloth server (LLM_BASE_URL)"
 }
