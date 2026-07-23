@@ -114,6 +114,20 @@ tuo, evitando di rilitigare la stessa discussione.
 | 2026-07-23 | Nessun tester ancora osservato; ipotesi interna che "pressure"/"Memory Contract"/"confidence" possano confondere | Nessuna modifica alla terminologia | Ipotesi non validata da un utente reale — vedi "Ipotesi da osservare" sotto; si aspetta l'osservazione |
 | 2026-07-23 | Trovato testando internamente: piano del planner sbagliato produceva un self-loop mostrato come risposta valida al 57.9% di confidence | Soglia alzata 0.52→0.65 + guardia anti-self-loop (implementato) | Bug di correttezza (risposta silenziosamente sbagliata), non estetica — rientra nell'eccezione della regola 5, corretto subito nonostante origine INTERNA |
 
+## Blocchi infrastrutturali (non feedback di prodotto)
+
+- **(23/7/2026)** Durante T1+T2 il tetto giornaliero free-tier di
+  OpenRouter è stato esaurito (non contesa tra modelli — verificato:
+  il messaggio reale è "Rate limit exceeded: free-models-per-day. Add
+  10 credits to unlock 1000 free model requests per day", un limite
+  per-account, non per-modello). Correzione di rotta: avevo ipotizzato
+  contesa di quota fra extract.js/plan.js sugli stessi modelli e stavo
+  per "risolverla" diversificando i modelli — ipotesi sbagliata,
+  scartata prima di implementarla dopo aver testato altri modelli e
+  trovato lo stesso errore ovunque. Decisione in sospeso (costo reale,
+  spetta a kiatto): aggiungere ~10 crediti OpenRouter (sblocca
+  1000 richieste/giorno) oppure aspettare il reset giornaliero.
+
 ## Annotazioni non azionate (problemi riportati 1 sola volta)
 
 - —
