@@ -35,7 +35,7 @@ Text:
 // Best-effort per-IP rate limit (resets on cold start — a deterrent,
 // not a guarantee; fine for a low-traffic demo).
 const hits = new Map();
-const WINDOW_MS = 60_000, MAX_PER_WINDOW = 6;
+const WINDOW_MS = 60_000, MAX_PER_WINDOW = 20; // one real PDF import = many chunks
 
 function rateLimited(ip) {
   const now = Date.now();
