@@ -14,6 +14,16 @@ Regole (vincolanti, decise PRIMA del primo tester):
    Serve ricorrenza — almeno 3 utenti indipendenti sullo stesso punto.
    Eccezione: bug evidenti o problemi di sicurezza si correggono
    subito, a prescindere dalla ricorrenza.
+6. **Ogni modifica elimina un problema OSSERVATO, non una sensazione.**
+   ❌ "questa pagina potrebbe essere più chiara" (impressione, non si
+   agisce). ✔ "quattro utenti hanno cercato il pulsante Upload per più
+   di 20 secondi" (osservazione concreta, comportamento specifico —
+   si agisce). Se non riesci a citare un comportamento o una frase
+   precisa, non è ancora evidenza.
+7. **Non innamorarti dei feedback positivi.** "Molto bello" = quasi
+   zero informazione. Cerca: "pensavo facesse quest'altra cosa", "qui
+   mi sono bloccato", "non avevo capito che potevo fare una domanda" —
+   meno piacevoli da leggere, molto più utili.
 
 **Modello mentale (correzione 23/7/2026):** non "aspetto 5 tester
 insieme". La prossima persona che può realisticamente provarlo — un
@@ -80,6 +90,18 @@ appena disponibile. **Tipo**: Comprensione / Feature / Bug / Ipotesi —
 serve a scoprire dopo un mese se es. il 70% dei feedback riguarda il
 linguaggio e solo il 10% riguarda davvero ABM, prima di investire mesi
 nel posto sbagliato.)
+
+## Decisioni prese (separata dal registro feedback)
+
+Non "cosa ha detto l'utente" — cosa **abbiamo deciso** e perché,
+incluse le non-modifiche. Fra tre mesi non ricorderai perché hai
+scelto di non cambiare qualcosa; questa tabella lo ricorda al posto
+tuo, evitando di rilitigare la stessa discussione.
+
+| Data | Evidenza | Decisione | Motivazione |
+|---|---|---|---|
+| 2026-07-23 | Nessun tester ancora osservato; ipotesi interna che "pressure"/"Memory Contract"/"confidence" possano confondere | Nessuna modifica alla terminologia | Ipotesi non validata da un utente reale — vedi "Ipotesi da osservare" sotto; si aspetta l'osservazione |
+| 2026-07-23 | Trovato testando internamente: piano del planner sbagliato produceva un self-loop mostrato come risposta valida al 57.9% di confidence | Soglia alzata 0.52→0.65 + guardia anti-self-loop (implementato) | Bug di correttezza (risposta silenziosamente sbagliata), non estetica — rientra nell'eccezione della regola 5, corretto subito nonostante origine INTERNA |
 
 ## Annotazioni non azionate (problemi riportati 1 sola volta)
 
