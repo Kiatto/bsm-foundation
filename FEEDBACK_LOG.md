@@ -10,6 +10,21 @@ Regole (vincolanti, decise PRIMA del primo tester):
 3. **Il core non si tocca** (FREEZE, 8 settimane) qualunque cosa dica
    un feedback — si annota per la fine del periodo.
 4. Registrare SUBITO, con citazioni testuali, non parafrasi a memoria.
+5. **Non modificare il kernel/UX per un singolo feedback [UTENTE].**
+   Serve ricorrenza — almeno 3 utenti indipendenti sullo stesso punto.
+   Eccezione: bug evidenti o problemi di sicurezza si correggono
+   subito, a prescindere dalla ricorrenza.
+
+**Modello mentale (correzione 23/7/2026):** non "aspetto 5 tester
+insieme". La prossima persona che può realisticamente provarlo — un
+collega, un ex collega, uno sviluppatore amico, un contatto LinkedIn,
+qualcuno incontrato a una conferenza. Si logga a partire dalla prima,
+incrementalmente; il primo test serve anche a verificare che il
+protocollo di osservazione stesso funzioni. Trovare quella persona
+richiede una rete nel mondo reale — è il pezzo che non posso fare al
+posto di kiatto; il resto (progettare il test, registrare le sessioni,
+interpretare i risultati, applicare la disciplina sopra) lo faccio con
+lui, non "glielo consegno e basta".
 
 **KPI ufficiale — TTFS (Time To First Success):** tempo tra
 `pip install abm-runtime` (o clone) e la prima risposta corretta da
@@ -56,11 +71,15 @@ di ottimizzazione autoreferenziale — fermarsi e aspettare dati veri.
 
 ## Registro
 
-| Tester | Profilo | TTFS | Primo errore/blocco (citazione) | Completato? | "Ti mancherebbe?" | Azione (max 1) |
-|---|---|---:|---|---|---|---|
-| T1 | | | | | | |
-| T2 | | | | | | |
-| T3 | | | | | | |
+| Tester | Profilo | TTFS | TTFV | Primo errore/blocco (citazione) | Completato? | "Ti mancherebbe?" | Origine | Tipo | Azione (max 1) |
+|---|---|---:|---|---|---|---|---|---|---|
+| T1 | | | | | | | | | |
+
+(Righe aggiunte una alla volta, non in blocco da 5 — per-tester,
+appena disponibile. **Tipo**: Comprensione / Feature / Bug / Ipotesi —
+serve a scoprire dopo un mese se es. il 70% dei feedback riguarda il
+linguaggio e solo il 10% riguarda davvero ABM, prima di investire mesi
+nel posto sbagliato.)
 
 ## Annotazioni non azionate (problemi riportati 1 sola volta)
 
