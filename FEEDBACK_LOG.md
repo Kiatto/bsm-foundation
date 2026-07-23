@@ -83,7 +83,8 @@ di ottimizzazione autoreferenziale — fermarsi e aspettare dati veri.
 
 | Tester | Profilo | TTFS | TTFV | Primo errore/blocco (citazione) | Completato? | "Ti mancherebbe?" | Origine | Tipo | Azione (max 1) |
 |---|---|---:|---|---|---|---|---|---|---|
-| T1 | | | | | | | | | |
+| T1 | kiatto stesso, PDF reale (listini Shopify, italiano) | ~15s import (45 facts, 46 entities) | TBD | 3/3 domande fallite: "sei d'accordo con quanto stabilito nel documento allegato?" → no answer (couldn't ground "documento allegato"); "come vengono gestiti su shopify i listini multipli?" → low confidence; "Come si costruisce un listino?" → no answer (couldn't ground "listino") | No — 0/3 risposte utili | TBD | UTENTE | TBD — in diagnosi, serve vedere i fatti estratti prima di classificare | Nessuna ancora — regola 6: serve evidenza, non ipotesi |
+| T2 | kiatto stesso, PDF reale (contratto di assunzione, italiano, dati personali/sensibili) | TBD | TBD | domanda esatta TBD → "no answer couldn't ground \"Assunzione a tempo indeterminato\" to anything in the document" (nota: quella frase è il titolo/oggetto del documento, non un'entità estratta) | No | TBD | UTENTE | TBD — ipotesi: planner (context-blind) ha restituito il TITOLO del documento come anchor invece di un'entità reale; da confermare con la domanda esatta + lista entità | Nessuna ancora — serve la domanda esatta e l'elenco entità prima di agire |
 
 (Righe aggiunte una alla volta, non in blocco da 5 — per-tester,
 appena disponibile. **Tipo**: Comprensione / Feature / Bug / Ipotesi —
