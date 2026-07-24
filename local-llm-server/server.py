@@ -9,7 +9,12 @@ rate-limited free tier. Exposes exactly what they need:
 
 Run:
     pip install fastapi uvicorn unsloth
-    python server.py --model unsloth/gemma-3-4b-it-bnb-4bit
+    python server.py --model unsloth/Qwen2.5-3B-Instruct-bnb-4bit
+
+Default model chosen for a 4GB-VRAM GPU (NVIDIA Quadro T1000 Mobile):
+Qwen2.5-3B in 4-bit fits comfortably with headroom for context, and
+Qwen's family is notably stronger than same-size Llama at reliable
+JSON output and multilingual (Italian) text — both matter here.
 
 Then set (see ../vercel-demo/.env.local.example):
     LLM_BASE_URL=http://localhost:8000/v1/chat/completions
@@ -75,7 +80,7 @@ if __name__ == "__main__":
     import uvicorn
 
     ap = argparse.ArgumentParser()
-    ap.add_argument("--model", default="unsloth/gemma-3-4b-it-bnb-4bit",
+    ap.add_argument("--model", default="unsloth/Qwen2.5-3B-Instruct-bnb-4bit",
                     help="any Unsloth/HF model id or local path")
     ap.add_argument("--max-seq-len", type=int, default=4096)
     ap.add_argument("--port", type=int, default=8000)
