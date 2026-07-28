@@ -19,6 +19,15 @@ export function modelsOrDefault(defaults) {
   return defaults;
 }
 
+// A local model on CPU is far slower than a hosted one (measured: ~55s
+// per extraction chunk for Qwen3-4B Q4 on a 4-core CPU, vs 2-8s on
+// OpenRouter). Cloud timeouts abort it mid-generation, so local mode
+// gets its own, much larger budget. Override with LLM_TIMEOUT_MS.
+export const CALL_TIMEOUT_MS = Number(process.env.LLM_TIMEOUT_MS)
+  || (IS_LOCAL ? 240000 : 18000);
+export const TOTAL_BUDGET_MS = Number(process.env.LLM_BUDGET_MS)
+  || (IS_LOCAL ? 260000 : 50000);
+
 export async function chatComplete(model, messages, { maxTokens = 1500, timeoutMs = 18000 } = {}) {
   const ctrl = new AbortController();
   const t = setTimeout(() => ctrl.abort(), timeoutMs);

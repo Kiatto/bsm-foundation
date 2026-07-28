@@ -174,6 +174,57 @@ Origine: **[INTERNA]** (diagnosi mia, non segnalazione di un tester),
 applicata come eccezione "bug evidente" alla regola 5: attribuire i
 fatti al soggetto sbagliato è scorrettezza, non preferenza di UX.
 
+## Test end-to-end col modello locale (28/7/2026) — isolamento dei tre livelli
+
+Rieseguito T2 **attraverso gli endpoint reali del prodotto** (non uno
+script), con modello locale. Risultato per livello:
+
+| livello | esito | evidenza |
+|---|---|---|
+| A — estrazione | **14/14 soggetti corretti** | tutte le triple su `luigi_piccirillo`, incluse data d'inizio, settore, tipo di contratto |
+| B — ABM | **100%**, contratto 100% = misurato 100% | 5/5 domande corrette con piano giusto, confidence 82-87% |
+| C — planner | **0/3 piani corretti** | vedi sotto |
+
+**Il planner è ora l'UNICO collo di bottiglia.** Con piano corretto il
+prodotto risponde a tutto; con i piani che il planner genera davvero,
+sbaglia. Esempio misurato: piano a 2 hop spuri → risposta
+`trav_d_ambrosio_22` invece di `1781.68` (per fortuna a 56% di
+confidence, sotto la soglia 0.65 → il prodotto mostra "low confidence"
+anziché una risposta sbagliata: la guardia funziona).
+
+### Tre ipotesi mie, tutte FALSIFICATE (registrate per non riprovarle)
+
+1. **"Il planner non conosce le entità"** → passargliele **peggiora**:
+   0/3 contro 1/3. Inizia a confondere entità e relazioni.
+2. **"È non-determinismo/sampling"** → falso: 3 ripetizioni identiche
+   sia a temperatura default sia a 0. Il planner è deterministico.
+3. **"Colpa della frase 'Use 2 hops when…' nel prompt"** → rimuoverla
+   non aiuta: 0/3 in entrambe le varianti di prompt.
+
+Conclusione: **il problema non è risolvibile con prompt engineering** a
+questa taglia di modello. Firma costante del fallimento: il modello usa
+NOMI DI RELAZIONE come ancora (`anchor='job_title'`,
+`anchor='trial_period'`, `anchor='work_location'`) e sceglie relazioni
+quasi-giuste (`base_salary` invece di `gross_monthly_salary`).
+
+### Il test che cambia la diagnosi
+
+Stesso modello, stesse domande, stesse relazioni — ma **compito
+riformulato** da "genera un piano JSON" a "scegli quale campo risponde
+alla domanda (rispondi col numero)":
+
+    generazione piano JSON:      0/3   (0%)
+    classificazione relazione:   6/7   (86%, chance 7%)
+
+Il modello **sa** mappare una domanda italiana sulla relazione inglese
+giusta. Non sa produrre il piano JSON. **Il difetto è nella
+formulazione del compito, non nella capacità del modello.**
+
+Implicazione (candidata, NON implementata): l'ancora non serve chiederla
+a un LLM — in un documento con un soggetto dominante (qui 14/14 triple)
+è deterministica; la relazione si ottiene per classificazione (86%);
+il multi-hop si affronta solo dove serve davvero.
+
 ## Blocchi infrastrutturali (non feedback di prodotto)
 
 - **(23/7/2026)** Durante T1+T2 il tetto giornaliero free-tier di

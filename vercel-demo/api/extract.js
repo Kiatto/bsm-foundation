@@ -2,9 +2,9 @@
 // var), never reaches the browser. Node.js runtime (not Edge): Edge
 // has a hard ~25s cap that free-tier reasoning models blow past.
 
-import { IS_LOCAL, modelsOrDefault, chatComplete } from "./_llm.js";
+import { IS_LOCAL, modelsOrDefault, chatComplete, CALL_TIMEOUT_MS, TOTAL_BUDGET_MS } from "./_llm.js";
 
-export const config = { maxDuration: 60 };
+export const config = { maxDuration: 60 }; // cloud cap; local runs unbounded under `vercel dev`
 
 // Fastest/lightest first — free-tier "ultra"/large models (nemotron-
 // 550b, hy3) took 60-90s per call in prior testing and are excluded:
@@ -18,7 +18,7 @@ const MODELS = modelsOrDefault([
 ]);
 
 const MAX_CHARS = 3000;
-const DEADLINE_MS = 50000; // margin under the 60s function cap
+const DEADLINE_MS = TOTAL_BUDGET_MS; // 50s cloud / ~260s local (see _llm.js)
 
 const PROMPT = `Extract factual triples from the text below.
 Rules:
@@ -99,7 +99,7 @@ export default async function handler(req, res) {
     const remaining = DEADLINE_MS - (Date.now() - start);
     if (remaining < 4000) break;
     try {
-      const out = await callModel(model, text, Math.min(remaining, 18000));
+      const out = await callModel(model, text, Math.min(remaining, CALL_TIMEOUT_MS));
       if (out.triples.length) return res.status(200).json(out);
       errors.push(`${model}: 0 triples parsed`);
     } catch (e) {

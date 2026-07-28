@@ -4,7 +4,7 @@
 // question + the relation names) — same discipline as the research
 // harness this reuses (examples/pilot_openrouter/planner2.py).
 
-import { IS_LOCAL, modelsOrDefault, chatComplete } from "./_llm.js";
+import { IS_LOCAL, modelsOrDefault, chatComplete, CALL_TIMEOUT_MS, TOTAL_BUDGET_MS } from "./_llm.js";
 
 export const config = { maxDuration: 30 };
 
@@ -71,10 +71,10 @@ export default async function handler(req, res) {
   const start = Date.now();
   const errors = [];
   for (const model of MODELS) {
-    const remaining = 25000 - (Date.now() - start);
+    const remaining = (IS_LOCAL ? TOTAL_BUDGET_MS : 25000) - (Date.now() - start);
     if (remaining < 3000) break;
     try {
-      const plan = await callModel(model, text, Math.min(remaining, 12000));
+      const plan = await callModel(model, text, Math.min(remaining, IS_LOCAL ? CALL_TIMEOUT_MS : 12000));
       return res.status(200).json({ plan, model });
     } catch (e) {
       errors.push(`${model}: ${e.message}`);
