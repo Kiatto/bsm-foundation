@@ -114,6 +114,40 @@ tuo, evitando di rilitigare la stessa discussione.
 | 2026-07-23 | Nessun tester ancora osservato; ipotesi interna che "pressure"/"Memory Contract"/"confidence" possano confondere | Nessuna modifica alla terminologia | Ipotesi non validata da un utente reale — vedi "Ipotesi da osservare" sotto; si aspetta l'osservazione |
 | 2026-07-23 | Trovato testando internamente: piano del planner sbagliato produceva un self-loop mostrato come risposta valida al 57.9% di confidence | Soglia alzata 0.52→0.65 + guardia anti-self-loop (implementato) | Bug di correttezza (risposta silenziosamente sbagliata), non estetica — rientra nell'eccezione della regola 5, corretto subito nonostante origine INTERNA |
 
+## CAUSA RADICE di T1/T2 — trovata (28/7/2026, modello locale)
+
+Con il modello locale (Qwen3-4B-Instruct-2507-GGUF UD-Q4_K_XL su
+Unsloth Studio) ho rieseguito l'estrazione sul contratto di assunzione
+di T2. L'estrazione **tecnicamente funziona**: 14 triple, JSON valido,
+snake_case, italiano gestito correttamente. Ma contiene un errore
+semantico sistematico e riproducibile:
+
+    ['kore77_srl', 'has_monthly_salary', '1781.68']      ← SOGGETTO SBAGLIATO
+    ['kore77_srl', 'has_qualification', 'software_integration_developer']
+    ['kore77_srl', 'has_trial_period', '15_days']
+    ['luigi_piccirillo', 'receives_letter', 'assunzione…']  ← unico fatto sul dipendente
+
+**11 triple su 14 attribuite all'AZIENDA invece che al DIPENDENTE.**
+Retribuzione, qualifica, sede, orario, periodo di prova sono attributi
+di Luigi Piccirillo, non di KORE77.
+
+**Meccanismo:** l'italiano formale dei contratti usa il possessivo con
+soggetto implicito ("**La Sua** retribuzione", "**Lei** sarà assunto").
+Senza risoluzione delle coreferenze, il modello aggancia i fatti
+all'entità nominata più prominente — l'azienda.
+
+**Questo spiega esattamente il fallimento di T1 e T2:** chiedendo
+"qual è la retribuzione di Luigi Piccirillo?" la memoria non ha nulla
+sotto quell'ancora, perché i fatti sono sotto `kore77_srl`. Non è
+l'algebra (Livello B), non è il planner: è **grounding, Livello A**,
+con una firma precisa e misurabile — coreferenze/soggetti impliciti in
+testo formale italiano.
+
+Status: diagnosi confermata su un caso, meccanismo identificato.
+Correzione candidata (prompt di estrazione: istruzione esplicita di
+risolvere possessivi/soggetti impliciti prima di emettere le triple)
+NON ancora applicata — vedi tabella Decisioni.
+
 ## Blocchi infrastrutturali (non feedback di prodotto)
 
 - **(23/7/2026)** Durante T1+T2 il tetto giornaliero free-tier di

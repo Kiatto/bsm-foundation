@@ -52,3 +52,4 @@ Thumbs.db
 dist/
 *.egg-info/
 .vercel/
+vercel-demo/.env.local
