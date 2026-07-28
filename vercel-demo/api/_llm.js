@@ -28,6 +28,16 @@ export const CALL_TIMEOUT_MS = Number(process.env.LLM_TIMEOUT_MS)
 export const TOTAL_BUDGET_MS = Number(process.env.LLM_BUDGET_MS)
   || (IS_LOCAL ? 260000 : 50000);
 
+// temperature 0 by default: extraction and planning are structured-output
+// tasks, not creative ones. Measured (28/07/2026): with the server's
+// sampling default, three runs over the SAME contract text produced 14,
+// 13 and 12 triples with different relation names (weekly_hours vs
+// working_hours, job_title vs has_qualification) — an unstable relation
+// vocabulary means a query that worked yesterday can miss today, and it
+// makes the extractor's Pg unreproducible. Override with LLM_TEMPERATURE.
+const TEMPERATURE = process.env.LLM_TEMPERATURE !== undefined
+  ? Number(process.env.LLM_TEMPERATURE) : 0;
+
 export async function chatComplete(model, messages, { maxTokens = 1500, timeoutMs = 18000 } = {}) {
   const ctrl = new AbortController();
   const t = setTimeout(() => ctrl.abort(), timeoutMs);
@@ -39,7 +49,7 @@ export async function chatComplete(model, messages, { maxTokens = 1500, timeoutM
         Authorization: `Bearer ${API_KEY}`,
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ model, max_tokens: maxTokens, messages }),
+      body: JSON.stringify({ model, max_tokens: maxTokens, temperature: TEMPERATURE, messages }),
     });
     if (!res.ok) throw new Error(`upstream ${res.status}`);
     const data = await res.json();

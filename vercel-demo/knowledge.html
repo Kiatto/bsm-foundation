@@ -280,7 +280,7 @@ async function askQuestion(q) {
   try {
     const res = await fetch("/api/plan", { method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ question: q, relations }) });
+      body: JSON.stringify({ question: q, relations, triples: facts }) });
     const data = await res.json();
     if (!res.ok || data.error) throw new Error(data.error || "planner failed");
     plan = data.plan;
