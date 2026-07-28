@@ -112,6 +112,7 @@ tuo, evitando di rilitigare la stessa discussione.
 | Data | Evidenza | Decisione | Motivazione |
 |---|---|---|---|
 | 2026-07-23 | Nessun tester ancora osservato; ipotesi interna che "pressure"/"Memory Contract"/"confidence" possano confondere | Nessuna modifica alla terminologia | Ipotesi non validata da un utente reale — vedi "Ipotesi da osservare" sotto; si aspetta l'osservazione |
+| 2026-07-28 | Modello locale: 11/14 triple attribuite all'azienda invece che al dipendente (contratto T2); dopo il fix 11/11 corrette e 5/5 domande risposte | Prompt di estrazione corretto (risoluzione soggetti impliciti) — APPLICATO | Bug di correttezza, non preferenza: rientra nell'eccezione della regola 5. Origine INTERNA, dichiarata. Costo accettato: perdita delle triple corrette sull'azienda (14→11) |
 | 2026-07-23 | Trovato testando internamente: piano del planner sbagliato produceva un self-loop mostrato come risposta valida al 57.9% di confidence | Soglia alzata 0.52→0.65 + guardia anti-self-loop (implementato) | Bug di correttezza (risposta silenziosamente sbagliata), non estetica — rientra nell'eccezione della regola 5, corretto subito nonostante origine INTERNA |
 
 ## CAUSA RADICE di T1/T2 — trovata (28/7/2026, modello locale)
@@ -143,10 +144,35 @@ l'algebra (Livello B), non è il planner: è **grounding, Livello A**,
 con una firma precisa e misurabile — coreferenze/soggetti impliciti in
 testo formale italiano.
 
-Status: diagnosi confermata su un caso, meccanismo identificato.
-Correzione candidata (prompt di estrazione: istruzione esplicita di
-risolvere possessivi/soggetti impliciti prima di emettere le triple)
-NON ancora applicata — vedi tabella Decisioni.
+### CORREZIONE APPLICATA E VERIFICATA (28/7/2026)
+
+Prompt di estrazione: aggiunta istruzione esplicita "RESOLVE IMPLICIT
+SUBJECTS BEFORE EMITTING A TRIPLE" con esempi in inglese e italiano
+("La Sua retribuzione" → soggetto = persona, non azienda) e il divieto
+di agganciare i fatti all'entità più prominente per default.
+
+Misura, stesso modello e stesso testo, prima/dopo:
+
+| | soggetti corretti | triple |
+|---|---|---|
+| prima | 3/14 (11 attribuite all'azienda) | 14 |
+| dopo | **11/11** | 11 |
+
+End-to-end su ABM (D=4096): le 5 domande realistiche sul contratto
+(retribuzione, qualifica, periodo di prova, orario, sede) rispondono
+**tutte correttamente**, confidence 87-90%, accuratezza misurata 100%
+= contratto previsto 100%.
+
+**Effetto collaterale onesto:** le triple sull'azienda che erano
+corrette (`kore77_srl has_legal_address`, `has_vat_number`) sono
+scomparse — il modello ora sovra-corregge attribuendo tutto alla
+persona. 14 → 11 triple. Netto positivo per il caso d'uso (domande sul
+contratto del dipendente), ma è una perdita reale di copertura, da
+registrare e non nascondere.
+
+Origine: **[INTERNA]** (diagnosi mia, non segnalazione di un tester),
+applicata come eccezione "bug evidente" alla regola 5: attribuire i
+fatti al soggetto sbagliato è scorrettezza, non preferenza di UX.
 
 ## Blocchi infrastrutturali (non feedback di prodotto)
 

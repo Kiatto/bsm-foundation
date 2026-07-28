@@ -32,6 +32,20 @@ Rules:
   multiple triples because of how a sentence is phrased.
 - Extract exhaustively but only facts actually stated in the text.
 
+RESOLVE IMPLICIT SUBJECTS BEFORE EMITTING A TRIPLE. This is the most
+common source of wrong output. Formal and legal writing routinely
+omits the subject or hides it in a possessive:
+- "Your salary will be X" / "La Sua retribuzione sarà X" → the subject
+  is the PERSON being addressed, NOT the company writing the letter.
+- "You will be hired at level IV" / "Lei sarà assunto al IV livello"
+  → subject = the addressed person.
+- "The trial period is 15 days" in a letter to a person → the trial
+  period belongs to that person's contract, not to the sender.
+Before each triple, ask: WHOSE attribute is this really? Attach the
+fact to that entity. Never default to the most prominent or
+first-mentioned entity (typically the company or document author)
+just because it is prominent.
+
 Text:
 `;
 
