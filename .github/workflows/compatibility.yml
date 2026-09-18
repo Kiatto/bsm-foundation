@@ -1,0 +1,100 @@
+# Matrice di compatibilità eseguita, non dedotta.
+#
+# Estende COMPATIBILITY.md lungo l'unica dimensione che il portatile di sviluppo
+# non può coprire: il sistema operativo e l'architettura. La sezione "Cosa questa
+# matrice non copre" dichiara «un solo OS e una sola CPU (Linux x86-64)»; questo
+# workflow toglie quel caveat per macOS (x86-64 e arm64) e Windows.
+#
+# Resta scoperto, e va lasciato dichiarato: nessun runner GitHub è big-endian.
+
+name: Compatibility matrix
+
+on:
+  push:
+    branches: [master]
+    paths:
+      - "bsm/**"
+      - "reference/**"
+      - "pyproject.toml"
+      - ".github/workflows/compatibility.yml"
+      - ".github/codeword_digest.py"
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  # Le righe già documentate in COMPATIBILITY.md, rieseguite a ogni commit.
+  documented:
+    name: py${{ matrix.python }} · numpy ${{ matrix.numpy }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - {python: "3.10", numpy: "1.24.4"}
+          - {python: "3.10", numpy: "1.26.4"}
+          - {python: "3.11", numpy: "1.26.4"}
+          - {python: "3.11", numpy: "2.0.2"}
+          - {python: "3.12", numpy: "2.0.2"}
+          - {python: "3.12", numpy: "2.5.1"}
+          - {python: "3.13", numpy: "2.5.1"}   # configurazione di riferimento
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v5
+      - name: Suite completa (bsm/tests + reference)
+        run: >
+          uv run --python ${{ matrix.python }}
+          --with "numpy==${{ matrix.numpy }}" --with pytest --with fastapi --with httpx
+          python -m pytest bsm/tests reference -q
+
+  # La dimensione nuova: OS e architettura.
+  platforms:
+    name: ${{ matrix.os }} · numpy ${{ matrix.numpy }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest, macos-13, windows-latest]
+        numpy: ["1.26.4", "2.5.1"]   # path LUT e path bitwise_count
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v5
+      - name: Suite completa
+        run: >
+          uv run --python 3.12
+          --with "numpy==${{ matrix.numpy }}" --with pytest --with fastapi --with httpx
+          python -m pytest bsm/tests reference -q
+      - name: Digest dei codeword
+        run: >
+          uv run --python 3.12 --with "numpy==${{ matrix.numpy }}"
+          python .github/codeword_digest.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: digest-${{ matrix.os }}-np${{ matrix.numpy }}
+          path: codeword_digest.txt
+
+  # I codeword devono essere gli stessi bit su ogni piattaforma, altrimenti un
+  # artifact prodotto su una macchina non è leggibile su un'altra.
+  codewords-identical:
+    name: Codeword identici su tutte le piattaforme
+    needs: platforms
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: digest-*
+          path: digests
+      - name: Confronto
+        run: |
+          set -euo pipefail
+          find digests -name codeword_digest.txt | sort | while read -r f; do
+            printf '%s  %s\n' "$(cat "$f")" "$(dirname "$f")"
+          done
+          n=$(cat digests/*/codeword_digest.txt | sort -u | wc -l)
+          if [ "$n" -ne 1 ]; then
+            echo "FALSIFICATO: i codeword differiscono tra piattaforme ($n digest distinti)."
+            exit 1
+          fi
+          echo "OK: un solo digest su tutte le piattaforme testate."

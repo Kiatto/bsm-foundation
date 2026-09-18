@@ -53,3 +53,9 @@ dist/
 *.egg-info/
 .vercel/
 vercel-demo/.env.local
+
+# digest prodotto dalla CI di compatibilità
+codeword_digest.txt
+
+# PDF del preprint: lo produce la CI, non si committa
+docs/paper/paper.pdf
