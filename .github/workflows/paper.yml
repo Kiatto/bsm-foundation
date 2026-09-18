@@ -1,0 +1,80 @@
+# Build del preprint: docs/paper.md -> PDF con bibliografia.
+#
+# Il sorgente resta il markdown, non un .tex parallelo: una sola copia, nessuna
+# deriva fra le due. La conversione e' identica a quella verificata in locale il
+# 2026-09-18 (stessa immagine, stessi comandi).
+#
+# Gratuito: repo pubblico, runner ubuntu.
+
+name: Preprint PDF
+
+on:
+  push:
+    branches: [master]
+    paths:
+      - "docs/paper.md"
+      - "docs/paper/**"
+      - ".github/workflows/paper.yml"
+  pull_request:
+    paths:
+      - "docs/paper.md"
+      - "docs/paper/**"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    container:
+      image: pandoc/latex:latest
+      options: --entrypoint sh
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Dipendenze (font DejaVu + pacchetti LaTeX mancanti in TinyTeX)
+        run: |
+          set -eu
+          apk add --no-cache font-dejavu
+          fc-cache -f
+          tlmgr install newunicodechar amsfonts
+
+      - name: Build PDF
+        run: |
+          set -eu
+          pandoc docs/paper/metadata.yaml docs/paper.md \
+            --citeproc \
+            -H docs/paper/header.tex \
+            --pdf-engine=xelatex \
+            -o paper.pdf 2>build.log || { cat build.log; exit 1; }
+          cat build.log
+
+      # Un glifo assente non fa fallire xelatex: sparisce e basta. Le ✓/✗ della
+      # tabella di ablazione sono risultati, quindi il silenzio qui e' un bug.
+      - name: Nessun carattere perso in silenzio
+        run: |
+          set -eu
+          if grep -qi "missing character" build.log; then
+            echo "FALLITO: xelatex ha scartato dei glifi ->"
+            grep -i "missing character" build.log | sort -u
+            echo "Aggiungere la mappatura in docs/paper/header.tex."
+            exit 1
+          fi
+          echo "OK: nessun glifo scartato."
+
+      # Una chiave di citazione sbagliata produce "[?]" nel PDF, senza errori.
+      - name: Nessuna citazione irrisolta
+        run: |
+          set -eu
+          if grep -qi "citeproc.*not found\|Citeproc.*no bibliography" build.log; then
+            echo "FALLITO: citazioni non risolte contro docs/paper/refs.bib"
+            grep -i "citeproc" build.log | sort -u
+            exit 1
+          fi
+          echo "OK: tutte le citazioni risolte."
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: preprint-pdf
+          path: paper.pdf

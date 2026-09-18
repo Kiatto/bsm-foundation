@@ -1,0 +1,22 @@
+---
+title: "A Quantitative Theory of Associative Memory, with a Reference Implementation"
+subtitle: "Algebraic Binary Memory (ABM)"
+author:
+  - kiatto
+date: "Preprint v1.1"
+bibliography: docs/paper/refs.bib
+link-citations: true
+numbersections: true
+geometry: "margin=1in"
+fontsize: 11pt
+colorlinks: true
+linkcolor: black
+urlcolor: blue
+citecolor: black
+# I caratteri matematici Unicode del sorgente (⊕ √ ≥ 𝔹 ⊞ ρ Φ) richiedono
+# xelatex con un font che li contenga: pdflatex li scarterebbe in silenzio.
+mainfont: "DejaVu Serif"
+sansfont: "DejaVu Sans"
+monofont: "DejaVu Sans Mono"
+mathfont: "DejaVu Math TeX Gyre"
+---

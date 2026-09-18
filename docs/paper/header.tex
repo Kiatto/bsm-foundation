@@ -1,0 +1,14 @@
+% header.tex — glifi Unicode che DejaVu non contiene.
+%
+% Senza queste mappature xelatex li scarta in SILENZIO: le ✓/✗ della tabella
+% di ablazione (§2.1) sparirebbero dal PDF senza alcun errore di build.
+% Verificato il 2026-09-18: questi sei sono esattamente i caratteri che
+% pandoc segnalava come mancanti, e nessun altro.
+\usepackage{amssymb}
+\usepackage{newunicodechar}
+\newunicodechar{✓}{\ensuremath{\checkmark}}
+\newunicodechar{✗}{\ensuremath{\times}}
+\newunicodechar{≳}{\ensuremath{\gtrsim}}
+\newunicodechar{𝒩}{\ensuremath{\mathcal{N}}}
+\newunicodechar{𝓐}{\ensuremath{\mathcal{A}}}
+\newunicodechar{𝓜}{\ensuremath{\mathcal{M}}}

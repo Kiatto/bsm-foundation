@@ -286,7 +286,7 @@ predicts. Declared limits: ~35–55% grammatical coverage (4 patterns);
 negation subset untested; chaining control is symbolic, the truth
 oracle is purely algebraic.
 
-**HotpotQA (negative result).** With a regex grounding layer, the
+**HotpotQA [@yang2018hotpotqa] (negative result).** With a regex grounding layer, the
 algebra is never engaged (1.9 triples per 42 sentences; 0.5% of
 queries planned) and demo-tuned multi-hop heuristics *subtract* value
 (7% vs a 13% single-hop baseline; oracle 100%, chance 4.9%). This
@@ -364,17 +364,33 @@ plans and real corpora.
 
 ## 8. Related work
 
-Vector Symbolic Architectures and hyperdimensional computing (Kanerva;
-Plate's HRR; Gallant & Okaywe's MBAT; Rachkovskij & Kussul's
-context-dependent thinning) supply the operator vocabulary; superposition
-capacity of the D/ln M form is classical. Hopfield networks share the
-interference-plus-extreme-value mechanism (our measured c ≈ 0.07–0.09
-at M ≈ 2N recalls the 0.138·N regime). ProofWriter/RuleTaker study soft
-theorem proving with transformers. Our contribution relative to this
-literature is the *resource theory*: laws with confidence intervals and
-derivations, a calculus with normal forms whose cost semantics is
-proved sound, predictions issued before measurement, and an
-axiomatization justified by operator-ablation.
+Vector Symbolic Architectures and hyperdimensional computing
+[@kanerva1988sdm; @kanerva2009hd; @gayler2003jackendoff; @kleyko2023survey]
+supply the operator vocabulary: Plate's holographic reduced representations
+[@plate1995hrr], Gallant and Okaywe's matrix binding [@gallant2013objects],
+and Rachkovskij and Kussul's context-dependent thinning
+[@rachkovskij2001thinning]. Superposition capacity of the D/ln M form is
+classical; the closest precedent to our Law IV is the capacity theory of
+Frady, Kleyko and Sommer [@frady2018sequence], which derives retrieval
+accuracy from crosstalk noise in VSA-coded recurrent networks. We differ in
+two respects: our threshold is the second-order Gumbel extreme-value
+statistic of the *codebook* rather than a fixed SNR criterion, and our law
+is stated as a deployable contract — a single constant k = 0.92 ± 0.03 with
+no per-configuration fitting. Hopfield networks [@hopfield1982] share the
+interference-plus-extreme-value mechanism (our measured c ≈ 0.07–0.09 at
+M ≈ 2N recalls the 0.138·N regime of Amit, Gutfreund and Sompolinsky
+[@amit1985storing]). ProofWriter [@tafjord2021proofwriter] and RuleTaker
+[@clark2020ruletaker] study soft theorem proving with transformers; our use
+of ProofWriter inverts the setting, keeping the chaining symbolic and making
+the *truth oracle* algebraic. Retrieval-augmented generation
+[@lewis2020rag] is the design we contrast with in §1: memory as an index
+with composition delegated to the language model. The confluence results of
+§4 are standard rewriting theory [@baader1998term] applied to a new algebra.
+
+Our contribution relative to this literature is the *resource theory*: laws
+with confidence intervals and derivations, a calculus with normal forms
+whose cost semantics is proved sound, predictions issued before measurement,
+and an axiomatization justified by operator-ablation.
 
 ## 9. Open problems
 
@@ -412,3 +428,6 @@ compilation to typed projection, were confirmed *after* being derived.
 frozen as FORMALISM.md v2.0; the reference implementation
 (`reference/abm.py`, < 500 lines, numpy-only, deterministic) passes the
 property tests derived from the axioms.*
+
+
+## References
