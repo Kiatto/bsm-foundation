@@ -60,6 +60,20 @@ messaggi) va etichettata:
 Se si accumulano 10 modifiche INTERNE e zero da utenti, è il segnale
 di ottimizzazione autoreferenziale — fermarsi e aspettare dati veri.
 
+8. **Regola delle due settimane (aggiunta 7/8/2026).** Se per due
+   settimane consecutive non entra **nessuna nuova evidenza esterna**,
+   la priorità assoluta non è migliorare il prodotto: è aumentare il
+   numero di contatti con potenziali utenti. Il criterio di
+   avanzamento smette di essere "abbiamo migliorato il repository" e
+   diventa "abbiamo imparato qualcosa che prima non sapevamo".
+   La regola 7 conta le modifiche; questa conta il **tempo**, perché
+   si può restare autoreferenziali anche facendo poche modifiche ma
+   molta documentazione.
+
+**Stato della regola 8 al 7/8/2026: sta scattando.** Ultima evidenza
+esterna: nessuna, mai. Il protocollo esiste dal 23/7 e non registra
+sessioni. Sono passate oltre due settimane.
+
 ### Modifiche registrate
 
 - **[INTERNA]** (23/7/2026) soglia di confidence in knowledge.html
@@ -68,6 +82,19 @@ di ottimizzazione autoreferenziale — fermarsi e aspettare dati veri.
   tester. Motivazione tecnica valida (evitava una risposta
   silenziosamente errata), ma l'origine resta interna — da verificare
   se un utente reale l'avrebbe mai notata.
+
+- **[INTERNA]** (6–7/8/2026) sessione di correzione e ottimizzazione
+  del layer bitpacked: 7 bug corretti, 9 ottimizzazioni adottate, 7
+  scartate, 36 test aggiunti, criterio di accettazione riscritto,
+  `PERFORMANCE.md` / `COMPATIBILITY.md` / `PRODUCT_HYPOTHESES.md` /
+  `KNOWN_UNKNOWNS.md` creati. **Zero di queste modifiche nasce da un
+  utente.** Alcune erano difetti reali e non discutibili (il router
+  rifiutava 30/30 risposte corrette; `requires-python` dichiarava il
+  falso), ma per la regola 7 il conteggio è quello che è: molto oltre
+  dieci modifiche interne, zero da utenti. La regola era già scritta
+  il 23/7 e questa sessione l'ha superata senza che nessuno se ne
+  accorgesse sul momento — motivo per cui esiste ora anche la regola
+  8, che scatta sul tempo e non sul conteggio.
 
 ### Ipotesi da osservare nel test crudele (5 persone, schermo condiviso, zero aiuto)
 

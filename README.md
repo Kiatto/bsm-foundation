@@ -27,6 +27,22 @@ abm demo
 Developer guide (no theory required): [docs/SDK.md](docs/SDK.md).
 The runtime is two files, numpy-only, ~400 lines total.
 
+### Supported configurations
+
+Every row below was executed, not inferred — full suite, 166 tests.
+
+| Configuration | Supported | Performance |
+|---|---|---|
+| Python 3.10 – 3.13 | ✓ | — |
+| Python ≤ 3.9 | ✗ | `int.bit_count()` requires 3.10 |
+| NumPy 1.24 – 1.26 | ✓ | **reduced**: cleanup ~12x slower |
+| NumPy ≥ 2.0 | ✓ | nominal |
+
+NumPy 1.x is correct and passes every test bit for bit; it lacks
+`np.bitwise_count`, so the popcount falls back to a byte lookup table. Full
+matrix, measured penalties and what the matrix does *not* cover (single OS, single
+CPU, single BLAS, untested on big-endian): [COMPATIBILITY.md](COMPATIBILITY.md).
+
 ```python
 from abm import Memory
 from inspector import stats, contract, report

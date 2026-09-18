@@ -59,6 +59,11 @@ Head weight FP32 domina (>80% del file per modelli con vocab grande).
 
 ## 5. Rotte di Ottimizzazione Future
 
+> Nota: le voci qui sotto sono **stime**, non misure. Per il runtime ABM/bitpack
+> le decisioni di prestazione *misurate* — adottate, scartate e perché — stanno in
+> [`PERFORMANCE.md`](../PERFORMANCE.md). Prima di inseguire una riga di questa
+> tabella, controllare che non sia già stata provata e scartata là.
+
 | Ottimizzazione | Speedup stimato | Sforzo |
 |----------------|----------------|--------|
 | AVX2 per BinaryDot (8× word parallele) | 2-3x | Alto (assembly Plan9) |
